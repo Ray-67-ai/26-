@@ -19,6 +19,7 @@ const TIMER  = scripting.addModule("/ti/driverlib/TIMER", {}, false);
 const CONTROL_TIMER = TIMER.addInstance();
 const UART   = scripting.addModule("/ti/driverlib/UART", {}, false);
 const DEBUG_UART = UART.addInstance();
+const VISION_UART = UART.addInstance();
 const Board = scripting.addModule("/ti/driverlib/Board", {}, false);
 
 const gate7 = system.clockTree["MFCLKGATE"];
@@ -140,12 +141,23 @@ CONTROL_TIMER.peripheral.$assign = "TIMA1";
 
 DEBUG_UART.$name = "DEBUG_UART";
 DEBUG_UART.uartClkSrc = "MFCLK";
+DEBUG_UART.enabledInterrupts = ["RX"];
 DEBUG_UART.targetBaudRate = 115200;
 DEBUG_UART.peripheral.$assign = "UART0";
 DEBUG_UART.peripheral.rxPin.$assign = "PA11";
 DEBUG_UART.peripheral.txPin.$assign = "PA10";
 DEBUG_UART.txPinConfig.$name = "ti_driverlib_gpio_GPIOPinGeneric20";
 DEBUG_UART.rxPinConfig.$name = "ti_driverlib_gpio_GPIOPinGeneric21";
+
+VISION_UART.$name = "VISION_UART";
+VISION_UART.uartClkSrc = "MFCLK";
+VISION_UART.enabledInterrupts = ["RX"];
+VISION_UART.targetBaudRate = 115200;
+VISION_UART.peripheral.$assign = "UART1";
+VISION_UART.peripheral.rxPin.$assign = "PA9";
+VISION_UART.peripheral.txPin.$assign = "PA8";
+VISION_UART.txPinConfig.$name = "ti_driverlib_gpio_GPIOPinGeneric22";
+VISION_UART.rxPinConfig.$name = "ti_driverlib_gpio_GPIOPinGeneric23";
 
 SYSCTL.forceDefaultClkConfig = true;
 SYSCTL.clockTreeEn = true;

@@ -58,6 +58,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_init(void)
     SYSCFG_DL_CONTROL_TIMER_init();
     SYSCFG_DL_I2C_DISPLAY_init();
     SYSCFG_DL_DEBUG_UART_init();
+    SYSCFG_DL_VISION_UART_init();
     /* Ensure backup structures have no valid state */
 	gPWM_RIGHTBackup.backupRdy 	= false;
 	gCONTROL_TIMERBackup.backupRdy 	= false;
@@ -98,6 +99,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_TimerA_reset(CONTROL_TIMER_INST);
     DL_I2C_reset(I2C_DISPLAY_INST);
     DL_UART_Main_reset(DEBUG_UART_INST);
+    DL_UART_Main_reset(VISION_UART_INST);
 
     DL_GPIO_enablePower(GPIOA);
     DL_GPIO_enablePower(GPIOB);
@@ -106,6 +108,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_TimerA_enablePower(CONTROL_TIMER_INST);
     DL_I2C_enablePower(I2C_DISPLAY_INST);
     DL_UART_Main_enablePower(DEBUG_UART_INST);
+    DL_UART_Main_enablePower(VISION_UART_INST);
     delay_cycles(POWER_STARTUP_DELAY);
 }
 
@@ -132,6 +135,10 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
         GPIO_DEBUG_UART_IOMUX_TX, GPIO_DEBUG_UART_IOMUX_TX_FUNC);
     DL_GPIO_initPeripheralInputFunction(
         GPIO_DEBUG_UART_IOMUX_RX, GPIO_DEBUG_UART_IOMUX_RX_FUNC);
+    DL_GPIO_initPeripheralOutputFunction(
+        GPIO_VISION_UART_IOMUX_TX, GPIO_VISION_UART_IOMUX_TX_FUNC);
+    DL_GPIO_initPeripheralInputFunction(
+        GPIO_VISION_UART_IOMUX_RX, GPIO_VISION_UART_IOMUX_RX_FUNC);
 
     DL_GPIO_initDigitalOutput(MOTOR_DIR_AIN1_IOMUX);
 
@@ -416,7 +423,46 @@ SYSCONFIG_WEAK void SYSCFG_DL_DEBUG_UART_init(void)
     DL_UART_Main_setBaudRateDivisor(DEBUG_UART_INST, DEBUG_UART_IBRD_4_MHZ_115200_BAUD, DEBUG_UART_FBRD_4_MHZ_115200_BAUD);
 
 
+    /* Configure Interrupts */
+    DL_UART_Main_enableInterrupt(DEBUG_UART_INST,
+                                 DL_UART_MAIN_INTERRUPT_RX);
+
 
     DL_UART_Main_enable(DEBUG_UART_INST);
+}
+static const DL_UART_Main_ClockConfig gVISION_UARTClockConfig = {
+    .clockSel    = DL_UART_MAIN_CLOCK_MFCLK,
+    .divideRatio = DL_UART_MAIN_CLOCK_DIVIDE_RATIO_1
+};
+
+static const DL_UART_Main_Config gVISION_UARTConfig = {
+    .mode        = DL_UART_MAIN_MODE_NORMAL,
+    .direction   = DL_UART_MAIN_DIRECTION_TX_RX,
+    .flowControl = DL_UART_MAIN_FLOW_CONTROL_NONE,
+    .parity      = DL_UART_MAIN_PARITY_NONE,
+    .wordLength  = DL_UART_MAIN_WORD_LENGTH_8_BITS,
+    .stopBits    = DL_UART_MAIN_STOP_BITS_ONE
+};
+
+SYSCONFIG_WEAK void SYSCFG_DL_VISION_UART_init(void)
+{
+    DL_UART_Main_setClockConfig(VISION_UART_INST, (DL_UART_Main_ClockConfig *) &gVISION_UARTClockConfig);
+
+    DL_UART_Main_init(VISION_UART_INST, (DL_UART_Main_Config *) &gVISION_UARTConfig);
+    /*
+     * Configure baud rate by setting oversampling and baud rate divisors.
+     *  Target baud rate: 115200
+     *  Actual baud rate: 115107.91
+     */
+    DL_UART_Main_setOversampling(VISION_UART_INST, DL_UART_OVERSAMPLING_RATE_16X);
+    DL_UART_Main_setBaudRateDivisor(VISION_UART_INST, VISION_UART_IBRD_4_MHZ_115200_BAUD, VISION_UART_FBRD_4_MHZ_115200_BAUD);
+
+
+    /* Configure Interrupts */
+    DL_UART_Main_enableInterrupt(VISION_UART_INST,
+                                 DL_UART_MAIN_INTERRUPT_RX);
+
+
+    DL_UART_Main_enable(VISION_UART_INST);
 }
 

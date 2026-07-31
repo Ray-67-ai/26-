@@ -1,6 +1,7 @@
 # FIXED
 
-main.o: ../main.c ti_msp_dl_config.h \
+src/zdt_stepper.o: ../src/zdt_stepper.c ../src/zdt_stepper.h \
+ ../src/h3_config.h ti_msp_dl_config.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/msp.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/DeviceFamily.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/m0p/mspm0g350x.h \
@@ -82,8 +83,9 @@ main.o: ../main.c ti_msp_dl_config.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_vref.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_wwdt.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_interrupt.h \
- F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h \
- ../src/competition_mode.h ../src/h3_ball_control.h
+ F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h
+../src/zdt_stepper.h:
+../src/h3_config.h:
 ti_msp_dl_config.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/msp.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/DeviceFamily.h:
@@ -167,5 +169,3 @@ F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_vref.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_wwdt.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_interrupt.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h:
-../src/competition_mode.h:
-../src/h3_ball_control.h:
