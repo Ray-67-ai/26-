@@ -165,6 +165,16 @@ extern "C" {
 
 
 
+/* Port definition for Pin Group USER_KEY */
+#define USER_KEY_PORT                                                    (GPIOA)
+
+/* Defines for START: GPIOA.23 with pinCMx 53 on package pin 24 */
+// pins affected by this interrupt request:["START"]
+#define USER_KEY_INT_IRQN                                       (GPIOA_INT_IRQn)
+#define USER_KEY_INT_IIDX                       (DL_INTERRUPT_GROUP1_IIDX_GPIOA)
+#define USER_KEY_START_IIDX                                 (DL_GPIO_IIDX_DIO23)
+#define USER_KEY_START_PIN                                      (DL_GPIO_PIN_23)
+#define USER_KEY_START_IOMUX                                     (IOMUX_PINCM53)
 /* Port definition for Pin Group MOTOR_DIR */
 #define MOTOR_DIR_PORT                                                   (GPIOB)
 
@@ -232,16 +242,6 @@ extern "C" {
 #define LINE_OUT8_PORT                                                   (GPIOA)
 #define LINE_OUT8_PIN                                           (DL_GPIO_PIN_27)
 #define LINE_OUT8_IOMUX                                          (IOMUX_PINCM60)
-/* Port definition for Pin Group USER_KEY */
-#define USER_KEY_PORT                                                    (GPIOA)
-
-/* Defines for START: GPIOA.23 with pinCMx 53 on package pin 24 */
-// pins affected by this interrupt request:["START"]
-#define USER_KEY_INT_IRQN                                       (GPIOA_INT_IRQn)
-#define USER_KEY_INT_IIDX                       (DL_INTERRUPT_GROUP1_IIDX_GPIOA)
-#define USER_KEY_START_IIDX                                 (DL_GPIO_IIDX_DIO23)
-#define USER_KEY_START_PIN                                      (DL_GPIO_PIN_23)
-#define USER_KEY_START_IOMUX                                     (IOMUX_PINCM53)
 
 
 /* clang-format on */

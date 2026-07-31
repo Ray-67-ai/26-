@@ -4,6 +4,7 @@
 #include "h3_vision.h"
 #include "motor_encoder.h"
 #include "ssd1306.h"
+#include "ti_msp_dl_config.h"
 #include "zdt_stepper.h"
 
 #include <stdbool.h>
@@ -35,6 +36,28 @@ static float g_target_mm;
 static float g_integral_mm_s;
 static float g_last_command_angle_deg;
 static bool g_oled_present;
+static uint32_t g_camera_ack_tx_frames;
+
+static void send_camera_ack(const h3_vision_sample_t *vision)
+{
+    char frame[56];
+    int length;
+    int i;
+
+    length = snprintf(frame, sizeof(frame), "A,%lu,%u,%lu,%lu\r\n",
+        (unsigned long) vision->sequence,
+        vision->valid ? 1U : 0U,
+        (unsigned long) vision->good_frames,
+        (unsigned long) vision->bad_frames);
+    if ((length <= 0) || (length >= (int) sizeof(frame))) {
+        return;
+    }
+    for (i = 0; i < length; ++i) {
+        DL_UART_Main_transmitDataBlocking(
+            VISION_UART_INST, (uint8_t) frame[i]);
+    }
+    ++g_camera_ack_tx_frames;
+}
 
 static float clampf(float value, float minimum, float maximum)
 {
@@ -145,30 +168,38 @@ static void start_run(uint32_t now)
 
 static void handle_key(uint32_t now)
 {
-    const h3_vision_sample_t *vision;
-
     if (!g_start_key_event) {
         return;
     }
+
     g_start_key_event = false;
+
     if ((now - g_last_key_ms) < H3_KEY_DEBOUNCE_MS) {
         return;
     }
-    g_last_key_ms = now;
-    vision = h3_vision_get();
 
-    if ((g_state == H3_READY) && vision_is_recent(now) &&
-        (absf(vision->position_mm) <= H3_START_CENTER_TOLERANCE_MM)) {
+    g_last_key_ms = now;
+
+    /*
+     * 调试版本：
+     * 1. 不要求视觉已经收到有效帧；
+     * 2. 不要求钢球处于中心附近；
+     * 3. READY或WAIT状态按键都能进入第三问。
+     */
+    if ((g_state == H3_READY) ||
+        (g_state == H3_WAIT_VISION)) {
         start_run(now);
-    } else if ((g_state == H3_DONE) || (g_state == H3_TIMEOUT) ||
+    } else if ((g_state == H3_DONE) ||
+               (g_state == H3_TIMEOUT) ||
                (g_state == H3_VISION_FAULT)) {
         g_integral_mm_s = 0.0f;
         g_target_mm = 0.0f;
         (void) send_motor_angle(now, 0.0f, true);
-        g_state = vision_is_recent(now) ? H3_READY : H3_WAIT_VISION;
+
+        /* 复位后直接回READY，不再回WAIT CAM */
+        g_state = H3_READY;
     }
 }
-
 static void update_motion_state(uint32_t now,
                                 const h3_vision_sample_t *vision)
 {
@@ -245,39 +276,46 @@ static void update_ui(uint32_t now)
 {
     const h3_vision_sample_t *vision = h3_vision_get();
     const zdt_stepper_status_t *zdt = zdt_stepper_get_status();
-    uint32_t elapsed = 0U;
+    uint32_t age_ms = vision->has_frame ?
+        (now - vision->received_ms) : 9999U;
     char text[24];
-    int position = (int) vision->position_mm;
-    int velocity = (int) vision->velocity_mm_s;
-    int angle_tenths = (int) (g_last_command_angle_deg * 10.0f);
-
-    if ((g_state == H3_GO_POSITIVE) || (g_state == H3_GO_NEGATIVE) ||
-        (g_state == H3_HOLD_NEGATIVE)) {
-        elapsed = now - g_run_start_ms;
-    } else if ((g_state == H3_DONE) || (g_state == H3_TIMEOUT)) {
-        elapsed = g_finish_elapsed_ms;
-    }
 
     ssd1306_clear();
     ssd1306_draw_text(0U, 0U, "H3 BALL CTRL");
-    ssd1306_draw_text(0U, 1U, state_text());
 
-    (void) snprintf(text, sizeof(text), "X%+4d V%+4d", position, velocity);
+    (void) snprintf(text, sizeof(text), "%s %s",
+        state_text(), vision_is_recent(now) ? "CAM OK" : "CAM --");
+    ssd1306_draw_text(0U, 1U, text);
+
+    (void) snprintf(text, sizeof(text), "POS%+4d V%+4d",
+        (int) vision->position_mm, (int) vision->velocity_mm_s);
+    ssd1306_draw_text(0U, 2U, text);
+
+    (void) snprintf(text, sizeof(text), "TGT%+4d ANG%+3d",
+        (int) g_target_mm, (int) g_last_command_angle_deg);
     ssd1306_draw_text(0U, 3U, text);
-    (void) snprintf(text, sizeof(text), "T%+3d A%+3d.%1d",
-                    (int) g_target_mm,
-                    angle_tenths / 10,
-                    (angle_tenths < 0 ? -angle_tenths : angle_tenths) % 10);
+
+    (void) snprintf(text, sizeof(text), "CAM RX%lu V%u",
+        (unsigned long) (vision->rx_bytes % 100000UL),
+        vision->valid ? 1U : 0U);
     ssd1306_draw_text(0U, 4U, text);
-    (void) snprintf(text, sizeof(text), "%lu.%02luS P%lu",
-                    (unsigned long) (elapsed / 1000U),
-                    (unsigned long) ((elapsed % 1000U) / 10U),
-                    (unsigned long) g_positive_reached_ms);
+
+    /* G/I/E = valid / no-ball / malformed frame counters. */
+    (void) snprintf(text, sizeof(text), "FRAME %lu/%lu/%lu",
+        (unsigned long) (vision->good_frames % 1000UL),
+        (unsigned long) (vision->invalid_frames % 1000UL),
+        (unsigned long) (vision->bad_frames % 1000UL));
+    ssd1306_draw_text(0U, 5U, text);
+
+    (void) snprintf(text, sizeof(text), "ACK TX%lu A%lu",
+        (unsigned long) (g_camera_ack_tx_frames % 100000UL),
+        (unsigned long) (age_ms % 10000UL));
     ssd1306_draw_text(0U, 6U, text);
-    (void) snprintf(text, sizeof(text), "CAM%lu ACK%lu/%02X",
-                    (unsigned long) vision->good_frames,
-                    (unsigned long) zdt->rx_frames,
-                    zdt->last_status);
+
+    (void) snprintf(text, sizeof(text), "ZDT T%lu R%lu E%lu",
+        (unsigned long) (zdt->tx_frames % 1000UL),
+        (unsigned long) (zdt->rx_frames % 1000UL),
+        (unsigned long) (zdt->tx_errors % 1000UL));
     ssd1306_draw_text(0U, 7U, text);
 }
 
@@ -285,7 +323,11 @@ void h3_ball_control_init(void)
 {
     g_millis = 0U;
     g_start_key_event = false;
-    g_state = H3_WAIT_VISION;
+ /*
+ * 调试阶段上电直接READY，
+ * 不再通过WAIT CAM阻止按键启动。
+ */
+g_state = H3_READY;
     g_last_key_ms = 0U;
     g_run_start_ms = 0U;
     g_positive_reached_ms = 0U;
@@ -297,6 +339,7 @@ void h3_ball_control_init(void)
     g_target_mm = 0.0f;
     g_integral_mm_s = 0.0f;
     g_last_command_angle_deg = 0.0f;
+    g_camera_ack_tx_frames = 0U;
 
     motor_init();
     h3_vision_init();
@@ -319,6 +362,10 @@ void h3_ball_control_process(void)
     h3_vision_process(now);
     new_sample = h3_vision_take_new_sample();
     vision = h3_vision_get();
+
+    if (new_sample) {
+        send_camera_ack(vision);
+    }
 
     if ((g_state == H3_WAIT_VISION) && vision_is_recent(now)) {
         g_state = H3_READY;

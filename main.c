@@ -10,6 +10,31 @@
 #error "Unsupported COMPETITION_MODE"
 #endif
 
+#if COMPETITION_MODE == COMPETITION_MODE_H3
+#define VISION_UART_CLEAR_MASK                                             \
+    (DL_UART_MAIN_INTERRUPT_RX |                                          \
+     DL_UART_MAIN_INTERRUPT_RX_TIMEOUT_ERROR |                            \
+     DL_UART_MAIN_INTERRUPT_OVERRUN_ERROR |                               \
+     DL_UART_MAIN_INTERRUPT_BREAK_ERROR |                                 \
+     DL_UART_MAIN_INTERRUPT_PARITY_ERROR |                                \
+     DL_UART_MAIN_INTERRUPT_FRAMING_ERROR |                               \
+     DL_UART_MAIN_INTERRUPT_NOISE_ERROR)
+
+/*
+ * MaixCAM may already be transmitting while OLED and ZDT are initialized.
+ * Discard that stale/overflowed fragment so reception always starts at the
+ * next complete B,... frame, regardless of which board was powered first.
+ */
+static void vision_uart_discard_startup_fragment(void)
+{
+    while (!DL_UART_Main_isRXFIFOEmpty(VISION_UART_INST)) {
+        (void) DL_UART_Main_receiveData(VISION_UART_INST);
+    }
+    DL_UART_Main_clearInterruptStatus(
+        VISION_UART_INST, VISION_UART_CLEAR_MASK);
+}
+#endif
+
 int main(void)
 {
     SYSCFG_DL_init();
@@ -21,16 +46,17 @@ int main(void)
     NVIC_EnableIRQ(USER_KEY_INT_IRQN);
 #else
     h3_ball_control_init();
-    DL_UART_Main_enableInterrupt(
-    VISION_UART_INST,
-    DL_UART_MAIN_INTERRUPT_RX |
-    DL_UART_MAIN_INTERRUPT_RX_TIMEOUT_ERROR);
-    
+    vision_uart_discard_startup_fragment();
     NVIC_ClearPendingIRQ(DEBUG_UART_INST_INT_IRQN);
     NVIC_ClearPendingIRQ(VISION_UART_INST_INT_IRQN);
     NVIC_EnableIRQ(CONTROL_TIMER_INST_INT_IRQN);
     NVIC_EnableIRQ(USER_KEY_INT_IRQN);
     NVIC_EnableIRQ(DEBUG_UART_INST_INT_IRQN);
+    /*
+     * MaixCAM sends each ASCII frame as a short burst. UART1 must move bytes
+     * into the software ring buffer by interrupt; main-loop polling loses
+     * bytes whenever OLED/I2C or ZDT transmission blocks for a few ms.
+     */
     NVIC_EnableIRQ(VISION_UART_INST_INT_IRQN);
 #endif
     __enable_irq();
@@ -38,10 +64,11 @@ int main(void)
     while (1) {
 #if COMPETITION_MODE == COMPETITION_MODE_H2
         app_process();
+        __WFI();
 #else
         h3_ball_control_process();
-#endif
         __WFI();
+#endif
     }
 }
 
@@ -77,7 +104,6 @@ void GROUP1_IRQHandler(void)
             }
             break;
 #endif
-
         case USER_KEY_INT_IIDX:
             if (DL_GPIO_getPendingInterrupt(USER_KEY_PORT) ==
                 USER_KEY_START_IIDX) {
@@ -88,7 +114,6 @@ void GROUP1_IRQHandler(void)
 #endif
             }
             break;
-
         default:
             break;
     }
@@ -106,20 +131,14 @@ void DEBUG_UART_INST_IRQHandler(void)
     }
 }
 
+/* Drain the complete hardware FIFO on every UART1 RX interrupt. */
 void VISION_UART_INST_IRQHandler(void)
 {
-    /*
-     * 一次性读空UART接收FIFO。
-     * 不要每次中断只读取一个字节，否则连续ASCII帧容易丢字节。
-     */
     while (!DL_UART_Main_isRXFIFOEmpty(VISION_UART_INST)) {
         h3_ball_control_vision_rx_isr(
             (uint8_t) DL_UART_Main_receiveData(VISION_UART_INST));
     }
-
     DL_UART_Main_clearInterruptStatus(
-        VISION_UART_INST,
-        DL_UART_MAIN_INTERRUPT_RX |
-        DL_UART_MAIN_INTERRUPT_RX_TIMEOUT_ERROR);
+        VISION_UART_INST, VISION_UART_CLEAR_MASK);
 }
 #endif

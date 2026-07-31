@@ -21,18 +21,18 @@
  * motor > 0 表示摆杆右端升高，球受到向左的加速度。
  * 这些参数只属于第三问，实车必须按调试顺序逐项调整。
  */
-#define H3_BALL_KP_DEG_PER_MM               (0.0300f)
-#define H3_BALL_KI_DEG_PER_MM_S             (0.0080f)
+#define H3_BALL_KP_DEG_PER_MM               (0.0800f)
+#define H3_BALL_KI_DEG_PER_MM_S             (0.0100f)
 #define H3_BALL_KD_DEG_PER_MM_S             (0.0100f)
-#define H3_INTEGRAL_LIMIT_MM_S               (120.0f)
+#define H3_INTEGRAL_LIMIT_MM_S               (150.0f)
 #define H3_MAX_MOTOR_ANGLE_DEG               (6.0f)
 #define H3_MAX_MOTOR_SLEW_DEG_S              (90.0f)
 #define H3_MOTOR_COMMAND_MIN_CHANGE_DEG      (0.03f)
 #define H3_MOTOR_COMMAND_MAX_INTERVAL_MS     (60U)
 
 /* 视觉坐标和速度低通滤波系数，范围 0~1，越大响应越快。 */
-#define H3_POSITION_FILTER_ALPHA             (0.45f)
-#define H3_VELOCITY_FILTER_ALPHA             (0.35f)
+#define H3_POSITION_FILTER_ALPHA             (0.8f)
+#define H3_VELOCITY_FILTER_ALPHA             (0.5f)
 
 /* ZDT X42S Emm TTL普通绝对位置命令参数。 */
 #define H3_ZDT_ADDRESS                       (1U)

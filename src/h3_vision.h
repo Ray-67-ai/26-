@@ -16,7 +16,10 @@ typedef struct {
     float velocity_mm_s;
     float sample_dt_s;
     uint32_t good_frames;
+    uint32_t invalid_frames;
     uint32_t bad_frames;
+    uint32_t resync_events;
+    volatile uint32_t rx_bytes;
     volatile uint32_t dropped_bytes;
 } h3_vision_sample_t;
 
