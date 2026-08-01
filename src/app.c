@@ -138,6 +138,10 @@ static void handle_key(uint32_t now)
     if (!g_start_key_event) {
         return;
     }
+    /* Preserve an early Q1 press until the 500 ms sensor warmup completes. */
+    if (g_app_state == APP_WARMUP) {
+        return;
+    }
     g_start_key_event = false;
     if ((now - g_last_key_ms) < 150U) {
         return;
@@ -367,8 +371,6 @@ void app_process(void)
     uint32_t now = app_millis();
 
     handle_key(now);
-
-  handle_key(now);
 
 /*
  * 小车未运行时，也定期读取灰度传感器，

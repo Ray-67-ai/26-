@@ -83,7 +83,8 @@ main.o: ../main.c ti_msp_dl_config.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_wwdt.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_interrupt.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h \
- ../src/competition_mode.h ../src/h3_ball_control.h
+ ../src/app.h ../src/competition_mode.h ../src/h3_ball_control.h \
+ ../src/motor_encoder.h ../src/ssd1306.h
 ti_msp_dl_config.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/msp.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/DeviceFamily.h:
@@ -167,5 +168,8 @@ F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_vref.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_wwdt.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_interrupt.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h:
+../src/app.h:
 ../src/competition_mode.h:
 ../src/h3_ball_control.h:
+../src/motor_encoder.h:
+../src/ssd1306.h:

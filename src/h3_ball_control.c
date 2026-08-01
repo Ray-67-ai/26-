@@ -122,6 +122,11 @@ static bool vision_is_recent(uint32_t now)
         ((now - vision->last_valid_ms) <= H3_VISION_STALE_TIMEOUT_MS);
 }
 
+bool h3_ball_control_vision_ready(void)
+{
+    return vision_is_recent(h3_millis());
+}
+
 static bool send_motor_angle(uint32_t now, float desired_deg, bool force)
 {
     float command_deg;

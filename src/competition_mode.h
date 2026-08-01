@@ -1,15 +1,13 @@
 #ifndef COMPETITION_MODE_H
 #define COMPETITION_MODE_H
 
-/*
- * 竞赛题目运行模式。
- * 只改下面一行即可切换程序：
- *   COMPETITION_MODE_H2：第二问循线一圈停车
- *   COMPETITION_MODE_H3：第三问滚球 +5 cm -> -5 cm
- */
-#define COMPETITION_MODE_H2 (2)
-#define COMPETITION_MODE_H3 (3)
-
-#define COMPETITION_MODE COMPETITION_MODE_H3 //选择第三问
+/* Runtime question selection. One firmware image serves all questions. */
+typedef enum {
+    COMPETITION_MODE_NONE = 0,
+    COMPETITION_MODE_H2 = 2,
+    COMPETITION_MODE_H3 = 3,
+    COMPETITION_MODE_H4 = 4,
+    COMPETITION_MODE_H5 = 5
+} competition_mode_t;
 
 #endif

@@ -104,12 +104,25 @@ GPIO3.associatedPins[7].internalResistor = "PULL_UP";
 GPIO3.associatedPins[7].pin.$assign      = "PA27";
 
 GPIO4.$name                              = "USER_KEY";
-GPIO4.associatedPins[0].$name            = "START";
+GPIO4.associatedPins.create(3);
+GPIO4.associatedPins[0].$name            = "Q1_H2";
 GPIO4.associatedPins[0].direction        = "INPUT";
 GPIO4.associatedPins[0].internalResistor = "PULL_UP";
-GPIO4.associatedPins[0].interruptEn      = true;
+GPIO4.associatedPins[0].interruptEn      = false;
 GPIO4.associatedPins[0].polarity         = "FALL";
 GPIO4.associatedPins[0].pin.$assign      = "PA23";
+GPIO4.associatedPins[1].$name            = "Q3_START";
+GPIO4.associatedPins[1].direction        = "INPUT";
+GPIO4.associatedPins[1].internalResistor = "PULL_UP";
+GPIO4.associatedPins[1].interruptEn      = false;
+GPIO4.associatedPins[1].polarity         = "FALL";
+GPIO4.associatedPins[1].pin.$assign      = "PB18";
+GPIO4.associatedPins[2].$name            = "Q4_H5";
+GPIO4.associatedPins[2].direction        = "INPUT";
+GPIO4.associatedPins[2].internalResistor = "PULL_UP";
+GPIO4.associatedPins[2].interruptEn      = false;
+GPIO4.associatedPins[2].polarity         = "FALL";
+GPIO4.associatedPins[2].pin.$assign      = "PA17";
 
 I2C1.$name                             = "I2C_DISPLAY";
 I2C1.basicEnableController             = true;
@@ -182,7 +195,7 @@ UART1.rxPinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric21";
 
 UART2.$name                            = "VISION_UART";
 UART2.uartClkSrc                       = "MFCLK";
-UART2.enabledInterrupts                = ["RX", "OVERRUN_ERROR", "BREAK_ERROR", "PARITY_ERROR", "FRAMING_ERROR", "NOISE_ERROR"];
+UART2.enabledInterrupts                = ["BREAK_ERROR","FRAMING_ERROR","NOISE_ERROR","OVERRUN_ERROR","PARITY_ERROR","RX"];
 UART2.targetBaudRate                   = 115200;
 UART2.peripheral.$assign               = "UART1";
 UART2.peripheral.rxPin.$assign         = "PA9";
