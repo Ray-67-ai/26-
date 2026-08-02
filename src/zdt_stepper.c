@@ -15,12 +15,13 @@ static bool send_frame(const uint8_t *frame, uint8_t length)
     uint8_t i;
 
     for (i = 0U; i < length; ++i) {
-        /* Wait until each byte leaves the UART. Together with the frame gap
-         * below this prevents adjacent ZDT commands from being merged; the
-         * motor reported 01 00 EE 6B before this timing fix. */
+        /* Waiting for each byte to leave the UART avoids joining two ZDT
+         * command frames in the hardware FIFO. The motor was observed to
+         * report 01 00 EE 6B when paired commands had no inter-frame gap.
+         */
         DL_UART_Main_transmitDataBlocking(DEBUG_UART_INST, frame[i]);
     }
-    delay_cycles(CPUCLK_FREQ / 500U); /* 2 ms at 32 MHz. */
+    delay_cycles(CPUCLK_FREQ / 500U); /* 2 ms frame boundary at 32 MHz. */
     ++g_status.tx_frames;
     return true;
 }
@@ -90,6 +91,43 @@ bool zdt_stepper_move_absolute_deg(float motor_deg)
     return send_frame(frame, (uint8_t) sizeof(frame));
 }
 
+bool zdt_stepper_read_status_flags(void)
+{
+    const uint8_t frame[3] = {H3_ZDT_ADDRESS, 0x3AU, ZDT_FRAME_END};
+    return send_frame(frame, (uint8_t) sizeof(frame));
+}
+
+bool zdt_stepper_read_real_position(void)
+{
+    const uint8_t frame[3] = {H3_ZDT_ADDRESS, 0x36U, ZDT_FRAME_END};
+    return send_frame(frame, (uint8_t) sizeof(frame));
+}
+
+bool zdt_stepper_send_reference_test(void)
+{
+    /* Exact 13-byte frame previously verified by the user in JCom.
+     * CCW, 30 RPM, acceleration 50, 44 pulses (~4.95 deg),
+     * relative to the current real position, execute immediately.
+     */
+    static const uint8_t frame[13] = {
+        0x01U, 0xFDU, 0x01U, 0x00U, 0x1EU, 0x32U,
+        0x00U, 0x00U, 0x00U, 0x2CU, 0x02U, 0x00U, 0x6BU
+    };
+    return send_frame(frame, (uint8_t) sizeof(frame));
+}
+
+bool zdt_stepper_send_reference_back(void)
+{
+    /* Opposite of the verified reference test: CW, 44 pulses, relative to
+     * the current real position. Used only to restore the bench mechanism.
+     */
+    static const uint8_t frame[13] = {
+        0x01U, 0xFDU, 0x00U, 0x00U, 0x1EU, 0x32U,
+        0x00U, 0x00U, 0x00U, 0x2CU, 0x02U, 0x00U, 0x6BU
+    };
+    return send_frame(frame, (uint8_t) sizeof(frame));
+}
+
 void zdt_stepper_rx_byte_isr(uint8_t byte)
 {
     uint8_t length = g_rx_length;
@@ -101,9 +139,30 @@ void zdt_stepper_rx_byte_isr(uint8_t byte)
 
     if (byte == ZDT_FRAME_END) {
         if ((length >= 4U) && (g_rx_frame[0] == H3_ZDT_ADDRESS)) {
+            uint8_t function = g_rx_frame[1];
             g_status.last_function = g_rx_frame[1];
             g_status.last_status = g_rx_frame[length - 2U];
             ++g_status.rx_frames;
+            if ((function == 0x3AU) && (length == 4U)) {
+                g_status.motor_flags = g_rx_frame[2];
+                ++g_status.status_read_frames;
+            } else if ((function == 0x36U) && (length == 8U)) {
+                uint32_t magnitude =
+                    ((uint32_t) g_rx_frame[3] << 24) |
+                    ((uint32_t) g_rx_frame[4] << 16) |
+                    ((uint32_t) g_rx_frame[5] << 8) |
+                    (uint32_t) g_rx_frame[6];
+                g_status.real_position_raw = (g_rx_frame[2] == 0U) ?
+                    (int32_t) magnitude : -(int32_t) magnitude;
+                ++g_status.position_read_frames;
+            }
+            if (g_status.last_status == 0x02U) {
+                ++g_status.ok_responses;
+            } else if (g_status.last_status == 0xE2U) {
+                ++g_status.parameter_errors;
+            } else if (g_status.last_status == 0xEEU) {
+                ++g_status.format_errors;
+            }
         }
         length = 0U;
     }

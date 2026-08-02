@@ -120,4 +120,5 @@ GEN_OPTS__QUOTED :=
 SUBDIRS := \
 . \
 src \
+src/segger_rtt \
 

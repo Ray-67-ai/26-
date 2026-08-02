@@ -1,18 +1,18 @@
 ******************************************************************************
             TI ARM Clang Linker PC v4.0.4                      
 ******************************************************************************
->> Linked Sat Aug  1 19:17:27 2026
+>> Linked Sun Aug  2 19:26:47 2026
 
 OUTPUT FILE NAME:   <H2_LineCar_CCS.out>
-ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00004be5
+ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 000081c1
 
 
 MEMORY CONFIGURATION
 
          name            origin    length      used     unused   attr    fill
 ----------------------  --------  ---------  --------  --------  ----  --------
-  FLASH                 00000000   00020000  000058a0  0001a760  R  X
-  SRAM                  20200000   00008000  00000971  0000768f  RW X
+  FLASH                 00000000   00020000  000093f0  00016c10  R  X
+  SRAM                  20200000   00008000  00000f38  000070c8  RW X
   BCR_CONFIG            41c00000   000000ff  00000000  000000ff  R   
   BSL_CONFIG            41c00100   00000080  00000000  00000080  R   
 
@@ -21,14 +21,14 @@ SEGMENT ALLOCATION MAP
 
 run origin  load origin   length   init length attrs members
 ----------  ----------- ---------- ----------- ----- -------
-00000000    00000000    000058a0   000058a0    r-x
+00000000    00000000    000093f0   000093f0    r-x
   00000000    00000000    000000c0   000000c0    r-- .intvecs
-  000000c0    000000c0    00005380   00005380    r-x .text
-  00005440    00005440    00000430   00000430    r-- .rodata
-  00005870    00005870    00000030   00000030    r-- .cinit
-20200000    20200000    00000772   00000000    rw-
-  20200000    20200000    0000076b   00000000    rw- .bss
-  2020076c    2020076c    00000006   00000000    rw- .data
+  000000c0    000000c0    00008ad0   00008ad0    r-x .text
+  00008b90    00008b90    00000830   00000830    r-- .rodata
+  000093c0    000093c0    00000030   00000030    r-- .cinit
+20200000    20200000    00000d3a   00000000    rw-
+  20200000    20200000    00000d32   00000000    rw- .bss
+  20200d34    20200d34    00000006   00000000    rw- .data
 20207e00    20207e00    00000200   00000000    rw-
   20207e00    20207e00    00000200   00000000    rw- .stack
 
@@ -41,402 +41,541 @@ section   page    origin      length       input sections
 .intvecs   0    00000000    000000c0     
                   00000000    000000c0     startup_mspm0g350x_ticlang.o (.intvecs)
 
-.text      0    000000c0    00005380     
-                  000000c0    00000868     libc.a : _printfi.c.obj (.text:__TI_printfi_nofloat)
-                  00000928    00000258     app.o (.text.run_control_5ms)
-                  00000b80    00000208     h3_ball_control.o (.text.update_ui)
-                  00000d88    000001cc     ti_msp_dl_config.o (.text.SYSCFG_DL_GPIO_init)
-                  00000f54    000001ae     h3_vision.o (.text.parse_decimal_i32)
-                  00001102    00000002     libclang_rt.builtins.a : aeabi_div0.c.obj (.text.__aeabi_idiv0)
-                  00001104    000001a4     app.o (.text.update_ui)
-                  000012a8    00000178     app.o (.text.app_process)
-                  00001420    00000178     h3_vision.o (.text.commit_frame)
-                  00001598    00000174     h3_ball_control.o (.text.h3_ball_control_process)
-                  0000170c    00000170     ssd1306.o (.text.ssd1306_draw_text_2x)
-                  0000187c    00000170     h3_ball_control.o (.text.update_motion_state)
-                  000019ec    0000016c     line_sensor.o (.text.line_sensor_read)
-                  00001b58    00000148     h3_ball_control.o (.text.run_outer_loop)
-                  00001ca0    00000134     h3_vision.o (.text.h3_vision_process)
-                  00001dd4    00000128     main.o (.text.main)
-                  00001efc    00000128     ssd1306.o (.text.ssd1306_init)
-                  00002024    00000104     driverlib.a : dl_timer.o (.text.DL_Timer_initFourCCPWMMode)
-                  00002128    000000fc                 : dl_timer.o (.text.DL_Timer_initTimerMode)
-                  00002224    000000f8     ssd1306.o (.text.ssd1306_refresh_next_page)
-                  0000231c    000000f0     h3_ball_control.o (.text.send_motor_angle)
-                  0000240c    000000ec     h3_vision.o (.text.parse_legacy_line)
-                  000024f8    000000e8     ssd1306.o (.text.glyph_index)
-                  000025e0    000000e8     main.o (.text.poll_keys_1ms_isr)
-                  000026c8    000000e2     h3_vision.o (.text.parse_u32)
-                  000027aa    00000002     libclang_rt.builtins.a : aeabi_div0.c.obj (.text.__aeabi_ldiv0)
-                  000027ac    000000e0     app.o (.text.app_init)
-                  0000288c    000000d8     app.o (.text.state_text)
-                  00002964    000000d8     libclang_rt.builtins.a : addsf3.S.obj (.text)
-                  00002a3c    000000cc     ssd1306.o (.text.ssd1306_draw_text)
-                  00002b08    000000c4     h3_ball_control.o (.text.h3_ball_control_init)
-                  00002bcc    000000c0     main.o (.text.select_or_trigger_mode)
-                  00002c8c    000000b4     motor_encoder.o (.text.motor_speed_control_10ms)
-                  00002d40    000000a8     motor_encoder.o (.text.speed_pi)
-                  00002de8    000000a4     app.o (.text.start_run)
-                  00002e8c    000000a2     libclang_rt.builtins.a : udivmoddi4.S.obj (.text)
-                  00002f2e    00000002     --HOLE-- [fill = 0]
-                  00002f30    000000a0     ti_msp_dl_config.o (.text.SYSCFG_DL_initPower)
-                  00002fd0    000000a0     h3_ball_control.o (.text.handle_key)
-                  00003070    000000a0     i2c_bus.o (.text.i2c_bus_write)
-                  00003110    0000009c     h3_ball_control.o (.text.state_text)
-                  000031ac    0000009c     ssd1306.o (.text.write_commands)
-                  00003248    0000009a     h3_vision.o (.text.parse_i32)
-                  000032e2    00000002     --HOLE-- [fill = 0]
-                  000032e4    00000098     h3_vision.o (.text.inside_legacy_checksum)
-                  0000337c    00000098     h3_vision.o (.text.parse_line)
-                  00003414    00000094     main.o (.text.draw_mode_menu)
-                  000034a8    00000094     zdt_stepper.o (.text.zdt_stepper_move_absolute_deg)
-                  0000353c    0000008c     libclang_rt.builtins.a : mulsf3.S.obj (.text.__mulsf3)
-                  000035c8    00000084     zdt_stepper.o (.text.zdt_stepper_rx_byte_isr)
-                  0000364c    00000082     libclang_rt.builtins.a : divsf3.S.obj (.text.__divsf3)
-                  000036ce    00000002     --HOLE-- [fill = 0]
-                  000036d0    00000080     i2c_bus.o (.text.finish_transfer)
-                  00003750    00000080     app.o (.text.handle_key)
-                  000037d0    00000080     h3_vision.o (.text.skip_field)
-                  00003850    0000007e     h3_vision.o (.text.parse_standard_line)
-                  000038ce    00000002     --HOLE-- [fill = 0]
-                  000038d0    0000007c     libc.a : copy_decompress_lzss.c.obj (.text:decompress:lzss)
-                  0000394c    00000078     h3_ball_control.o (.text.send_camera_ack)
-                  000039c4    00000070     main.o (.text.read_pressed_keys)
-                  00003a34    00000068     motor_encoder.o (.text.set_pwm)
-                  00003a9c    00000064     ti_msp_dl_config.o (.text.SYSCFG_DL_PWM_LEFT_init)
-                  00003b00    00000064     ti_msp_dl_config.o (.text.SYSCFG_DL_PWM_RIGHT_init)
-                  00003b64    00000064     motor_encoder.o (.text.motor_encoder_right_edge_isr)
-                  00003bc8    00000062     libclang_rt.builtins.a : aeabi_fcmp.S.obj (.text.__aeabi_fcmp)
-                  00003c2a    00000002     --HOLE-- [fill = 0]
-                  00003c2c    00000060     h3_vision.o (.text.h3_vision_rx_byte_isr)
-                  00003c8c    00000060     motor_encoder.o (.text.motor_encoder_left_edge_isr)
-                  00003cec    00000060     motor_encoder.o (.text.motor_init)
-                  00003d4c    00000060     app.o (.text.travelled_distance_mm)
-                  00003dac    0000005e     driverlib.a : dl_i2c.o (.text.DL_I2C_fillControllerTXFIFO)
-                  00003e0a    00000002     --HOLE-- [fill = 0]
-                  00003e0c    0000005c     zdt_stepper.o (.text.zdt_stepper_init)
-                  00003e68    00000058     ti_msp_dl_config.o (.text.SYSCFG_DL_I2C_DISPLAY_init)
-                  00003ec0    00000058     motor_encoder.o (.text.motor_prepare_run)
-                  00003f18    00000058     zdt_stepper.o (.text.send_frame)
-                  00003f70    00000056     libclang_rt.builtins.a : aeabi_idivmod.S.obj (.text.__aeabi_idivmod)
-                  00003fc6    00000002     --HOLE-- [fill = 0]
-                  00003fc8    00000050     ti_msp_dl_config.o (.text.DL_GPIO_initPeripheralInputFunctionFeatures)
-                  00004018    00000050     i2c_bus.o (.text.DL_I2C_startControllerTransfer)
-                  00004068    0000004c     ti_msp_dl_config.o (.text.DL_GPIO_initDigitalInputFeatures)
-                  000040b4    0000004c     ti_msp_dl_config.o (.text.DL_UART_setBaudRateDivisor)
-                  00004100    0000004c     ti_msp_dl_config.o (.text.SYSCFG_DL_VISION_UART_init)
-                  0000414c    0000004c     h3_vision.o (.text.h3_vision_init)
-                  00004198    0000004c     libc.a : snprintf.c.obj (.text.snprintf)
-                  000041e4    0000004c     h3_ball_control.o (.text.start_run)
-                  00004230    0000004c     i2c_bus.o (.text.wait_idle)
-                  0000427c    00000048     driverlib.a : dl_uart.o (.text.DL_UART_init)
-                  000042c4    00000048     ti_msp_dl_config.o (.text.SYSCFG_DL_DEBUG_UART_init)
-                  0000430c    00000048     main.o (.text.dispatch_key_debounced)
-                  00004354    00000048     app.o (.text.stop_with_state)
-                  0000439c    00000044     main.o (.text.GROUP1_IRQHandler)
-                  000043e0    00000044     main.o (.text.vision_uart_start_clean)
-                  00004424    00000042     h3_ball_control.o (.text.vision_is_recent)
-                  00004466    00000002     --HOLE-- [fill = 0]
-                  00004468    00000040     libclang_rt.builtins.a : aeabi_uidivmod.S.obj (.text.__aeabi_uidivmod)
-                  000044a8    00000040     libc.a : atoi.c.obj (.text.atoi)
-                  000044e8    00000040     main.o (.text.start_selected_mode)
-                  00004528    0000003e     app.o (.text.clampf)
-                  00004566    0000003e     h3_ball_control.o (.text.clampf)
-                  000045a4    0000003e     motor_encoder.o (.text.clampf)
-                  000045e2    00000002     --HOLE-- [fill = 0]
-                  000045e4    0000003c     driverlib.a : dl_i2c.o (.text.DL_I2C_flushControllerTXFIFO)
-                  00004620    0000003c     ti_msp_dl_config.o (.text.DL_Timer_setCounterControl)
-                  0000465c    0000003c     ti_msp_dl_config.o (.text.SYSCFG_DL_init)
-                  00004698    0000003c     libclang_rt.builtins.a : floatsisf.S.obj (.text.__floatsisf)
-                  000046d4    0000003c                            : comparesf2.S.obj (.text.__gtsf2)
-                  00004710    0000003c     motor_encoder.o (.text.motor_active_brake)
-                  0000474c    0000003c     motor_encoder.o (.text.motor_coast)
-                  00004788    0000003c     libc.a : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit)
-                  000047c4    0000003a     libclang_rt.builtins.a : comparesf2.S.obj (.text.__eqsf2)
-                  000047fe    00000002     --HOLE-- [fill = 0]
-                  00004800    0000003a                            : muldsi3.S.obj (.text.__muldsi3)
-                  0000483a    00000002     --HOLE-- [fill = 0]
-                  0000483c    00000038                            : fixsfsi.S.obj (.text.__fixsfsi)
-                  00004874    00000038     motor_encoder.o (.text.motor_set_targets)
-                  000048ac    00000034     ti_msp_dl_config.o (.text.SYSCFG_DL_CONTROL_TIMER_init)
-                  000048e0    00000034     main.o (.text.__NVIC_DisableIRQ)
-                  00004914    00000032     libclang_rt.builtins.a : fixunssfsi.S.obj (.text.__fixunssfsi)
-                  00004946    00000002     --HOLE-- [fill = 0]
-                  00004948    00000030     driverlib.a : dl_i2c.o (.text.DL_I2C_flushControllerRXFIFO)
-                  00004978    00000030                 : dl_uart.o (.text.DL_UART_transmitDataBlocking)
-                  000049a8    00000030     main.o (.text.TIMA1_IRQHandler)
-                  000049d8    00000030     main.o (.text.UART0_IRQHandler)
-                  00004a08    00000030     main.o (.text.UART1_IRQHandler)
-                  00004a38    00000030     libc.a : snprintf.c.obj (.text._outs)
-                  00004a68    0000002e     zdt_stepper.o (.text.zdt_stepper_enable)
-                  00004a96    00000002     --HOLE-- [fill = 0]
-                  00004a98    0000002c     main.o (.text.__NVIC_ClearPendingIRQ)
-                  00004ac4    0000002c     main.o (.text.__NVIC_EnableIRQ)
-                  00004af0    0000002c     h3_ball_control.o (.text.absf)
-                  00004b1c    00000028     i2c_bus.o (.text.DL_Common_updateReg)
-                  00004b44    00000028     ti_msp_dl_config.o (.text.DL_Common_updateReg)
-                  00004b6c    00000028     ti_msp_dl_config.o (.text.DL_I2C_setControllerRXFIFOThreshold)
-                  00004b94    00000028     ti_msp_dl_config.o (.text.DL_I2C_setControllerTXFIFOThreshold)
-                  00004bbc    00000028     libclang_rt.builtins.a : floatunsisf.S.obj (.text.__floatunsisf)
-                  00004be4    00000028     libc.a : boot_cortex_m.c.obj (.text:_c_int00_noargs)
-                  00004c0c    00000026     ti_msp_dl_config.o (.text.DL_I2C_setAnalogGlitchFilterPulseWidth)
-                  00004c32    00000026     driverlib.a : dl_i2c.o (.text.DL_I2C_setClockConfig)
-                  00004c58    00000024     libclang_rt.builtins.a : muldi3.S.obj (.text.__muldi3)
-                  00004c7c    00000024     motor_encoder.o (.text.set_right_direction_forward)
-                  00004ca0    00000024     ssd1306.o (.text.try_init_at)
-                  00004cc4    00000022     ti_msp_dl_config.o (.text.SYSCFG_DL_SYSCTL_init)
-                  00004ce6    00000022     line_sensor.o (.text.is_black)
-                  00004d08    00000022     libc.a : memccpy.c.obj (.text.memccpy)
-                  00004d2a    00000002     --HOLE-- [fill = 0]
-                  00004d2c    00000020     ti_msp_dl_config.o (.text.DL_GPIO_initPeripheralInputFunction)
-                  00004d4c    00000020     app.o (.text.abs_i32)
-                  00004d6c    00000020     h3_vision.o (.text.h3_vision_take_new_sample)
-                  00004d8c    00000020     motor_encoder.o (.text.set_left_direction_forward)
-                  00004dac    0000001e     ti_msp_dl_config.o (.text.DL_UART_setOversampling)
-                  00004dca    00000002     --HOLE-- [fill = 0]
-                  00004dcc    0000001e     libclang_rt.builtins.a : ashldi3.S.obj (.text.__ashldi3)
-                  00004dea    00000002     --HOLE-- [fill = 0]
-                  00004dec    0000001c     ti_msp_dl_config.o (.text.DL_GPIO_clearInterruptStatus)
-                  00004e08    0000001c     ti_msp_dl_config.o (.text.DL_GPIO_enableHiZ)
-                  00004e24    0000001c     ti_msp_dl_config.o (.text.DL_GPIO_enableInterrupt)
-                  00004e40    0000001c     ti_msp_dl_config.o (.text.DL_GPIO_initPeripheralOutputFunction)
-                  00004e5c    0000001c     ti_msp_dl_config.o (.text.DL_GPIO_setLowerPinsPolarity)
-                  00004e78    0000001c     main.o (.text.DL_Interrupt_getPendingGroup)
-                  00004e94    0000001c     ti_msp_dl_config.o (.text.DL_SYSCTL_setSYSOSCFreq)
-                  00004eb0    0000001c     ti_msp_dl_config.o (.text.DL_Timer_enableInterrupt)
-                  00004ecc    0000001c     driverlib.a : dl_timer.o (.text.DL_Timer_setCaptCompUpdateMethod)
-                  00004ee8    0000001c                 : dl_timer.o (.text.DL_Timer_setClockConfig)
-                  00004f04    0000001c     ti_msp_dl_config.o (.text.DL_UART_enableInterrupt)
-                  00004f20    0000001c     main.o (.text.take_key_events)
-                  00004f3c    00000018     ti_msp_dl_config.o (.text.DL_GPIO_enableOutput)
-                  00004f54    00000018     ti_msp_dl_config.o (.text.DL_GPIO_enablePower)
-                  00004f6c    00000018     ti_msp_dl_config.o (.text.DL_GPIO_initDigitalOutput)
-                  00004f84    00000018     ti_msp_dl_config.o (.text.DL_GPIO_reset)
-                  00004f9c    00000018     motor_encoder.o (.text.DL_GPIO_setPins)
-                  00004fb4    00000018     ti_msp_dl_config.o (.text.DL_GPIO_setUpperPinsPolarity)
-                  00004fcc    00000018     ti_msp_dl_config.o (.text.DL_I2C_enableAnalogGlitchFilter)
-                  00004fe4    00000018     ti_msp_dl_config.o (.text.DL_I2C_enableController)
-                  00004ffc    00000018     ti_msp_dl_config.o (.text.DL_I2C_enableControllerClockStretching)
-                  00005014    00000018     ti_msp_dl_config.o (.text.DL_I2C_enablePower)
-                  0000502c    00000018     ti_msp_dl_config.o (.text.DL_I2C_reset)
-                  00005044    00000018     ti_msp_dl_config.o (.text.DL_I2C_setTimerPeriod)
-                  0000505c    00000018     ti_msp_dl_config.o (.text.DL_SYSCTL_setBORThreshold)
-                  00005074    00000018     ti_msp_dl_config.o (.text.DL_Timer_enablePower)
-                  0000508c    00000018     ti_msp_dl_config.o (.text.DL_Timer_reset)
-                  000050a4    00000018     driverlib.a : dl_timer.o (.text.DL_Timer_setCaptureCompareOutCtl)
-                  000050bc    00000018     main.o (.text.DL_UART_clearInterruptStatus)
-                  000050d4    00000018     ti_msp_dl_config.o (.text.DL_UART_enablePower)
-                  000050ec    00000018     main.o (.text.DL_UART_isRXFIFOEmpty)
-                  00005104    00000018     ti_msp_dl_config.o (.text.DL_UART_reset)
-                  0000511c    00000018     libc.a : snprintf.c.obj (.text._outc)
-                  00005134    00000016     line_sensor.o (.text.DL_GPIO_readPins)
-                  0000514a    00000016     main.o (.text.DL_GPIO_readPins)
-                  00005160    00000016     motor_encoder.o (.text.DL_GPIO_readPins)
-                  00005176    00000016     ti_msp_dl_config.o (.text.DL_UART_enable)
-                  0000518c    00000014     motor_encoder.o (.text.DL_GPIO_clearPins)
-                  000051a0    00000014     ti_msp_dl_config.o (.text.DL_GPIO_clearPins)
-                  000051b4    00000014     i2c_bus.o (.text.DL_I2C_getControllerStatus)
-                  000051c8    00000014     i2c_bus.o (.text.DL_I2C_resetControllerTransfer)
-                  000051dc    00000014     ti_msp_dl_config.o (.text.DL_I2C_resetControllerTransfer)
-                  000051f0    00000014     ti_msp_dl_config.o (.text.DL_SYSCTL_disableSYSPLL)
-                  00005204    00000014     ti_msp_dl_config.o (.text.DL_SYSCTL_enableMFCLK)
-                  00005218    00000014     ti_msp_dl_config.o (.text.DL_Timer_enableClock)
-                  0000522c    00000014     ti_msp_dl_config.o (.text.DL_Timer_setCCPDirection)
-                  00005240    00000014     main.o (.text.DL_UART_receiveData)
-                  00005254    00000014     libclang_rt.builtins.a : aeabi_uldivmod.S.obj (.text.__aeabi_uldivmod)
-                  00005268    00000014     h3_ball_control.o (.text.h3_ball_control_vision_rx_isr)
-                  0000527c    00000014     h3_ball_control.o (.text.h3_ball_control_zdt_rx_isr)
-                  00005290    00000014     ssd1306.o (.text.ssd1306_clear)
-                  000052a4    00000012     main.o (.text.DL_GPIO_getPendingInterrupt)
-                  000052b6    00000012     main.o (.text.DL_Timer_getPendingInterrupt)
-                  000052c8    00000012     driverlib.a : dl_uart.o (.text.DL_UART_setClockConfig)
-                  000052da    00000012     libc.a : memcpy16.S.obj (.text:TI_memcpy_small)
-                  000052ec    00000012            : copy_decompress_none.c.obj (.text:decompress:none)
-                  000052fe    00000002     --HOLE-- [fill = 0]
-                  00005300    00000010     ti_msp_dl_config.o (.text.DL_SYSCTL_disableHFXT)
-                  00005310    00000010     driverlib.a : dl_timer.o (.text.DL_Timer_setCaptureCompareValue)
-                  00005320    00000010     app.o (.text.app_tick_1ms_isr)
-                  00005330    00000010     h3_ball_control.o (.text.h3_ball_control_tick_1ms_isr)
-                  00005340    00000010     ssd1306.o (.text.ssd1306_is_present)
-                  00005350    00000010     libc.a : wcslen.c.obj (.text.wcslen)
-                  00005360    00000010            : copy_zero_init.c.obj (.text:decompress:ZI)
-                  00005370    0000000e     libclang_rt.builtins.a : aeabi_memset.S.obj (.text.__aeabi_memset)
-                  0000537e    0000000e     libc.a : _printfi.c.obj (.text.strlen)
-                  0000538c    0000000e            : memset16.S.obj (.text:TI_memset_small)
-                  0000539a    00000002     --HOLE-- [fill = 0]
-                  0000539c    0000000c     libclang_rt.builtins.a : aeabi_memset.S.obj (.text.__aeabi_memclr)
-                  000053a8    0000000c     app.o (.text.app_millis)
-                  000053b4    0000000c     app.o (.text.app_start_key_isr)
-                  000053c0    0000000c     h3_ball_control.o (.text.h3_ball_control_start_key_isr)
-                  000053cc    0000000c     h3_ball_control.o (.text.h3_ball_control_vision_ready)
-                  000053d8    0000000c     h3_ball_control.o (.text.h3_millis)
-                  000053e4    0000000a     driverlib.a : dl_common.o (.text.DL_Common_delayCycles)
-                  000053ee    00000002     --HOLE-- [fill = 0]
-                  000053f0    00000008     libc.a : aeabi_portable.c.obj (.text.__aeabi_errno_addr)
-                  000053f8    00000008     libclang_rt.builtins.a : aeabi_memcpy.S.obj (.text.__aeabi_memcpy)
-                  00005400    00000008     h3_vision.o (.text.h3_vision_get)
-                  00005408    00000008     motor_encoder.o (.text.motor_get)
-                  00005410    00000008     zdt_stepper.o (.text.zdt_stepper_get_status)
-                  00005418    00000006     libc.a : exit.c.obj (.text:abort)
-                  0000541e    00000004     startup_mspm0g350x_ticlang.o (.text.Default_Handler)
-                  00005422    00000004     libsysbm.a : hostexit.c.obj (.text.HOSTexit)
-                  00005426    00000004     startup_mspm0g350x_ticlang.o (.text.Reset_Handler)
-                  0000542a    00000002     --HOLE-- [fill = 0]
-                  0000542c    00000010     libc.a : boot_cortex_m.c.obj (.tramp._c_int00_noargs.1)
-                  0000543c    00000004            : pre_init.c.obj (.text._system_pre_init)
+.text      0    000000c0    00008ad0     
+                  000000c0    00000bdc     libc.a : _scanfi.c.obj (.text.__TI_scanfi)
+                  00000c9c    00000868            : _printfi.c.obj (.text:__TI_printfi_nofloat)
+                  00001504    000003cc     h3_ball_control.o (.text.run_outer_loop)
+                  000018d0    000003b8     libc.a : strtod.c.obj (.text.strtod)
+                  00001c88    0000033e     SEGGER_RTT_printf.o (.text.SEGGER_RTT_vprintf)
+                  00001fc6    00000002     libclang_rt.builtins.a : aeabi_div0.c.obj (.text.__aeabi_idiv0)
+                  00001fc8    00000278     h3_ball_control.o (.text.update_motion_state)
+                  00002240    00000268     h3_tuning_link.o (.text.parse_command)
+                  000024a8    00000258     app.o (.text.run_control_5ms)
+                  00002700    00000240     h3_ball_control.o (.text.h3_ball_control_process)
+                  00002940    00000208     h3_ball_control.o (.text.update_ui)
+                  00002b48    000001e2     SEGGER_RTT_printf.o (.text._PrintInt)
+                  00002d2a    00000002     libclang_rt.builtins.a : aeabi_div0.c.obj (.text.__aeabi_ldiv0)
+                  00002d2c    000001e0     libc.a : strtoll.c.obj (.text.strtoll)
+                  00002f0c    000001d0     h3_ball_control.o (.text.handle_tuning_commands)
+                  000030dc    000001cc     ti_msp_dl_config.o (.text.SYSCFG_DL_GPIO_init)
+                  000032a8    000001c8     SEGGER_RTT_printf.o (.text._PrintUnsigned)
+                  00003470    000001ae     h3_vision.o (.text.parse_decimal_i32)
+                  0000361e    00000002     --HOLE-- [fill = 0]
+                  00003620    000001a4     app.o (.text.update_ui)
+                  000037c4    00000192     libclang_rt.builtins.a : adddf3.S.obj (.text.adddf3_subdf3)
+                  00003956    00000002     --HOLE-- [fill = 0]
+                  00003958    00000184     h3_tuning_link.o (.text.h3_tuning_link_telemetry)
+                  00003adc    00000178     app.o (.text.app_process)
+                  00003c54    00000178     h3_vision.o (.text.commit_frame)
+                  00003dcc    00000170     ssd1306.o (.text.ssd1306_draw_text_2x)
+                  00003f3c    0000016c     line_sensor.o (.text.line_sensor_read)
+                  000040a8    0000016c     libc.a : strtoull.c.obj (.text.strtoull)
+                  00004214    00000144            : strtol.c.obj (.text.strtol)
+                  00004358    00000140     zdt_stepper.o (.text.zdt_stepper_rx_byte_isr)
+                  00004498    00000134     h3_vision.o (.text.h3_vision_process)
+                  000045cc    0000012c     libc.a : strtoul.c.obj (.text.strtoul)
+                  000046f8    00000128     SEGGER_RTT.o (.text.SEGGER_RTT_ReadNoLock)
+                  00004820    00000128     main.o (.text.main)
+                  00004948    00000128     ssd1306.o (.text.ssd1306_init)
+                  00004a70    00000118     h3_ball_control.o (.text.h3_ball_control_init)
+                  00004b88    0000010c     libclang_rt.builtins.a : divdf3.S.obj (.text.__divdf3)
+                  00004c94    00000104     driverlib.a : dl_timer.o (.text.DL_Timer_initFourCCPWMMode)
+                  00004d98    000000fc                 : dl_timer.o (.text.DL_Timer_initTimerMode)
+                  00004e94    000000fc     h3_ball_control.o (.text.send_motor_angle)
+                  00004f90    000000f8     ssd1306.o (.text.ssd1306_refresh_next_page)
+                  00005088    000000ec     h3_vision.o (.text.parse_legacy_line)
+                  00005174    000000e8     ssd1306.o (.text.glyph_index)
+                  0000525c    000000e8     main.o (.text.poll_keys_1ms_isr)
+                  00005344    000000e4     libclang_rt.builtins.a : muldf3.S.obj (.text.__muldf3)
+                  00005428    000000e2     h3_vision.o (.text.parse_u32)
+                  0000550a    00000002     --HOLE-- [fill = 0]
+                  0000550c    000000e0     app.o (.text.app_init)
+                  000055ec    000000dc     SEGGER_RTT.o (.text._WriteBlocking)
+                  000056c8    000000d8     libc.a : s_scalbn.c.obj (.text.scalbn)
+                  000057a0    000000d8     app.o (.text.state_text)
+                  00005878    000000d8     libclang_rt.builtins.a : addsf3.S.obj (.text)
+                  00005950    000000cc     ssd1306.o (.text.ssd1306_draw_text)
+                  00005a1c    000000c0     main.o (.text.select_or_trigger_mode)
+                  00005adc    000000b8     h3_ball_control.o (.text.handle_key)
+                  00005b94    000000b4     motor_encoder.o (.text.motor_speed_control_10ms)
+                  00005c48    000000b0     SEGGER_RTT.o (.text.SEGGER_RTT_WriteNoLock)
+                  00005cf8    000000ac     h3_ball_control.o (.text.state_text)
+                  00005da4    000000a8     motor_encoder.o (.text.speed_pi)
+                  00005e4c    000000a4     app.o (.text.start_run)
+                  00005ef0    000000a2     libclang_rt.builtins.a : udivmoddi4.S.obj (.text)
+                  00005f92    00000002     --HOLE-- [fill = 0]
+                  00005f94    000000a0     ti_msp_dl_config.o (.text.SYSCFG_DL_initPower)
+                  00006034    000000a0     i2c_bus.o (.text.i2c_bus_write)
+                  000060d4    0000009c     ssd1306.o (.text.write_commands)
+                  00006170    0000009a     h3_vision.o (.text.parse_i32)
+                  0000620a    00000002     --HOLE-- [fill = 0]
+                  0000620c    00000098     h3_vision.o (.text.inside_legacy_checksum)
+                  000062a4    00000098     h3_vision.o (.text.parse_line)
+                  0000633c    00000094     main.o (.text.draw_mode_menu)
+                  000063d0    00000094     h3_tuning_link.o (.text.h3_tuning_link_process)
+                  00006464    00000094     zdt_stepper.o (.text.zdt_stepper_move_absolute_deg)
+                  000064f8    00000090     h3_ball_control.o (.text.start_run)
+                  00006588    0000008c     libclang_rt.builtins.a : mulsf3.S.obj (.text.__mulsf3)
+                  00006614    0000000c                            : aeabi_memset.S.obj (.text.__aeabi_memclr)
+                  00006620    00000088     libc.a : strcmp-armv6m.S.obj (.text:strcmp)
+                  000066a8    00000084     SEGGER_RTT.o (.text._DoInit)
+                  0000672c    00000082     libclang_rt.builtins.a : divsf3.S.obj (.text.__divsf3)
+                  000067ae    00000002     --HOLE-- [fill = 0]
+                  000067b0    00000080     i2c_bus.o (.text.finish_transfer)
+                  00006830    00000080     app.o (.text.handle_key)
+                  000068b0    00000080     h3_vision.o (.text.skip_field)
+                  00006930    0000007e     h3_vision.o (.text.parse_standard_line)
+                  000069ae    00000002     --HOLE-- [fill = 0]
+                  000069b0    0000007c     libc.a : copy_decompress_lzss.c.obj (.text:decompress:lzss)
+                  00006a2c    00000078     SEGGER_RTT.o (.text._WriteNoCheck)
+                  00006aa4    00000078     h3_ball_control.o (.text.send_camera_ack)
+                  00006b1c    00000074     SEGGER_RTT_printf.o (.text._StoreChar)
+                  00006b90    00000074     libclang_rt.builtins.a : comparedf2.c.obj (.text.__gedf2)
+                  00006c04    0000000c     app.o (.text.app_millis)
+                  00006c10    00000074     libclang_rt.builtins.a : truncdfsf2.S.obj (.text.__truncdfsf2)
+                  00006c84    00000074     libc.a : sscanf.c.obj (.text._chkmbc)
+                  00006cf8    00000070     h3_tuning_link.o (.text.h3_tuning_link_init)
+                  00006d68    00000070     main.o (.text.read_pressed_keys)
+                  00006dd8    00000070     h3_ball_control.o (.text.start_return_center)
+                  00006e48    00000068     libclang_rt.builtins.a : comparedf2.c.obj (.text.__ledf2)
+                  00006eb0    00000068     motor_encoder.o (.text.set_pwm)
+                  00006f18    00000064     ti_msp_dl_config.o (.text.SYSCFG_DL_PWM_LEFT_init)
+                  00006f7c    00000064     ti_msp_dl_config.o (.text.SYSCFG_DL_PWM_RIGHT_init)
+                  00006fe0    00000064     motor_encoder.o (.text.motor_encoder_right_edge_isr)
+                  00007044    00000062     libclang_rt.builtins.a : aeabi_dcmp.S.obj (.text.__aeabi_dcmp)
+                  000070a6    00000002     --HOLE-- [fill = 0]
+                  000070a8    00000062                            : aeabi_fcmp.S.obj (.text.__aeabi_fcmp)
+                  0000710a    00000002     --HOLE-- [fill = 0]
+                  0000710c    00000060     h3_vision.o (.text.h3_vision_rx_byte_isr)
+                  0000716c    00000060     motor_encoder.o (.text.motor_encoder_left_edge_isr)
+                  000071cc    00000060     motor_encoder.o (.text.motor_init)
+                  0000722c    00000060     app.o (.text.travelled_distance_mm)
+                  0000728c    00000060     zdt_stepper.o (.text.zdt_stepper_init)
+                  000072ec    0000005e     driverlib.a : dl_i2c.o (.text.DL_I2C_fillControllerTXFIFO)
+                  0000734a    00000002     --HOLE-- [fill = 0]
+                  0000734c    00000058     ti_msp_dl_config.o (.text.SYSCFG_DL_I2C_DISPLAY_init)
+                  000073a4    00000058     motor_encoder.o (.text.motor_prepare_run)
+                  000073fc    00000058     zdt_stepper.o (.text.send_frame)
+                  00007454    00000056     libclang_rt.builtins.a : aeabi_idivmod.S.obj (.text.__aeabi_idivmod)
+                  000074aa    00000002     --HOLE-- [fill = 0]
+                  000074ac    00000050     ti_msp_dl_config.o (.text.DL_GPIO_initPeripheralInputFunctionFeatures)
+                  000074fc    00000050     i2c_bus.o (.text.DL_I2C_startControllerTransfer)
+                  0000754c    0000004c     ti_msp_dl_config.o (.text.DL_GPIO_initDigitalInputFeatures)
+                  00007598    0000004c     ti_msp_dl_config.o (.text.DL_UART_setBaudRateDivisor)
+                  000075e4    0000004c     ti_msp_dl_config.o (.text.SYSCFG_DL_VISION_UART_init)
+                  00007630    0000004c     h3_vision.o (.text.h3_vision_init)
+                  0000767c    0000004c     libc.a : snprintf.c.obj (.text.snprintf)
+                  000076c8    0000004c     i2c_bus.o (.text.wait_idle)
+                  00007714    00000048     driverlib.a : dl_uart.o (.text.DL_UART_init)
+                  0000775c    00000048     ti_msp_dl_config.o (.text.SYSCFG_DL_DEBUG_UART_init)
+                  000077a4    00000048     main.o (.text.dispatch_key_debounced)
+                  000077ec    00000048     app.o (.text.stop_with_state)
+                  00007834    00000044     main.o (.text.GROUP1_IRQHandler)
+                  00007878    00000044     main.o (.text.vision_uart_start_clean)
+                  000078bc    00000042     h3_tuning_link.o (.text.scaled_float)
+                  000078fe    00000042     h3_ball_control.o (.text.vision_is_recent)
+                  00007940    00000040     libclang_rt.builtins.a : aeabi_uidivmod.S.obj (.text.__aeabi_uidivmod)
+                  00007980    00000040     libc.a : atoi.c.obj (.text.atoi)
+                  000079c0    00000040     main.o (.text.start_selected_mode)
+                  00007a00    0000003e     SEGGER_RTT.o (.text._GetAvailWriteSpace)
+                  00007a3e    0000003e     app.o (.text.clampf)
+                  00007a7c    0000003e     h3_ball_control.o (.text.clampf)
+                  00007aba    0000003e     motor_encoder.o (.text.clampf)
+                  00007af8    0000003c     driverlib.a : dl_i2c.o (.text.DL_I2C_flushControllerTXFIFO)
+                  00007b34    0000003c     ti_msp_dl_config.o (.text.DL_Timer_setCounterControl)
+                  00007b70    0000003c     ti_msp_dl_config.o (.text.SYSCFG_DL_init)
+                  00007bac    0000003c     libclang_rt.builtins.a : floatsisf.S.obj (.text.__floatsisf)
+                  00007be8    0000003c                            : comparesf2.S.obj (.text.__gtsf2)
+                  00007c24    0000003c     motor_encoder.o (.text.motor_active_brake)
+                  00007c60    0000003c     motor_encoder.o (.text.motor_coast)
+                  00007c9c    0000003c     libc.a : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit)
+                  00007cd8    0000003a     libclang_rt.builtins.a : comparesf2.S.obj (.text.__eqsf2)
+                  00007d12    00000002     --HOLE-- [fill = 0]
+                  00007d14    0000003a                            : muldsi3.S.obj (.text.__muldsi3)
+                  00007d4e    00000002     --HOLE-- [fill = 0]
+                  00007d50    00000038                            : fixsfsi.S.obj (.text.__fixsfsi)
+                  00007d88    00000038     h3_tuning_link.o (.text.h3_tuning_link_take_command)
+                  00007dc0    00000038     motor_encoder.o (.text.motor_set_targets)
+                  00007df8    00000034     SEGGER_RTT.o (.text.SEGGER_RTT_Write)
+                  00007e2c    00000034     ti_msp_dl_config.o (.text.SYSCFG_DL_CONTROL_TIMER_init)
+                  00007e60    00000034     main.o (.text.__NVIC_DisableIRQ)
+                  00007e94    00000032     libclang_rt.builtins.a : fixunssfsi.S.obj (.text.__fixunssfsi)
+                  00007ec6    00000002     --HOLE-- [fill = 0]
+                  00007ec8    00000030     driverlib.a : dl_i2c.o (.text.DL_I2C_flushControllerRXFIFO)
+                  00007ef8    00000030                 : dl_uart.o (.text.DL_UART_transmitDataBlocking)
+                  00007f28    00000030     main.o (.text.TIMA1_IRQHandler)
+                  00007f58    00000030     main.o (.text.UART0_IRQHandler)
+                  00007f88    00000030     main.o (.text.UART1_IRQHandler)
+                  00007fb8    00000030     libc.a : snprintf.c.obj (.text._outs)
+                  00007fe8    00000030            : sscanf.c.obj (.text.sscanf)
+                  00008018    0000002e     zdt_stepper.o (.text.zdt_stepper_enable)
+                  00008046    0000002c     SEGGER_RTT_printf.o (.text.SEGGER_RTT_printf)
+                  00008072    00000002     --HOLE-- [fill = 0]
+                  00008074    0000002c     main.o (.text.__NVIC_ClearPendingIRQ)
+                  000080a0    0000002c     main.o (.text.__NVIC_EnableIRQ)
+                  000080cc    0000002c     h3_ball_control.o (.text.absf)
+                  000080f8    00000028     i2c_bus.o (.text.DL_Common_updateReg)
+                  00008120    00000028     ti_msp_dl_config.o (.text.DL_Common_updateReg)
+                  00008148    00000028     ti_msp_dl_config.o (.text.DL_I2C_setControllerRXFIFOThreshold)
+                  00008170    00000028     ti_msp_dl_config.o (.text.DL_I2C_setControllerTXFIFOThreshold)
+                  00008198    00000028     libclang_rt.builtins.a : floatunsisf.S.obj (.text.__floatunsisf)
+                  000081c0    00000028     libc.a : boot_cortex_m.c.obj (.text:_c_int00_noargs)
+                  000081e8    00000026     ti_msp_dl_config.o (.text.DL_I2C_setAnalogGlitchFilterPulseWidth)
+                  0000820e    00000026     driverlib.a : dl_i2c.o (.text.DL_I2C_setClockConfig)
+                  00008234    00000024     libclang_rt.builtins.a : muldi3.S.obj (.text.__muldi3)
+                  00008258    00000024     motor_encoder.o (.text.set_right_direction_forward)
+                  0000827c    00000024     ssd1306.o (.text.try_init_at)
+                  000082a0    00000022     ti_msp_dl_config.o (.text.SYSCFG_DL_SYSCTL_init)
+                  000082c2    00000022     line_sensor.o (.text.is_black)
+                  000082e4    00000022     libc.a : memccpy.c.obj (.text.memccpy)
+                  00008306    00000002     --HOLE-- [fill = 0]
+                  00008308    00000020     ti_msp_dl_config.o (.text.DL_GPIO_initPeripheralInputFunction)
+                  00008328    00000020     app.o (.text.abs_i32)
+                  00008348    00000020     h3_vision.o (.text.h3_vision_take_new_sample)
+                  00008368    00000020     h3_tuning_link.o (.text.reply)
+                  00008388    00000020     motor_encoder.o (.text.set_left_direction_forward)
+                  000083a8    0000001e     ti_msp_dl_config.o (.text.DL_UART_setOversampling)
+                  000083c6    0000001e     SEGGER_RTT.o (.text.SEGGER_RTT_WriteString)
+                  000083e4    0000001e     libclang_rt.builtins.a : ashldi3.S.obj (.text.__ashldi3)
+                  00008402    00000002     --HOLE-- [fill = 0]
+                  00008404    0000001c     ti_msp_dl_config.o (.text.DL_GPIO_clearInterruptStatus)
+                  00008420    0000001c     ti_msp_dl_config.o (.text.DL_GPIO_enableHiZ)
+                  0000843c    0000001c     ti_msp_dl_config.o (.text.DL_GPIO_enableInterrupt)
+                  00008458    0000001c     ti_msp_dl_config.o (.text.DL_GPIO_initPeripheralOutputFunction)
+                  00008474    0000001c     ti_msp_dl_config.o (.text.DL_GPIO_setLowerPinsPolarity)
+                  00008490    0000001c     main.o (.text.DL_Interrupt_getPendingGroup)
+                  000084ac    0000001c     ti_msp_dl_config.o (.text.DL_SYSCTL_setSYSOSCFreq)
+                  000084c8    0000001c     ti_msp_dl_config.o (.text.DL_Timer_enableInterrupt)
+                  000084e4    0000001c     driverlib.a : dl_timer.o (.text.DL_Timer_setCaptCompUpdateMethod)
+                  00008500    0000001c                 : dl_timer.o (.text.DL_Timer_setClockConfig)
+                  0000851c    0000001c     ti_msp_dl_config.o (.text.DL_UART_enableInterrupt)
+                  00008538    0000001c     SEGGER_RTT.o (.text.SEGGER_RTT_Read)
+                  00008554    0000001c     h3_tuning_link.o (.text.h3_tuning_link_event)
+                  00008570    0000001c     main.o (.text.take_key_events)
+                  0000858c    0000001c     zdt_stepper.o (.text.zdt_stepper_read_real_position)
+                  000085a8    0000001c     zdt_stepper.o (.text.zdt_stepper_read_status_flags)
+                  000085c4    0000001c     zdt_stepper.o (.text.zdt_stepper_stop_now)
+                  000085e0    00000018     ti_msp_dl_config.o (.text.DL_GPIO_enableOutput)
+                  000085f8    00000018     ti_msp_dl_config.o (.text.DL_GPIO_enablePower)
+                  00008610    00000018     ti_msp_dl_config.o (.text.DL_GPIO_initDigitalOutput)
+                  00008628    00000018     ti_msp_dl_config.o (.text.DL_GPIO_reset)
+                  00008640    00000018     motor_encoder.o (.text.DL_GPIO_setPins)
+                  00008658    00000018     ti_msp_dl_config.o (.text.DL_GPIO_setUpperPinsPolarity)
+                  00008670    00000018     ti_msp_dl_config.o (.text.DL_I2C_enableAnalogGlitchFilter)
+                  00008688    00000018     ti_msp_dl_config.o (.text.DL_I2C_enableController)
+                  000086a0    00000018     ti_msp_dl_config.o (.text.DL_I2C_enableControllerClockStretching)
+                  000086b8    00000018     ti_msp_dl_config.o (.text.DL_I2C_enablePower)
+                  000086d0    00000018     ti_msp_dl_config.o (.text.DL_I2C_reset)
+                  000086e8    00000018     ti_msp_dl_config.o (.text.DL_I2C_setTimerPeriod)
+                  00008700    00000018     ti_msp_dl_config.o (.text.DL_SYSCTL_setBORThreshold)
+                  00008718    00000018     ti_msp_dl_config.o (.text.DL_Timer_enablePower)
+                  00008730    00000018     ti_msp_dl_config.o (.text.DL_Timer_reset)
+                  00008748    00000018     driverlib.a : dl_timer.o (.text.DL_Timer_setCaptureCompareOutCtl)
+                  00008760    00000018     main.o (.text.DL_UART_clearInterruptStatus)
+                  00008778    00000018     ti_msp_dl_config.o (.text.DL_UART_enablePower)
+                  00008790    00000018     main.o (.text.DL_UART_isRXFIFOEmpty)
+                  000087a8    00000018     ti_msp_dl_config.o (.text.DL_UART_reset)
+                  000087c0    00000018     libc.a : snprintf.c.obj (.text._outc)
+                  000087d8    00000016     line_sensor.o (.text.DL_GPIO_readPins)
+                  000087ee    00000016     main.o (.text.DL_GPIO_readPins)
+                  00008804    00000016     motor_encoder.o (.text.DL_GPIO_readPins)
+                  0000881a    00000016     ti_msp_dl_config.o (.text.DL_UART_enable)
+                  00008830    00000014     motor_encoder.o (.text.DL_GPIO_clearPins)
+                  00008844    00000014     ti_msp_dl_config.o (.text.DL_GPIO_clearPins)
+                  00008858    00000014     i2c_bus.o (.text.DL_I2C_getControllerStatus)
+                  0000886c    00000014     i2c_bus.o (.text.DL_I2C_resetControllerTransfer)
+                  00008880    00000014     ti_msp_dl_config.o (.text.DL_I2C_resetControllerTransfer)
+                  00008894    00000014     ti_msp_dl_config.o (.text.DL_SYSCTL_disableSYSPLL)
+                  000088a8    00000014     ti_msp_dl_config.o (.text.DL_SYSCTL_enableMFCLK)
+                  000088bc    00000014     ti_msp_dl_config.o (.text.DL_Timer_enableClock)
+                  000088d0    00000014     ti_msp_dl_config.o (.text.DL_Timer_setCCPDirection)
+                  000088e4    00000014     main.o (.text.DL_UART_receiveData)
+                  000088f8    00000014     libclang_rt.builtins.a : aeabi_uldivmod.S.obj (.text.__aeabi_uldivmod)
+                  0000890c    00000014     libc.a : sscanf.c.obj (.text._inpchar)
+                  00008920    00000014     h3_ball_control.o (.text.h3_ball_control_vision_rx_isr)
+                  00008934    00000014     h3_ball_control.o (.text.h3_ball_control_zdt_rx_isr)
+                  00008948    00000014     ssd1306.o (.text.ssd1306_clear)
+                  0000895c    00000012     main.o (.text.DL_GPIO_getPendingInterrupt)
+                  0000896e    00000012     main.o (.text.DL_Timer_getPendingInterrupt)
+                  00008980    00000012     driverlib.a : dl_uart.o (.text.DL_UART_setClockConfig)
+                  00008992    00000012     libc.a : memcpy16.S.obj (.text:TI_memcpy_small)
+                  000089a4    00000012            : copy_decompress_none.c.obj (.text:decompress:none)
+                  000089b6    00000002     --HOLE-- [fill = 0]
+                  000089b8    00000010     ti_msp_dl_config.o (.text.DL_SYSCTL_disableHFXT)
+                  000089c8    00000010     driverlib.a : dl_timer.o (.text.DL_Timer_setCaptureCompareValue)
+                  000089d8    00000010     app.o (.text.app_tick_1ms_isr)
+                  000089e8    00000010     h3_ball_control.o (.text.h3_ball_control_tick_1ms_isr)
+                  000089f8    00000010     ssd1306.o (.text.ssd1306_is_present)
+                  00008a08    00000010     libc.a : wcslen.c.obj (.text.wcslen)
+                  00008a18    00000010     zdt_stepper.o (.text.zdt_stepper_send_reference_back)
+                  00008a28    00000010     zdt_stepper.o (.text.zdt_stepper_send_reference_test)
+                  00008a38    00000010     libc.a : copy_zero_init.c.obj (.text:decompress:ZI)
+                  00008a48    0000000e            : _scanfi.c.obj (.text.OUTLINED_FUNCTION_1)
+                  00008a56    0000000e            : _scanfi.c.obj (.text.OUTLINED_FUNCTION_2)
+                  00008a64    0000000e            : _scanfi.c.obj (.text.OUTLINED_FUNCTION_4)
+                  00008a72    00000002     --HOLE-- [fill = 0]
+                  00008a74    0000000e     libclang_rt.builtins.a : aeabi_memset.S.obj (.text.__aeabi_memset)
+                  00008a82    0000000e     libc.a : strcpy.c.obj (.text.strcpy)
+                  00008a90    0000000e            : _printfi.c.obj (.text.strlen)
+                  00008a9e    0000000e            : strlen.c.obj (.text.strlen)
+                  00008aac    0000000e            : memset16.S.obj (.text:TI_memset_small)
+                  00008aba    00000002     --HOLE-- [fill = 0]
+                  00008abc    0000000c     app.o (.text.app_start_key_isr)
+                  00008ac8    0000000c     h3_ball_control.o (.text.h3_ball_control_start_key_isr)
+                  00008ad4    0000000c     h3_ball_control.o (.text.h3_ball_control_vision_ready)
+                  00008ae0    0000000c     h3_ball_control.o (.text.h3_millis)
+                  00008aec    0000000a     driverlib.a : dl_common.o (.text.DL_Common_delayCycles)
+                  00008af6    00000008     libc.a : _scanfi.c.obj (.text.OUTLINED_FUNCTION_0)
+                  00008afe    00000008            : strtod.c.obj (.text.OUTLINED_FUNCTION_0)
+                  00008b06    00000008            : strtod.c.obj (.text.OUTLINED_FUNCTION_1)
+                  00008b0e    00000002     --HOLE-- [fill = 0]
+                  00008b10    00000010     libclang_rt.builtins.a : aeabi_dcmp.S.obj (.tramp.__aeabi_dcmpeq.1)
+                  00008b20    00000008     SEGGER_RTT.o (.text.SEGGER_RTT_Init)
+                  00008b28    00000008     libc.a : aeabi_portable.c.obj (.text.__aeabi_errno_addr)
+                  00008b30    00000008     libclang_rt.builtins.a : aeabi_memcpy.S.obj (.text.__aeabi_memcpy)
+                  00008b38    00000008     libc.a : sscanf.c.obj (.text._uninpchar)
+                  00008b40    00000008     h3_tuning_link.o (.text.h3_tuning_link_runtime)
+                  00008b48    00000008     h3_vision.o (.text.h3_vision_get)
+                  00008b50    00000008     motor_encoder.o (.text.motor_get)
+                  00008b58    00000008     zdt_stepper.o (.text.zdt_stepper_get_status)
+                  00008b60    00000006     libc.a : _scanfi.c.obj (.text.OUTLINED_FUNCTION_3)
+                  00008b66    00000006            : exit.c.obj (.text:abort)
+                  00008b6c    00000004     startup_mspm0g350x_ticlang.o (.text.Default_Handler)
+                  00008b70    00000004     libsysbm.a : hostexit.c.obj (.text.HOSTexit)
+                  00008b74    00000004     startup_mspm0g350x_ticlang.o (.text.Reset_Handler)
+                  00008b78    00000010     libc.a : boot_cortex_m.c.obj (.tramp._c_int00_noargs.1)
+                  00008b88    00000004            : pre_init.c.obj (.text._system_pre_init)
+                  00008b8c    00000004     --HOLE-- [fill = 0]
 
-.cinit     0    00005870    00000030     
-                  00005870    0000000c     (__TI_handler_table)
-                  0000587c    00000008     (.cinit..bss.load) [load image, compression = zero_init]
-                  00005884    00000007     (.cinit..data.load) [load image, compression = lzss]
-                  0000588b    00000001     --HOLE-- [fill = 0]
-                  0000588c    00000010     (__TI_cinit_table)
-                  0000589c    00000004     --HOLE-- [fill = 0]
+.cinit     0    000093c0    00000030     
+                  000093c0    0000000c     (__TI_handler_table)
+                  000093cc    00000008     (.cinit..bss.load) [load image, compression = zero_init]
+                  000093d4    00000007     (.cinit..data.load) [load image, compression = lzss]
+                  000093db    00000001     --HOLE-- [fill = 0]
+                  000093dc    00000010     (__TI_cinit_table)
+                  000093ec    00000004     --HOLE-- [fill = 0]
 
-.rodata    0    00005440    00000430     
-                  00005440    00000101     libc.a : aeabi_ctype.S.obj (.rodata:__aeabi_ctype_table_)
-                  00005541    000000d2     ssd1306.o (.rodata.g_font)
-                  00005613    00000019     ssd1306.o (.rodata.try_init_at.init_commands)
-                  0000562c    00000014     ti_msp_dl_config.o (.rodata.gCONTROL_TIMERTimerConfig)
-                  00005640    00000013     h3_ball_control.o (.rodata.str1.10557231840400332371.1)
-                  00005653    00000013     h3_ball_control.o (.rodata.str1.7106409058061791663.1)
-                  00005666    00000012     h3_ball_control.o (.rodata.str1.1126359134911944296.1)
-                  00005678    00000011     libc.a : _printfi.c.obj (.rodata.str1.10348868589481759720.1)
-                  00005689    00000011            : _printfi.c.obj (.rodata.str1.15363888844622738466.1)
-                  0000569a    00000011     app.o (.rodata.str1.2606929252065540862.1)
-                  000056ab    00000001     --HOLE-- [fill = 0]
-                  000056ac    00000010     line_sensor.o (.rodata.line_sensor_read.weights)
-                  000056bc    00000010     main.o (.rodata.str1.17100691992556644108.1)
-                  000056cc    00000010     h3_ball_control.o (.rodata.str1.7577149768182804784.1)
-                  000056dc    00000010     main.o (.rodata.str1.8154729771448623357.1)
-                  000056ec    0000000f     h3_ball_control.o (.rodata.str1.13141150544294324688.1)
-                  000056fb    0000000e     main.o (.rodata.str1.15159059442110792349.1)
-                  00005709    0000000e     app.o (.rodata.str1.3543938948723267646.1)
-                  00005717    0000000e     h3_ball_control.o (.rodata.str1.5334463718731916073.1)
-                  00005725    0000000e     app.o (.rodata.str1.5602021903949372904.1)
-                  00005733    0000000e     app.o (.rodata.str1.8682387830711593804.1)
-                  00005741    0000000e     h3_ball_control.o (.rodata.str1.8801625546549058199.1)
-                  0000574f    0000000d     app.o (.rodata.str1.14141965288680528547.1)
-                  0000575c    0000000d     h3_ball_control.o (.rodata.str1.6320901919405435980.1)
-                  00005769    0000000c     app.o (.rodata.str1.13935281678674483141.1)
-                  00005775    0000000b     app.o (.rodata.str1.1944712146988729081.1)
-                  00005780    0000000a     ti_msp_dl_config.o (.rodata.gDEBUG_UARTConfig)
-                  0000578a    0000000a     ti_msp_dl_config.o (.rodata.gVISION_UARTConfig)
-                  00005794    0000000a     app.o (.rodata.str1.10450196737795524526.1)
-                  0000579e    0000000a     main.o (.rodata.str1.2846389346932560359.1)
-                  000057a8    0000000a     app.o (.rodata.str1.4360399834097859481.1)
-                  000057b2    00000009     h3_ball_control.o (.rodata.str1.14042360478803217214.1)
-                  000057bb    00000009     h3_ball_control.o (.rodata.str1.16556530777337167717.1)
-                  000057c4    00000009     main.o (.rodata.str1.18227636981041470289.1)
-                  000057cd    00000003     ti_msp_dl_config.o (.rodata.gCONTROL_TIMERClockConfig)
-                  000057d0    00000008     ti_msp_dl_config.o (.rodata.gPWM_LEFTConfig)
-                  000057d8    00000008     ti_msp_dl_config.o (.rodata.gPWM_RIGHTConfig)
-                  000057e0    00000008     h3_ball_control.o (.rodata.str1.10153115017827215444.1)
-                  000057e8    00000008     h3_ball_control.o (.rodata.str1.12966144182881050767.1)
-                  000057f0    00000008     app.o (.rodata.str1.2540114484728192048.1)
-                  000057f8    00000008     h3_ball_control.o (.rodata.str1.5543627561405077967.1)
-                  00005800    00000008     h3_ball_control.o (.rodata.str1.5788038055639424766.1)
-                  00005808    00000007     app.o (.rodata.str1.12441497784875596899.1)
-                  0000580f    00000007     h3_ball_control.o (.rodata.str1.14451229389811978652.1)
-                  00005816    00000007     app.o (.rodata.str1.2568190970272041647.1)
-                  0000581d    00000007     h3_ball_control.o (.rodata.str1.3499223319192506562.1)
-                  00005824    00000006     app.o (.rodata.str1.11849843482968746561.1)
-                  0000582a    00000006     app.o (.rodata.str1.11879963978103418143.1)
-                  00005830    00000006     h3_ball_control.o (.rodata.str1.13132125606125582124.1)
-                  00005836    00000006     h3_ball_control.o (.rodata.str1.1405161051558020165.1)
-                  0000583c    00000006     app.o (.rodata.str1.7777424699149452427.1)
-                  00005842    00000006     h3_ball_control.o (.rodata.str1.8518641162528035037.1)
-                  00005848    00000005     app.o (.rodata.str1.1155299426122084162.1)
-                  0000584d    00000005     h3_ball_control.o (.rodata.str1.16656616020101717245.1)
-                  00005852    00000004     app.o (.rodata.str1.6810515665389614968.1)
-                  00005856    00000003     ti_msp_dl_config.o (.rodata.gPWM_LEFTClockConfig)
-                  00005859    00000003     ti_msp_dl_config.o (.rodata.gPWM_RIGHTClockConfig)
-                  0000585c    00000002     ti_msp_dl_config.o (.rodata.gDEBUG_UARTClockConfig)
-                  0000585e    00000002     ti_msp_dl_config.o (.rodata.gI2C_DISPLAYClockConfig)
-                  00005860    00000002     ti_msp_dl_config.o (.rodata.gVISION_UARTClockConfig)
-                  00005862    0000000e     --HOLE-- [fill = 0]
+.rodata    0    00008b90    00000830     
+                  00008b90    00000101     libc.a : aeabi_ctype.S.obj (.rodata:__aeabi_ctype_table_)
+                  00008c91    000000d2     ssd1306.o (.rodata.g_font)
+                  00008d63    00000005     app.o (.rodata.str1.1155299426122084162.1)
+                  00008d68    00000080     libc.a : strtod.c.obj (.rodata.digits)
+                  00008de8    0000005a     h3_tuning_link.o (.rodata.str1.10218159078692993451.1)
+                  00008e42    00000058     h3_tuning_link.o (.rodata.str1.1366156615253811946.1)
+                  00008e9a    00000006     libc.a : _scanfi.c.obj (.rodata._sproc_int.barr)
+                  00008ea0    00000048            : strtod.c.obj (.rodata.powerof10)
+                  00008ee8    00000019     h3_ball_control.o (.rodata.str1.12695798723665544532.1)
+                  00008f01    00000019     h3_ball_control.o (.rodata.str1.17160114413371085226.1)
+                  00008f1a    00000019     ssd1306.o (.rodata.try_init_at.init_commands)
+                  00008f33    00000017     h3_ball_control.o (.rodata.str1.3036510924497347778.1)
+                  00008f4a    00000002     ti_msp_dl_config.o (.rodata.gDEBUG_UARTClockConfig)
+                  00008f4c    00000014     ti_msp_dl_config.o (.rodata.gCONTROL_TIMERTimerConfig)
+                  00008f60    00000014     h3_tuning_link.o (.rodata.str1.6550298247165071433.1)
+                  00008f74    00000013     h3_ball_control.o (.rodata.str1.10557231840400332371.1)
+                  00008f87    00000013     h3_ball_control.o (.rodata.str1.2156722851266222832.1)
+                  00008f9a    00000012     h3_ball_control.o (.rodata.str1.1126359134911944296.1)
+                  00008fac    00000012     h3_ball_control.o (.rodata.str1.14985158219793567657.1)
+                  00008fbe    00000012     h3_ball_control.o (.rodata.str1.3516315778190940846.1)
+                  00008fd0    00000012     h3_tuning_link.o (.rodata.str1.7960252041146012317.1)
+                  00008fe2    00000011     libc.a : _printfi.c.obj (.rodata.str1.10348868589481759720.1)
+                  00008ff3    00000011     h3_ball_control.o (.rodata.str1.11875267916847732718.1)
+                  00009004    00000011     libc.a : _printfi.c.obj (.rodata.str1.15363888844622738466.1)
+                  00009015    00000011     h3_ball_control.o (.rodata.str1.15431543767815374290.1)
+                  00009026    00000011     h3_ball_control.o (.rodata.str1.16566806302315456484.1)
+                  00009037    00000011     app.o (.rodata.str1.2606929252065540862.1)
+                  00009048    00000011     h3_ball_control.o (.rodata.str1.310176657490481817.1)
+                  00009059    00000011     h3_ball_control.o (.rodata.str1.3328094260642726465.1)
+                  0000906a    00000011     h3_ball_control.o (.rodata.str1.5095976179259903684.1)
+                  0000907b    00000010     SEGGER_RTT_printf.o (.rodata._PrintUnsigned._aV2C)
+                  0000908b    00000001     --HOLE-- [fill = 0]
+                  0000908c    00000010     line_sensor.o (.rodata.line_sensor_read.weights)
+                  0000909c    00000010     h3_tuning_link.o (.rodata.str1.16329731956048209902.1)
+                  000090ac    00000010     h3_tuning_link.o (.rodata.str1.16794917733953926581.1)
+                  000090bc    00000010     main.o (.rodata.str1.17100691992556644108.1)
+                  000090cc    00000010     h3_ball_control.o (.rodata.str1.7577149768182804784.1)
+                  000090dc    00000010     main.o (.rodata.str1.8154729771448623357.1)
+                  000090ec    0000000f     h3_ball_control.o (.rodata.str1.13141150544294324688.1)
+                  000090fb    0000000f     h3_ball_control.o (.rodata.str1.14682952647622405038.1)
+                  0000910a    0000000f     h3_ball_control.o (.rodata.str1.6513029696915202382.1)
+                  00009119    0000000e     h3_tuning_link.o (.rodata.str1.13279474203910071291.1)
+                  00009127    0000000e     main.o (.rodata.str1.15159059442110792349.1)
+                  00009135    0000000e     h3_tuning_link.o (.rodata.str1.16959831008040899032.1)
+                  00009143    0000000e     h3_ball_control.o (.rodata.str1.2395749509541821367.1)
+                  00009151    0000000e     app.o (.rodata.str1.3543938948723267646.1)
+                  0000915f    0000000e     h3_ball_control.o (.rodata.str1.5334463718731916073.1)
+                  0000916d    0000000e     app.o (.rodata.str1.5602021903949372904.1)
+                  0000917b    0000000e     app.o (.rodata.str1.8682387830711593804.1)
+                  00009189    0000000e     h3_ball_control.o (.rodata.str1.8801625546549058199.1)
+                  00009197    0000000d     app.o (.rodata.str1.14141965288680528547.1)
+                  000091a4    0000000d     h3_ball_control.o (.rodata.str1.15542972626696010633.1)
+                  000091b1    0000000d     h3_ball_control.o (.rodata.str1.16094584847282460967.1)
+                  000091be    0000000d     h3_ball_control.o (.rodata.str1.6320901919405435980.1)
+                  000091cb    0000000d     zdt_stepper.o (.rodata.zdt_stepper_send_reference_back.frame)
+                  000091d8    0000000d     zdt_stepper.o (.rodata.zdt_stepper_send_reference_test.frame)
+                  000091e5    0000000c     h3_ball_control.o (.rodata.str1.13599687812454243081.1)
+                  000091f1    0000000c     app.o (.rodata.str1.13935281678674483141.1)
+                  000091fd    0000000c     h3_tuning_link.o (.rodata.str1.860752882519934477.1)
+                  00009209    0000000b     h3_tuning_link.o (.rodata.str1.14501648342268147298.1)
+                  00009214    0000000b     h3_tuning_link.o (.rodata.str1.16171095414779551744.1)
+                  0000921f    0000000b     app.o (.rodata.str1.1944712146988729081.1)
+                  0000922a    0000000a     ti_msp_dl_config.o (.rodata.gDEBUG_UARTConfig)
+                  00009234    0000000a     ti_msp_dl_config.o (.rodata.gVISION_UARTConfig)
+                  0000923e    0000000a     app.o (.rodata.str1.10450196737795524526.1)
+                  00009248    0000000a     h3_ball_control.o (.rodata.str1.16656616020101717245.1)
+                  00009252    0000000a     h3_tuning_link.o (.rodata.str1.1934055512551796135.1)
+                  0000925c    0000000a     main.o (.rodata.str1.2846389346932560359.1)
+                  00009266    0000000a     app.o (.rodata.str1.4360399834097859481.1)
+                  00009270    00000009     libc.a : _scanfi.c.obj (.rodata.str1.12964984209033246150.1)
+                  00009279    00000009     SEGGER_RTT.o (.rodata.str1.1347869369698290154.1)
+                  00009282    00000009     h3_ball_control.o (.rodata.str1.1405161051558020165.1)
+                  0000928b    00000009     h3_tuning_link.o (.rodata.str1.15951788003922213949.1)
+                  00009294    00000009     h3_ball_control.o (.rodata.str1.16556530777337167717.1)
+                  0000929d    00000009     main.o (.rodata.str1.18227636981041470289.1)
+                  000092a6    00000009     h3_tuning_link.o (.rodata.str1.2780627885379847873.1)
+                  000092af    00000009     h3_tuning_link.o (.rodata.str1.9107908380711643443.1)
+                  000092b8    00000008     libc.a : _scanfi.c.obj (.rodata..L__const._sproc_float.special)
+                  000092c0    00000008     ti_msp_dl_config.o (.rodata.gPWM_LEFTConfig)
+                  000092c8    00000008     ti_msp_dl_config.o (.rodata.gPWM_RIGHTConfig)
+                  000092d0    00000008     h3_ball_control.o (.rodata.str1.10153115017827215444.1)
+                  000092d8    00000008     h3_tuning_link.o (.rodata.str1.10761872028093102433.1)
+                  000092e0    00000008     h3_ball_control.o (.rodata.str1.12966144182881050767.1)
+                  000092e8    00000008     h3_tuning_link.o (.rodata.str1.13825721972002761475.1)
+                  000092f0    00000008     h3_ball_control.o (.rodata.str1.14042360478803217214.1)
+                  000092f8    00000008     h3_tuning_link.o (.rodata.str1.2173056223687720993.1)
+                  00009300    00000008     app.o (.rodata.str1.2540114484728192048.1)
+                  00009308    00000008     h3_ball_control.o (.rodata.str1.5543627561405077967.1)
+                  00009310    00000007     libc.a : _scanfi.c.obj (.rodata._sproc_int.flit)
+                  00009317    00000007     h3_tuning_link.o (.rodata.str1.11944796311768819877.1)
+                  0000931e    00000007     app.o (.rodata.str1.12441497784875596899.1)
+                  00009325    00000007     SEGGER_RTT.o (.rodata.str1.1377668454645174194.1)
+                  0000932c    00000007     h3_tuning_link.o (.rodata.str1.14214889785964027745.1)
+                  00009333    00000007     h3_ball_control.o (.rodata.str1.14451229389811978652.1)
+                  0000933a    00000007     app.o (.rodata.str1.2568190970272041647.1)
+                  00009341    00000007     h3_ball_control.o (.rodata.str1.3499223319192506562.1)
+                  00009348    00000007     h3_tuning_link.o (.rodata.str1.561395030728031355.1)
+                  0000934f    00000006     app.o (.rodata.str1.11849843482968746561.1)
+                  00009355    00000006     app.o (.rodata.str1.11879963978103418143.1)
+                  0000935b    00000006     h3_ball_control.o (.rodata.str1.12349733267510933482.1)
+                  00009361    00000006     h3_ball_control.o (.rodata.str1.13132125606125582124.1)
+                  00009367    00000006     h3_tuning_link.o (.rodata.str1.14658482146732036165.1)
+                  0000936d    00000006     h3_tuning_link.o (.rodata.str1.334767335784406961.1)
+                  00009373    00000006     h3_ball_control.o (.rodata.str1.7106409058061791663.1)
+                  00009379    00000006     app.o (.rodata.str1.7777424699149452427.1)
+                  0000937f    00000006     h3_ball_control.o (.rodata.str1.8518641162528035037.1)
+                  00009385    00000005     h3_ball_control.o (.rodata.str1.5788038055639424766.1)
+                  0000938a    00000005     h3_tuning_link.o (.rodata.str1.6914390080480306980.1)
+                  0000938f    00000004     libc.a : _scanfi.c.obj (.rodata.str1.3403580589742030990.1)
+                  00009393    00000004     h3_tuning_link.o (.rodata.str1.6142588366470987890.1)
+                  00009397    00000004     SEGGER_RTT.o (.rodata.str1.6528701487320202176.1)
+                  0000939b    00000004     app.o (.rodata.str1.6810515665389614968.1)
+                  0000939f    00000003     ti_msp_dl_config.o (.rodata.gCONTROL_TIMERClockConfig)
+                  000093a2    00000003     ti_msp_dl_config.o (.rodata.gPWM_LEFTClockConfig)
+                  000093a5    00000003     ti_msp_dl_config.o (.rodata.gPWM_RIGHTClockConfig)
+                  000093a8    00000003     h3_tuning_link.o (.rodata.str1.2961185572538257204.1)
+                  000093ab    00000003     h3_tuning_link.o (.rodata.str1.4342818907371618067.1)
+                  000093ae    00000002     ti_msp_dl_config.o (.rodata.gI2C_DISPLAYClockConfig)
+                  000093b0    00000002     ti_msp_dl_config.o (.rodata.gVISION_UARTClockConfig)
+                  000093b2    0000000e     --HOLE-- [fill = 0]
 
 .init_array 
 *          0    00000000    00000000     UNINITIALIZED
 
 .binit     0    00000000    00000000     
 
-.bss       0    20200000    0000076b     UNINITIALIZED
-                  20200000    00000400     ssd1306.o (.bss.g_frame)
-                  20200400    000000bc     (.common:gCONTROL_TIMERBackup)
-                  202004bc    000000bc     (.common:gPWM_RIGHTBackup)
-                  20200578    00000080     h3_vision.o (.bss.g_rx_buffer)
-                  202005f8    00000040     h3_vision.o (.bss.g_line)
-                  20200638    0000003c     h3_vision.o (.bss.g_sample)
-                  20200674    00000020     motor_encoder.o (.bss.g_motor)
-                  20200694    00000010     zdt_stepper.o (.bss.g_rx_frame)
-                  202006a4    00000010     zdt_stepper.o (.bss.g_status)
-                  202006b4    00000006     app.o (.bss.g_line)
-                  202006ba    00000002     app.o (.bss.g_finish_wide_ms)
-                  202006bc    00000004     app.o (.bss.g_boot_ms)
-                  202006c0    00000004     app.o (.bss.g_brake_start_ms)
-                  202006c4    00000004     h3_ball_control.o (.bss.g_camera_ack_tx_frames)
-                  202006c8    00000004     app.o (.bss.g_distance_mm)
-                  202006cc    00000004     h3_ball_control.o (.bss.g_finish_elapsed_ms)
-                  202006d0    00000004     h3_ball_control.o (.bss.g_integral_mm_s)
-                  202006d4    00000004     main.o (.bss.g_key_debounce_count)
-                  202006d8    00000004     h3_ball_control.o (.bss.g_last_command_angle_deg)
-                  202006dc    00000004     h3_ball_control.o (.bss.g_last_command_ms)
-                  202006e0    00000004     main.o (.bss.g_last_dispatch_key_ms)
-                  202006e4    00000004     app.o (.bss.g_last_key_ms)
-                  202006e8    00000004     h3_ball_control.o (.bss.g_last_key_ms)
-                  202006ec    00000004     motor_encoder.o (.bss.g_last_left_count)
-                  202006f0    00000004     app.o (.bss.g_last_line_control_ms)
-                  202006f4    00000004     app.o (.bss.g_last_line_seen_ms)
-                  202006f8    00000004     main.o (.bss.g_last_menu_refresh_ms)
-                  202006fc    00000004     app.o (.bss.g_last_oled_page_ms)
-                  20200700    00000004     h3_ball_control.o (.bss.g_last_oled_page_ms)
-                  20200704    00000004     motor_encoder.o (.bss.g_last_right_count)
-                  20200708    00000004     app.o (.bss.g_last_speed_ms)
-                  2020070c    00000004     app.o (.bss.g_last_ui_ms)
-                  20200710    00000004     h3_ball_control.o (.bss.g_last_ui_ms)
-                  20200714    00000004     motor_encoder.o (.bss.g_left_count)
-                  20200718    00000004     motor_encoder.o (.bss.g_left_integral)
-                  2020071c    00000004     app.o (.bss.g_millis)
-                  20200720    00000004     h3_ball_control.o (.bss.g_millis)
-                  20200724    00000004     h3_ball_control.o (.bss.g_positive_reached_ms)
-                  20200728    00000004     motor_encoder.o (.bss.g_right_count)
-                  2020072c    00000004     motor_encoder.o (.bss.g_right_integral)
-                  20200730    00000004     app.o (.bss.g_run_start_ms)
-                  20200734    00000004     h3_ball_control.o (.bss.g_run_start_ms)
-                  20200738    00000004     h3_ball_control.o (.bss.g_stable_start_ms)
-                  2020073c    00000004     app.o (.bss.g_start_left_count)
-                  20200740    00000004     app.o (.bss.g_start_right_count)
-                  20200744    00000004     app.o (.bss.g_stop_elapsed_ms)
-                  20200748    00000004     main.o (.bss.g_system_ms)
-                  2020074c    00000004     h3_ball_control.o (.bss.g_target_mm)
-                  20200750    00000002     app.o (.bss.g_last_line_error)
-                  20200752    00000002     h3_vision.o (.bss.g_rx_head)
-                  20200754    00000002     h3_vision.o (.bss.g_rx_tail)
-                  20200756    00000002     app.o (.bss.g_start_clear_ms)
-                  20200758    00000001     main.o (.bss.g_active_mode)
-                  20200759    00000001     ssd1306.o (.bss.g_address)
-                  2020075a    00000001     app.o (.bss.g_app_state)
-                  2020075b    00000001     main.o (.bss.g_dispatch_key_seen)
-                  2020075c    00000001     main.o (.bss.g_h3_start_pending)
-                  2020075d    00000001     main.o (.bss.g_key_events)
-                  2020075e    00000001     main.o (.bss.g_key_stable_pressed)
-                  2020075f    00000001     h3_vision.o (.bss.g_line_length)
-                  20200760    00000001     h3_vision.o (.bss.g_new_sample)
-                  20200761    00000001     h3_ball_control.o (.bss.g_oled_present)
-                  20200762    00000001     ssd1306.o (.bss.g_present)
-                  20200763    00000001     ssd1306.o (.bss.g_refresh_page)
-                  20200764    00000001     app.o (.bss.g_result_valid)
-                  20200765    00000001     zdt_stepper.o (.bss.g_rx_length)
-                  20200766    00000001     main.o (.bss.g_selected_mode)
-                  20200767    00000001     app.o (.bss.g_start_key_event)
-                  20200768    00000001     h3_ball_control.o (.bss.g_start_key_event)
-                  20200769    00000001     app.o (.bss.g_start_line_cleared)
-                  2020076a    00000001     h3_ball_control.o (.bss.g_state)
+.bss       0    20200000    00000d32     UNINITIALIZED
+                  20200000    00000400     SEGGER_RTT.o (.bss._acUpBuffer)
+                  20200400    00000400     ssd1306.o (.bss.g_frame)
+                  20200800    000000bc     (.common:gCONTROL_TIMERBackup)
+                  202008bc    000000bc     (.common:gPWM_RIGHTBackup)
+                  20200978    000000a8     (.common:_SEGGER_RTT)
+                  20200a20    00000080     SEGGER_RTT.o (.bss._acDownBuffer)
+                  20200aa0    00000080     h3_vision.o (.bss.g_rx_buffer)
+                  20200b20    00000050     h3_tuning_link.o (.bss.g_command_line)
+                  20200b70    00000040     h3_vision.o (.bss.g_line)
+                  20200bb0    0000003c     h3_vision.o (.bss.g_sample)
+                  20200bec    00000028     zdt_stepper.o (.bss.g_status)
+                  20200c14    00000020     motor_encoder.o (.bss.g_motor)
+                  20200c34    00000018     h3_tuning_link.o (.bss.g_runtime)
+                  20200c4c    00000010     zdt_stepper.o (.bss.g_rx_frame)
+                  20200c5c    00000006     app.o (.bss.g_line)
+                  20200c62    00000002     app.o (.bss.g_finish_wide_ms)
+                  20200c64    00000004     h3_ball_control.o (.bss.g_auto_start_vision_since_ms)
+                  20200c68    00000004     app.o (.bss.g_boot_ms)
+                  20200c6c    00000004     app.o (.bss.g_brake_start_ms)
+                  20200c70    00000004     h3_ball_control.o (.bss.g_camera_ack_tx_frames)
+                  20200c74    00000004     app.o (.bss.g_distance_mm)
+                  20200c78    00000004     h3_ball_control.o (.bss.g_finish_elapsed_ms)
+                  20200c7c    00000004     h3_ball_control.o (.bss.g_integral_mm_s)
+                  20200c80    00000004     main.o (.bss.g_key_debounce_count)
+                  20200c84    00000004     h3_ball_control.o (.bss.g_last_command_angle_deg)
+                  20200c88    00000004     h3_ball_control.o (.bss.g_last_command_ms)
+                  20200c8c    00000004     main.o (.bss.g_last_dispatch_key_ms)
+                  20200c90    00000004     app.o (.bss.g_last_key_ms)
+                  20200c94    00000004     h3_ball_control.o (.bss.g_last_key_ms)
+                  20200c98    00000004     motor_encoder.o (.bss.g_last_left_count)
+                  20200c9c    00000004     app.o (.bss.g_last_line_control_ms)
+                  20200ca0    00000004     app.o (.bss.g_last_line_seen_ms)
+                  20200ca4    00000004     main.o (.bss.g_last_menu_refresh_ms)
+                  20200ca8    00000004     h3_ball_control.o (.bss.g_last_motor_diag_ms)
+                  20200cac    00000004     app.o (.bss.g_last_oled_page_ms)
+                  20200cb0    00000004     h3_ball_control.o (.bss.g_last_oled_page_ms)
+                  20200cb4    00000004     motor_encoder.o (.bss.g_last_right_count)
+                  20200cb8    00000004     app.o (.bss.g_last_speed_ms)
+                  20200cbc    00000004     h3_tuning_link.o (.bss.g_last_telemetry_ms)
+                  20200cc0    00000004     app.o (.bss.g_last_ui_ms)
+                  20200cc4    00000004     h3_ball_control.o (.bss.g_last_ui_ms)
+                  20200cc8    00000004     motor_encoder.o (.bss.g_left_count)
+                  20200ccc    00000004     motor_encoder.o (.bss.g_left_integral)
+                  20200cd0    00000004     app.o (.bss.g_millis)
+                  20200cd4    00000004     h3_ball_control.o (.bss.g_millis)
+                  20200cd8    00000004     h3_ball_control.o (.bss.g_phase_start_ms)
+                  20200cdc    00000004     h3_ball_control.o (.bss.g_positive_reached_ms)
+                  20200ce0    00000004     motor_encoder.o (.bss.g_right_count)
+                  20200ce4    00000004     motor_encoder.o (.bss.g_right_integral)
+                  20200ce8    00000004     app.o (.bss.g_run_start_ms)
+                  20200cec    00000004     h3_ball_control.o (.bss.g_run_start_ms)
+                  20200cf0    00000004     h3_ball_control.o (.bss.g_stable_start_ms)
+                  20200cf4    00000004     h3_ball_control.o (.bss.g_stall_anchor_position_mm)
+                  20200cf8    00000004     h3_ball_control.o (.bss.g_stall_start_ms)
+                  20200cfc    00000004     app.o (.bss.g_start_left_count)
+                  20200d00    00000004     app.o (.bss.g_start_right_count)
+                  20200d04    00000004     app.o (.bss.g_stop_elapsed_ms)
+                  20200d08    00000004     main.o (.bss.g_system_ms)
+                  20200d0c    00000004     h3_ball_control.o (.bss.g_target_mm)
+                  20200d10    00000002     app.o (.bss.g_last_line_error)
+                  20200d12    00000002     h3_vision.o (.bss.g_rx_head)
+                  20200d14    00000002     h3_vision.o (.bss.g_rx_tail)
+                  20200d16    00000002     app.o (.bss.g_start_clear_ms)
+                  20200d18    00000001     main.o (.bss.g_active_mode)
+                  20200d19    00000001     ssd1306.o (.bss.g_address)
+                  20200d1a    00000001     app.o (.bss.g_app_state)
+                  20200d1b    00000001     h3_ball_control.o (.bss.g_auto_started)
+                  20200d1c    00000001     h3_tuning_link.o (.bss.g_command_length)
+                  20200d1d    00000001     main.o (.bss.g_dispatch_key_seen)
+                  20200d1e    00000001     h3_tuning_link.o (.bss.g_force_telemetry)
+                  20200d1f    00000001     main.o (.bss.g_h3_start_pending)
+                  20200d20    00000001     main.o (.bss.g_key_events)
+                  20200d21    00000001     main.o (.bss.g_key_stable_pressed)
+                  20200d22    00000001     h3_vision.o (.bss.g_line_length)
+                  20200d23    00000001     h3_ball_control.o (.bss.g_motion_phase)
+                  20200d24    00000001     h3_ball_control.o (.bss.g_motor_armed)
+                  20200d25    00000001     h3_ball_control.o (.bss.g_motor_diag_read_position)
+                  20200d26    00000001     h3_vision.o (.bss.g_new_sample)
+                  20200d27    00000001     h3_ball_control.o (.bss.g_oled_present)
+                  20200d28    00000001     h3_tuning_link.o (.bss.g_pending_command)
+                  20200d29    00000001     ssd1306.o (.bss.g_present)
+                  20200d2a    00000001     ssd1306.o (.bss.g_refresh_page)
+                  20200d2b    00000001     app.o (.bss.g_result_valid)
+                  20200d2c    00000001     zdt_stepper.o (.bss.g_rx_length)
+                  20200d2d    00000001     main.o (.bss.g_selected_mode)
+                  20200d2e    00000001     app.o (.bss.g_start_key_event)
+                  20200d2f    00000001     h3_ball_control.o (.bss.g_start_key_event)
+                  20200d30    00000001     app.o (.bss.g_start_line_cleared)
+                  20200d31    00000001     h3_ball_control.o (.bss.g_state)
 
-.data      0    2020076c    00000006     UNINITIALIZED
-                  2020076c    00000004     libc.a : aeabi_portable.c.obj (.data.__aeabi_errno)
-                  20200770    00000002     line_sensor.o (.data.line_sensor_read.last_error)
+.data      0    20200d34    00000006     UNINITIALIZED
+                  20200d34    00000004     libc.a : aeabi_portable.c.obj (.data.__aeabi_errno)
+                  20200d38    00000002     line_sensor.o (.data.line_sensor_read.last_error)
 
 .stack     0    20207e00    00000200     UNINITIALIZED
                   20207e00    00000004     libc.a : boot_cortex_m.c.obj (.stack)
@@ -460,16 +599,23 @@ MODULE SUMMARY
        Total:                         4206    328       398    
                                                                
     .\src\
-       h3_ball_control.o              2800    215       55     
+       h3_ball_control.o              4692    524       79     
        ssd1306.o                      1576    235       1027   
        h3_vision.o                    2500    0         258    
        app.o                          2430    164       72     
+       h3_tuning_link.o               1454    419       111    
        motor_encoder.o                1212    0         56     
-       zdt_stepper.o                  514     0         33     
+       zdt_stepper.o                  822     26        57     
        i2c_bus.o                      524     0         0      
        line_sensor.o                  420     16        2      
     +--+------------------------------+-------+---------+---------+
-       Total:                         11976   630       1503   
+       Total:                         15630   1384      1662   
+                                                               
+    .\src\segger_rtt\
+       SEGGER_RTT.o                   1124    20        1320   
+       SEGGER_RTT_printf.o            1928    16        0      
+    +--+------------------------------+-------+---------+---------+
+       Total:                         3052    36        1320   
                                                                
     F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/lib/ticlang/m0p/mspm0g1x0x_g3x0x/driverlib.a
        dl_timer.o                     608     0         0      
@@ -480,9 +626,18 @@ MODULE SUMMARY
        Total:                         996     0         0      
                                                                
     F:\ti\ccs2051\ccs\tools\compiler\ti-cgt-armllvm_4.0.4.LTS\lib\armv6m-ti-none-eabi/c/libc.a
+       _scanfi.c.obj                  3092    34        0      
        _printfi.c.obj                 2166    34        0      
+       strtod.c.obj                   968     200       0      
+       strtoll.c.obj                  480     0         0      
+       strtoull.c.obj                 364     0         0      
+       strtol.c.obj                   324     0         0      
+       strtoul.c.obj                  300     0         0      
        aeabi_ctype.S.obj              0       257       0      
+       s_scalbn.c.obj                 216     0         0      
+       sscanf.c.obj                   192     0         0      
        snprintf.c.obj                 148     0         0      
+       strcmp-armv6m.S.obj            136     0         0      
        copy_decompress_lzss.c.obj     124     0         0      
        atoi.c.obj                     64      0         0      
        autoinit.c.obj                 60      0         0      
@@ -493,11 +648,13 @@ MODULE SUMMARY
        copy_zero_init.c.obj           16      0         0      
        wcslen.c.obj                   16      0         0      
        memset16.S.obj                 14      0         0      
+       strcpy.c.obj                   14      0         0      
+       strlen.c.obj                   14      0         0      
        aeabi_portable.c.obj           8       0         4      
        exit.c.obj                     6       0         0      
        pre_init.c.obj                 4       0         0      
     +--+------------------------------+-------+---------+---------+
-       Total:                         2752    291       4      
+       Total:                         8852    525       4      
                                                                
     F:\ti\ccs2051\ccs\tools\compiler\ti-cgt-armllvm_4.0.4.LTS\lib\armv6m-ti-none-eabi/c/libsysbm.a
        hostexit.c.obj                 4       0         0      
@@ -505,11 +662,17 @@ MODULE SUMMARY
        Total:                         4       0         0      
                                                                
     F:\ti\ccs2051\ccs\tools\compiler\ti-cgt-armllvm_4.0.4.LTS\lib\armv6m-ti-none-eabi/libclang_rt.builtins.a
+       adddf3.S.obj                   402     0         0      
+       divdf3.S.obj                   268     0         0      
+       muldf3.S.obj                   228     0         0      
+       comparedf2.c.obj               220     0         0      
        addsf3.S.obj                   216     0         0      
        udivmoddi4.S.obj               162     0         0      
        mulsf3.S.obj                   140     0         0      
        divsf3.S.obj                   130     0         0      
        comparesf2.S.obj               118     0         0      
+       truncdfsf2.S.obj               116     0         0      
+       aeabi_dcmp.S.obj               114     0         0      
        aeabi_fcmp.S.obj               98      0         0      
        aeabi_idivmod.S.obj            86      0         0      
        aeabi_uidivmod.S.obj           64      0         0      
@@ -525,24 +688,24 @@ MODULE SUMMARY
        aeabi_memcpy.S.obj             8       0         0      
        aeabi_div0.c.obj               4       0         0      
     +--+------------------------------+-------+---------+---------+
-       Total:                         1402    0         0      
+       Total:                         2750    0         0      
                                                                
        Stack:                         0       0         512    
        Linker Generated:              0       43        0      
     +--+------------------------------+-------+---------+---------+
-       Grand Total:                   21336   1292      2417   
+       Grand Total:                   35490   2316      3896   
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 0000588c records: 2, size/record: 8, table size: 16
-	.bss: load addr=0000587c, load size=00000008 bytes, run addr=20200000, run size=0000076b bytes, compression=zero_init
-	.data: load addr=00005884, load size=00000007 bytes, run addr=2020076c, run size=00000006 bytes, compression=lzss
+__TI_cinit_table @ 000093dc records: 2, size/record: 8, table size: 16
+	.bss: load addr=000093cc, load size=00000008 bytes, run addr=20200000, run size=00000d32 bytes, compression=zero_init
+	.data: load addr=000093d4, load size=00000007 bytes, run addr=20200d34, run size=00000006 bytes, compression=lzss
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00005870 records: 3, size/record: 4, table size: 12
+__TI_handler_table @ 000093c0 records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_decompress_lzss
 	index: 1, handler: __TI_decompress_none
 	index: 2, handler: __TI_zero_init
@@ -553,76 +716,87 @@ FAR CALL TRAMPOLINES
 callee name               trampoline name
    callee addr  tramp addr   call addr  call info
 --------------  -----------  ---------  ----------------
+__aeabi_dcmpeq            $Tramp$TT$L$PI$$__aeabi_dcmpeq
+   00007045     00008b10     00008b0c   libc.a : strtod.c.obj (.text.OUTLINED_FUNCTION_1)
 _c_int00_noargs           $Tramp$TT$L$PI$$_c_int00_noargs
-   00004be5     0000542c     00005426   startup_mspm0g350x_ticlang.o (.text.Reset_Handler)
+   000081c1     00008b78     00008b74   startup_mspm0g350x_ticlang.o (.text.Reset_Handler)
 
-[1 trampolines]
-[1 trampoline calls]
+[2 trampolines]
+[2 trampoline calls]
 
 
 GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
 
 address   name                            
 -------   ----                            
-0000541f  ADC0_IRQHandler                 
-0000541f  ADC1_IRQHandler                 
-0000541f  AES_IRQHandler                  
-00005422  C$$EXIT                         
-0000541f  CANFD0_IRQHandler               
-0000541f  DAC0_IRQHandler                 
-000053e5  DL_Common_delayCycles           
-00003dad  DL_I2C_fillControllerTXFIFO     
-00004949  DL_I2C_flushControllerRXFIFO    
-000045e5  DL_I2C_flushControllerTXFIFO    
-00004c33  DL_I2C_setClockConfig           
-00002025  DL_Timer_initFourCCPWMMode      
-00002129  DL_Timer_initTimerMode          
-00004ecd  DL_Timer_setCaptCompUpdateMethod
-000050a5  DL_Timer_setCaptureCompareOutCtl
-00005311  DL_Timer_setCaptureCompareValue 
-00004ee9  DL_Timer_setClockConfig         
-0000427d  DL_UART_init                    
-000052c9  DL_UART_setClockConfig          
-00004979  DL_UART_transmitDataBlocking    
-0000541f  DMA_IRQHandler                  
-0000541f  Default_Handler                 
-0000541f  GROUP0_IRQHandler               
-0000439d  GROUP1_IRQHandler               
-00005423  HOSTexit                        
-0000541f  HardFault_Handler               
-0000541f  I2C0_IRQHandler                 
-0000541f  I2C1_IRQHandler                 
-0000541f  NMI_Handler                     
-0000541f  PendSV_Handler                  
-0000541f  RTC_IRQHandler                  
-00005427  Reset_Handler                   
-0000541f  SPI0_IRQHandler                 
-0000541f  SPI1_IRQHandler                 
-0000541f  SVC_Handler                     
-000048ad  SYSCFG_DL_CONTROL_TIMER_init    
-000042c5  SYSCFG_DL_DEBUG_UART_init       
-00000d89  SYSCFG_DL_GPIO_init             
-00003e69  SYSCFG_DL_I2C_DISPLAY_init      
-00003a9d  SYSCFG_DL_PWM_LEFT_init         
-00003b01  SYSCFG_DL_PWM_RIGHT_init        
-00004cc5  SYSCFG_DL_SYSCTL_init           
-00004101  SYSCFG_DL_VISION_UART_init      
-0000465d  SYSCFG_DL_init                  
-00002f31  SYSCFG_DL_initPower             
-0000541f  SysTick_Handler                 
-0000541f  TIMA0_IRQHandler                
-000049a9  TIMA1_IRQHandler                
-0000541f  TIMG0_IRQHandler                
-0000541f  TIMG12_IRQHandler               
-0000541f  TIMG6_IRQHandler                
-0000541f  TIMG7_IRQHandler                
-0000541f  TIMG8_IRQHandler                
-000052db  TI_memcpy_small                 
-0000538d  TI_memset_small                 
-000049d9  UART0_IRQHandler                
-00004a09  UART1_IRQHandler                
-0000541f  UART2_IRQHandler                
-0000541f  UART3_IRQHandler                
+00008b6d  ADC0_IRQHandler                 
+00008b6d  ADC1_IRQHandler                 
+00008b6d  AES_IRQHandler                  
+00008b70  C$$EXIT                         
+00008b6d  CANFD0_IRQHandler               
+00008b6d  DAC0_IRQHandler                 
+00008aed  DL_Common_delayCycles           
+000072ed  DL_I2C_fillControllerTXFIFO     
+00007ec9  DL_I2C_flushControllerRXFIFO    
+00007af9  DL_I2C_flushControllerTXFIFO    
+0000820f  DL_I2C_setClockConfig           
+00004c95  DL_Timer_initFourCCPWMMode      
+00004d99  DL_Timer_initTimerMode          
+000084e5  DL_Timer_setCaptCompUpdateMethod
+00008749  DL_Timer_setCaptureCompareOutCtl
+000089c9  DL_Timer_setCaptureCompareValue 
+00008501  DL_Timer_setClockConfig         
+00007715  DL_UART_init                    
+00008981  DL_UART_setClockConfig          
+00007ef9  DL_UART_transmitDataBlocking    
+00008b6d  DMA_IRQHandler                  
+00008b6d  Default_Handler                 
+00008b6d  GROUP0_IRQHandler               
+00007835  GROUP1_IRQHandler               
+00008b71  HOSTexit                        
+00008b6d  HardFault_Handler               
+00008b6d  I2C0_IRQHandler                 
+00008b6d  I2C1_IRQHandler                 
+00008b6d  NMI_Handler                     
+00008b6d  PendSV_Handler                  
+00008b6d  RTC_IRQHandler                  
+00008b75  Reset_Handler                   
+00008b21  SEGGER_RTT_Init                 
+00008539  SEGGER_RTT_Read                 
+000046f9  SEGGER_RTT_ReadNoLock           
+00007df9  SEGGER_RTT_Write                
+00005c49  SEGGER_RTT_WriteNoLock          
+000083c7  SEGGER_RTT_WriteString          
+00008047  SEGGER_RTT_printf               
+00001c89  SEGGER_RTT_vprintf              
+00008b6d  SPI0_IRQHandler                 
+00008b6d  SPI1_IRQHandler                 
+00008b6d  SVC_Handler                     
+00007e2d  SYSCFG_DL_CONTROL_TIMER_init    
+0000775d  SYSCFG_DL_DEBUG_UART_init       
+000030dd  SYSCFG_DL_GPIO_init             
+0000734d  SYSCFG_DL_I2C_DISPLAY_init      
+00006f19  SYSCFG_DL_PWM_LEFT_init         
+00006f7d  SYSCFG_DL_PWM_RIGHT_init        
+000082a1  SYSCFG_DL_SYSCTL_init           
+000075e5  SYSCFG_DL_VISION_UART_init      
+00007b71  SYSCFG_DL_init                  
+00005f95  SYSCFG_DL_initPower             
+00008b6d  SysTick_Handler                 
+00008b6d  TIMA0_IRQHandler                
+00007f29  TIMA1_IRQHandler                
+00008b6d  TIMG0_IRQHandler                
+00008b6d  TIMG12_IRQHandler               
+00008b6d  TIMG6_IRQHandler                
+00008b6d  TIMG7_IRQHandler                
+00008b6d  TIMG8_IRQHandler                
+00008993  TI_memcpy_small                 
+00008aad  TI_memset_small                 
+00007f59  UART0_IRQHandler                
+00007f89  UART1_IRQHandler                
+00008b6d  UART2_IRQHandler                
+00008b6d  UART3_IRQHandler                
+20200978  _SEGGER_RTT                     
 20208000  __STACK_END                     
 00000200  __STACK_SIZE                    
 00000000  __TI_ATRegion0_region_sz        
@@ -634,133 +808,181 @@ address   name
 00000000  __TI_ATRegion2_region_sz        
 00000000  __TI_ATRegion2_src_addr         
 00000000  __TI_ATRegion2_trg_addr         
-0000588c  __TI_CINIT_Base                 
-0000589c  __TI_CINIT_Limit                
-0000589c  __TI_CINIT_Warm                 
-00005870  __TI_Handler_Table_Base         
-0000587c  __TI_Handler_Table_Limit        
-00004789  __TI_auto_init_nobinit_nopinit  
-000038d1  __TI_decompress_lzss            
-000052ed  __TI_decompress_none            
+000093dc  __TI_CINIT_Base                 
+000093ec  __TI_CINIT_Limit                
+000093ec  __TI_CINIT_Warm                 
+000093c0  __TI_Handler_Table_Base         
+000093cc  __TI_Handler_Table_Limit        
+00007c9d  __TI_auto_init_nobinit_nopinit  
+000069b1  __TI_decompress_lzss            
+000089a5  __TI_decompress_none            
 ffffffff  __TI_pprof_out_hndl             
-000000c1  __TI_printfi_nofloat            
+00000c9d  __TI_printfi_nofloat            
 ffffffff  __TI_prof_data_size             
 ffffffff  __TI_prof_data_start            
+000000c1  __TI_scanfi                     
 00000000  __TI_static_base__              
-00005361  __TI_zero_init                  
-0000296f  __addsf3                        
-00005440  __aeabi_ctype_table_            
-00005440  __aeabi_ctype_table_C           
-2020076c  __aeabi_errno                   
-000053f1  __aeabi_errno_addr              
-0000483d  __aeabi_f2iz                    
-00004915  __aeabi_f2uiz                   
-0000296f  __aeabi_fadd                    
-00003bc9  __aeabi_fcmpeq                  
-00003c05  __aeabi_fcmpge                  
-00003c19  __aeabi_fcmpgt                  
-00003bf1  __aeabi_fcmple                  
-00003bdd  __aeabi_fcmplt                  
-0000364d  __aeabi_fdiv                    
-0000353d  __aeabi_fmul                    
-00002965  __aeabi_fsub                    
-00004699  __aeabi_i2f                     
-00003f71  __aeabi_idiv                    
-00001103  __aeabi_idiv0                   
-00003f71  __aeabi_idivmod                 
-000027ab  __aeabi_ldiv0                   
-00004dcd  __aeabi_llsl                    
-00004c59  __aeabi_lmul                    
-0000539d  __aeabi_memclr                  
-0000539d  __aeabi_memclr4                 
-0000539d  __aeabi_memclr8                 
-000053f9  __aeabi_memcpy                  
-000053f9  __aeabi_memcpy4                 
-000053f9  __aeabi_memcpy8                 
-00005371  __aeabi_memset                  
-00005371  __aeabi_memset4                 
-00005371  __aeabi_memset8                 
-00004bbd  __aeabi_ui2f                    
-00004469  __aeabi_uidiv                   
-00004469  __aeabi_uidivmod                
-00005255  __aeabi_uldivmod                
-00004dcd  __ashldi3                       
+00008a39  __TI_zero_init                  
+000037cf  __adddf3                        
+00005883  __addsf3                        
+00008b90  __aeabi_ctype_table_            
+00008b90  __aeabi_ctype_table_C           
+00006c11  __aeabi_d2f                     
+000037cf  __aeabi_dadd                    
+00007045  __aeabi_dcmpeq                  
+00007081  __aeabi_dcmpge                  
+00007095  __aeabi_dcmpgt                  
+0000706d  __aeabi_dcmple                  
+00007059  __aeabi_dcmplt                  
+00004b89  __aeabi_ddiv                    
+00005345  __aeabi_dmul                    
+000037c5  __aeabi_dsub                    
+20200d34  __aeabi_errno                   
+00008b29  __aeabi_errno_addr              
+00007d51  __aeabi_f2iz                    
+00007e95  __aeabi_f2uiz                   
+00005883  __aeabi_fadd                    
+000070a9  __aeabi_fcmpeq                  
+000070e5  __aeabi_fcmpge                  
+000070f9  __aeabi_fcmpgt                  
+000070d1  __aeabi_fcmple                  
+000070bd  __aeabi_fcmplt                  
+0000672d  __aeabi_fdiv                    
+00006589  __aeabi_fmul                    
+00005879  __aeabi_fsub                    
+00007bad  __aeabi_i2f                     
+00007455  __aeabi_idiv                    
+00001fc7  __aeabi_idiv0                   
+00007455  __aeabi_idivmod                 
+00002d2b  __aeabi_ldiv0                   
+000083e5  __aeabi_llsl                    
+00008235  __aeabi_lmul                    
+00006615  __aeabi_memclr                  
+00006615  __aeabi_memclr4                 
+00006615  __aeabi_memclr8                 
+00008b31  __aeabi_memcpy                  
+00008b31  __aeabi_memcpy4                 
+00008b31  __aeabi_memcpy8                 
+00008a75  __aeabi_memset                  
+00008a75  __aeabi_memset4                 
+00008a75  __aeabi_memset8                 
+00008199  __aeabi_ui2f                    
+00007941  __aeabi_uidiv                   
+00007941  __aeabi_uidivmod                
+000088f9  __aeabi_uldivmod                
+000083e5  __ashldi3                       
 ffffffff  __binit__                       
-000047c5  __cmpsf2                        
-0000364d  __divsf3                        
-000047c5  __eqsf2                         
-0000483d  __fixsfsi                       
-00004915  __fixunssfsi                    
-00004699  __floatsisf                     
-00004bbd  __floatunsisf                   
-000046d5  __gesf2                         
-000046d5  __gtsf2                         
-000047c5  __lesf2                         
-000047c5  __ltsf2                         
+00006e49  __cmpdf2                        
+00007cd9  __cmpsf2                        
+00004b89  __divdf3                        
+0000672d  __divsf3                        
+00006e49  __eqdf2                         
+00007cd9  __eqsf2                         
+00007d51  __fixsfsi                       
+00007e95  __fixunssfsi                    
+00007bad  __floatsisf                     
+00008199  __floatunsisf                   
+00006b91  __gedf2                         
+00007be9  __gesf2                         
+00006b91  __gtdf2                         
+00007be9  __gtsf2                         
+00006e49  __ledf2                         
+00007cd9  __lesf2                         
+00006e49  __ltdf2                         
+00007cd9  __ltsf2                         
 UNDEFED   __mpu_init                      
-00004c59  __muldi3                        
-00004801  __muldsi3                       
-0000353d  __mulsf3                        
-000047c5  __nesf2                         
+00005345  __muldf3                        
+00008235  __muldi3                        
+00007d15  __muldsi3                       
+00006589  __mulsf3                        
+00006e49  __nedf2                         
+00007cd9  __nesf2                         
 20207e00  __stack                         
 20200000  __start___llvm_prf_bits         
 20200000  __start___llvm_prf_cnts         
 20200000  __stop___llvm_prf_bits          
 20200000  __stop___llvm_prf_cnts          
-00002965  __subsf3                        
-00002e8d  __udivmoddi4                    
-00004be5  _c_int00_noargs                 
+000037c5  __subdf3                        
+00005879  __subsf3                        
+00006c11  __truncdfsf2                    
+00005ef1  __udivmoddi4                    
+000081c1  _c_int00_noargs                 
 UNDEFED   _system_post_cinit              
-0000543d  _system_pre_init                
-00005419  abort                           
-000027ad  app_init                        
-000053a9  app_millis                      
-000012a9  app_process                     
-000053b5  app_start_key_isr               
-00005321  app_tick_1ms_isr                
-000044a9  atoi                            
+00008b89  _system_pre_init                
+00008b67  abort                           
+0000550d  app_init                        
+00006c05  app_millis                      
+00003add  app_process                     
+00008abd  app_start_key_isr               
+000089d9  app_tick_1ms_isr                
+00007981  atoi                            
 ffffffff  binit                           
-20200400  gCONTROL_TIMERBackup            
-202004bc  gPWM_RIGHTBackup                
-00002b09  h3_ball_control_init            
-00001599  h3_ball_control_process         
-000053c1  h3_ball_control_start_key_isr   
-00005331  h3_ball_control_tick_1ms_isr    
-000053cd  h3_ball_control_vision_ready    
-00005269  h3_ball_control_vision_rx_isr   
-0000527d  h3_ball_control_zdt_rx_isr      
-00005401  h3_vision_get                   
-0000414d  h3_vision_init                  
-00001ca1  h3_vision_process               
-00003c2d  h3_vision_rx_byte_isr           
-00004d6d  h3_vision_take_new_sample       
-00003071  i2c_bus_write                   
+20200800  gCONTROL_TIMERBackup            
+202008bc  gPWM_RIGHTBackup                
+00004a71  h3_ball_control_init            
+00002701  h3_ball_control_process         
+00008ac9  h3_ball_control_start_key_isr   
+000089e9  h3_ball_control_tick_1ms_isr    
+00008ad5  h3_ball_control_vision_ready    
+00008921  h3_ball_control_vision_rx_isr   
+00008935  h3_ball_control_zdt_rx_isr      
+00008555  h3_tuning_link_event            
+00006cf9  h3_tuning_link_init             
+000063d1  h3_tuning_link_process          
+00008b41  h3_tuning_link_runtime          
+00007d89  h3_tuning_link_take_command     
+00003959  h3_tuning_link_telemetry        
+00008b49  h3_vision_get                   
+00007631  h3_vision_init                  
+00004499  h3_vision_process               
+0000710d  h3_vision_rx_byte_isr           
+00008349  h3_vision_take_new_sample       
+00006035  i2c_bus_write                   
 00000000  interruptVectors                
-000019ed  line_sensor_read                
-00001dd5  main                            
-00004d09  memccpy                         
-00004711  motor_active_brake              
-0000474d  motor_coast                     
-00003c8d  motor_encoder_left_edge_isr     
-00003b65  motor_encoder_right_edge_isr    
-00005409  motor_get                       
-00003ced  motor_init                      
-00003ec1  motor_prepare_run               
-00004875  motor_set_targets               
-00002c8d  motor_speed_control_10ms        
-00004199  snprintf                        
-00005291  ssd1306_clear                   
-00002a3d  ssd1306_draw_text               
-0000170d  ssd1306_draw_text_2x            
-00001efd  ssd1306_init                    
-00005341  ssd1306_is_present              
-00002225  ssd1306_refresh_next_page       
-00005351  wcslen                          
-00004a69  zdt_stepper_enable              
-00005411  zdt_stepper_get_status          
-00003e0d  zdt_stepper_init                
-000034a9  zdt_stepper_move_absolute_deg   
-000035c9  zdt_stepper_rx_byte_isr         
+000056c9  ldexp                           
+000056c9  ldexpl                          
+00003f3d  line_sensor_read                
+00004821  main                            
+000082e5  memccpy                         
+00007c25  motor_active_brake              
+00007c61  motor_coast                     
+0000716d  motor_encoder_left_edge_isr     
+00006fe1  motor_encoder_right_edge_isr    
+00008b51  motor_get                       
+000071cd  motor_init                      
+000073a5  motor_prepare_run               
+00007dc1  motor_set_targets               
+00005b95  motor_speed_control_10ms        
+000056c9  scalbn                          
+000056c9  scalbnl                         
+0000767d  snprintf                        
+00007fe9  sscanf                          
+00008949  ssd1306_clear                   
+00005951  ssd1306_draw_text               
+00003dcd  ssd1306_draw_text_2x            
+00004949  ssd1306_init                    
+000089f9  ssd1306_is_present              
+00004f91  ssd1306_refresh_next_page       
+00006621  strcmp                          
+00008a83  strcpy                          
+00008a9f  strlen                          
+000018d1  strtod                          
+00004215  strtol                          
+000018d1  strtold                         
+00002d2d  strtoll                         
+000045cd  strtoul                         
+000040a9  strtoull                        
+00008a09  wcslen                          
+00008019  zdt_stepper_enable              
+00008b59  zdt_stepper_get_status          
+0000728d  zdt_stepper_init                
+00006465  zdt_stepper_move_absolute_deg   
+0000858d  zdt_stepper_read_real_position  
+000085a9  zdt_stepper_read_status_flags   
+00004359  zdt_stepper_rx_byte_isr         
+00008a19  zdt_stepper_send_reference_back 
+00008a29  zdt_stepper_send_reference_test 
+000085c5  zdt_stepper_stop_now            
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -778,183 +1000,240 @@ address   name
 00000000  __TI_ATRegion2_trg_addr         
 00000000  __TI_static_base__              
 00000000  interruptVectors                
-000000c1  __TI_printfi_nofloat            
+000000c1  __TI_scanfi                     
 00000200  __STACK_SIZE                    
-00000d89  SYSCFG_DL_GPIO_init             
-00001103  __aeabi_idiv0                   
-000012a9  app_process                     
-00001599  h3_ball_control_process         
-0000170d  ssd1306_draw_text_2x            
-000019ed  line_sensor_read                
-00001ca1  h3_vision_process               
-00001dd5  main                            
-00001efd  ssd1306_init                    
-00002025  DL_Timer_initFourCCPWMMode      
-00002129  DL_Timer_initTimerMode          
-00002225  ssd1306_refresh_next_page       
-000027ab  __aeabi_ldiv0                   
-000027ad  app_init                        
-00002965  __aeabi_fsub                    
-00002965  __subsf3                        
-0000296f  __addsf3                        
-0000296f  __aeabi_fadd                    
-00002a3d  ssd1306_draw_text               
-00002b09  h3_ball_control_init            
-00002c8d  motor_speed_control_10ms        
-00002e8d  __udivmoddi4                    
-00002f31  SYSCFG_DL_initPower             
-00003071  i2c_bus_write                   
-000034a9  zdt_stepper_move_absolute_deg   
-0000353d  __aeabi_fmul                    
-0000353d  __mulsf3                        
-000035c9  zdt_stepper_rx_byte_isr         
-0000364d  __aeabi_fdiv                    
-0000364d  __divsf3                        
-000038d1  __TI_decompress_lzss            
-00003a9d  SYSCFG_DL_PWM_LEFT_init         
-00003b01  SYSCFG_DL_PWM_RIGHT_init        
-00003b65  motor_encoder_right_edge_isr    
-00003bc9  __aeabi_fcmpeq                  
-00003bdd  __aeabi_fcmplt                  
-00003bf1  __aeabi_fcmple                  
-00003c05  __aeabi_fcmpge                  
-00003c19  __aeabi_fcmpgt                  
-00003c2d  h3_vision_rx_byte_isr           
-00003c8d  motor_encoder_left_edge_isr     
-00003ced  motor_init                      
-00003dad  DL_I2C_fillControllerTXFIFO     
-00003e0d  zdt_stepper_init                
-00003e69  SYSCFG_DL_I2C_DISPLAY_init      
-00003ec1  motor_prepare_run               
-00003f71  __aeabi_idiv                    
-00003f71  __aeabi_idivmod                 
-00004101  SYSCFG_DL_VISION_UART_init      
-0000414d  h3_vision_init                  
-00004199  snprintf                        
-0000427d  DL_UART_init                    
-000042c5  SYSCFG_DL_DEBUG_UART_init       
-0000439d  GROUP1_IRQHandler               
-00004469  __aeabi_uidiv                   
-00004469  __aeabi_uidivmod                
-000044a9  atoi                            
-000045e5  DL_I2C_flushControllerTXFIFO    
-0000465d  SYSCFG_DL_init                  
-00004699  __aeabi_i2f                     
-00004699  __floatsisf                     
-000046d5  __gesf2                         
-000046d5  __gtsf2                         
-00004711  motor_active_brake              
-0000474d  motor_coast                     
-00004789  __TI_auto_init_nobinit_nopinit  
-000047c5  __cmpsf2                        
-000047c5  __eqsf2                         
-000047c5  __lesf2                         
-000047c5  __ltsf2                         
-000047c5  __nesf2                         
-00004801  __muldsi3                       
-0000483d  __aeabi_f2iz                    
-0000483d  __fixsfsi                       
-00004875  motor_set_targets               
-000048ad  SYSCFG_DL_CONTROL_TIMER_init    
-00004915  __aeabi_f2uiz                   
-00004915  __fixunssfsi                    
-00004949  DL_I2C_flushControllerRXFIFO    
-00004979  DL_UART_transmitDataBlocking    
-000049a9  TIMA1_IRQHandler                
-000049d9  UART0_IRQHandler                
-00004a09  UART1_IRQHandler                
-00004a69  zdt_stepper_enable              
-00004bbd  __aeabi_ui2f                    
-00004bbd  __floatunsisf                   
-00004be5  _c_int00_noargs                 
-00004c33  DL_I2C_setClockConfig           
-00004c59  __aeabi_lmul                    
-00004c59  __muldi3                        
-00004cc5  SYSCFG_DL_SYSCTL_init           
-00004d09  memccpy                         
-00004d6d  h3_vision_take_new_sample       
-00004dcd  __aeabi_llsl                    
-00004dcd  __ashldi3                       
-00004ecd  DL_Timer_setCaptCompUpdateMethod
-00004ee9  DL_Timer_setClockConfig         
-000050a5  DL_Timer_setCaptureCompareOutCtl
-00005255  __aeabi_uldivmod                
-00005269  h3_ball_control_vision_rx_isr   
-0000527d  h3_ball_control_zdt_rx_isr      
-00005291  ssd1306_clear                   
-000052c9  DL_UART_setClockConfig          
-000052db  TI_memcpy_small                 
-000052ed  __TI_decompress_none            
-00005311  DL_Timer_setCaptureCompareValue 
-00005321  app_tick_1ms_isr                
-00005331  h3_ball_control_tick_1ms_isr    
-00005341  ssd1306_is_present              
-00005351  wcslen                          
-00005361  __TI_zero_init                  
-00005371  __aeabi_memset                  
-00005371  __aeabi_memset4                 
-00005371  __aeabi_memset8                 
-0000538d  TI_memset_small                 
-0000539d  __aeabi_memclr                  
-0000539d  __aeabi_memclr4                 
-0000539d  __aeabi_memclr8                 
-000053a9  app_millis                      
-000053b5  app_start_key_isr               
-000053c1  h3_ball_control_start_key_isr   
-000053cd  h3_ball_control_vision_ready    
-000053e5  DL_Common_delayCycles           
-000053f1  __aeabi_errno_addr              
-000053f9  __aeabi_memcpy                  
-000053f9  __aeabi_memcpy4                 
-000053f9  __aeabi_memcpy8                 
-00005401  h3_vision_get                   
-00005409  motor_get                       
-00005411  zdt_stepper_get_status          
-00005419  abort                           
-0000541f  ADC0_IRQHandler                 
-0000541f  ADC1_IRQHandler                 
-0000541f  AES_IRQHandler                  
-0000541f  CANFD0_IRQHandler               
-0000541f  DAC0_IRQHandler                 
-0000541f  DMA_IRQHandler                  
-0000541f  Default_Handler                 
-0000541f  GROUP0_IRQHandler               
-0000541f  HardFault_Handler               
-0000541f  I2C0_IRQHandler                 
-0000541f  I2C1_IRQHandler                 
-0000541f  NMI_Handler                     
-0000541f  PendSV_Handler                  
-0000541f  RTC_IRQHandler                  
-0000541f  SPI0_IRQHandler                 
-0000541f  SPI1_IRQHandler                 
-0000541f  SVC_Handler                     
-0000541f  SysTick_Handler                 
-0000541f  TIMA0_IRQHandler                
-0000541f  TIMG0_IRQHandler                
-0000541f  TIMG12_IRQHandler               
-0000541f  TIMG6_IRQHandler                
-0000541f  TIMG7_IRQHandler                
-0000541f  TIMG8_IRQHandler                
-0000541f  UART2_IRQHandler                
-0000541f  UART3_IRQHandler                
-00005422  C$$EXIT                         
-00005423  HOSTexit                        
-00005427  Reset_Handler                   
-0000543d  _system_pre_init                
-00005440  __aeabi_ctype_table_            
-00005440  __aeabi_ctype_table_C           
-00005870  __TI_Handler_Table_Base         
-0000587c  __TI_Handler_Table_Limit        
-0000588c  __TI_CINIT_Base                 
-0000589c  __TI_CINIT_Limit                
-0000589c  __TI_CINIT_Warm                 
+00000c9d  __TI_printfi_nofloat            
+000018d1  strtod                          
+000018d1  strtold                         
+00001c89  SEGGER_RTT_vprintf              
+00001fc7  __aeabi_idiv0                   
+00002701  h3_ball_control_process         
+00002d2b  __aeabi_ldiv0                   
+00002d2d  strtoll                         
+000030dd  SYSCFG_DL_GPIO_init             
+000037c5  __aeabi_dsub                    
+000037c5  __subdf3                        
+000037cf  __adddf3                        
+000037cf  __aeabi_dadd                    
+00003959  h3_tuning_link_telemetry        
+00003add  app_process                     
+00003dcd  ssd1306_draw_text_2x            
+00003f3d  line_sensor_read                
+000040a9  strtoull                        
+00004215  strtol                          
+00004359  zdt_stepper_rx_byte_isr         
+00004499  h3_vision_process               
+000045cd  strtoul                         
+000046f9  SEGGER_RTT_ReadNoLock           
+00004821  main                            
+00004949  ssd1306_init                    
+00004a71  h3_ball_control_init            
+00004b89  __aeabi_ddiv                    
+00004b89  __divdf3                        
+00004c95  DL_Timer_initFourCCPWMMode      
+00004d99  DL_Timer_initTimerMode          
+00004f91  ssd1306_refresh_next_page       
+00005345  __aeabi_dmul                    
+00005345  __muldf3                        
+0000550d  app_init                        
+000056c9  ldexp                           
+000056c9  ldexpl                          
+000056c9  scalbn                          
+000056c9  scalbnl                         
+00005879  __aeabi_fsub                    
+00005879  __subsf3                        
+00005883  __addsf3                        
+00005883  __aeabi_fadd                    
+00005951  ssd1306_draw_text               
+00005b95  motor_speed_control_10ms        
+00005c49  SEGGER_RTT_WriteNoLock          
+00005ef1  __udivmoddi4                    
+00005f95  SYSCFG_DL_initPower             
+00006035  i2c_bus_write                   
+000063d1  h3_tuning_link_process          
+00006465  zdt_stepper_move_absolute_deg   
+00006589  __aeabi_fmul                    
+00006589  __mulsf3                        
+00006615  __aeabi_memclr                  
+00006615  __aeabi_memclr4                 
+00006615  __aeabi_memclr8                 
+00006621  strcmp                          
+0000672d  __aeabi_fdiv                    
+0000672d  __divsf3                        
+000069b1  __TI_decompress_lzss            
+00006b91  __gedf2                         
+00006b91  __gtdf2                         
+00006c05  app_millis                      
+00006c11  __aeabi_d2f                     
+00006c11  __truncdfsf2                    
+00006cf9  h3_tuning_link_init             
+00006e49  __cmpdf2                        
+00006e49  __eqdf2                         
+00006e49  __ledf2                         
+00006e49  __ltdf2                         
+00006e49  __nedf2                         
+00006f19  SYSCFG_DL_PWM_LEFT_init         
+00006f7d  SYSCFG_DL_PWM_RIGHT_init        
+00006fe1  motor_encoder_right_edge_isr    
+00007045  __aeabi_dcmpeq                  
+00007059  __aeabi_dcmplt                  
+0000706d  __aeabi_dcmple                  
+00007081  __aeabi_dcmpge                  
+00007095  __aeabi_dcmpgt                  
+000070a9  __aeabi_fcmpeq                  
+000070bd  __aeabi_fcmplt                  
+000070d1  __aeabi_fcmple                  
+000070e5  __aeabi_fcmpge                  
+000070f9  __aeabi_fcmpgt                  
+0000710d  h3_vision_rx_byte_isr           
+0000716d  motor_encoder_left_edge_isr     
+000071cd  motor_init                      
+0000728d  zdt_stepper_init                
+000072ed  DL_I2C_fillControllerTXFIFO     
+0000734d  SYSCFG_DL_I2C_DISPLAY_init      
+000073a5  motor_prepare_run               
+00007455  __aeabi_idiv                    
+00007455  __aeabi_idivmod                 
+000075e5  SYSCFG_DL_VISION_UART_init      
+00007631  h3_vision_init                  
+0000767d  snprintf                        
+00007715  DL_UART_init                    
+0000775d  SYSCFG_DL_DEBUG_UART_init       
+00007835  GROUP1_IRQHandler               
+00007941  __aeabi_uidiv                   
+00007941  __aeabi_uidivmod                
+00007981  atoi                            
+00007af9  DL_I2C_flushControllerTXFIFO    
+00007b71  SYSCFG_DL_init                  
+00007bad  __aeabi_i2f                     
+00007bad  __floatsisf                     
+00007be9  __gesf2                         
+00007be9  __gtsf2                         
+00007c25  motor_active_brake              
+00007c61  motor_coast                     
+00007c9d  __TI_auto_init_nobinit_nopinit  
+00007cd9  __cmpsf2                        
+00007cd9  __eqsf2                         
+00007cd9  __lesf2                         
+00007cd9  __ltsf2                         
+00007cd9  __nesf2                         
+00007d15  __muldsi3                       
+00007d51  __aeabi_f2iz                    
+00007d51  __fixsfsi                       
+00007d89  h3_tuning_link_take_command     
+00007dc1  motor_set_targets               
+00007df9  SEGGER_RTT_Write                
+00007e2d  SYSCFG_DL_CONTROL_TIMER_init    
+00007e95  __aeabi_f2uiz                   
+00007e95  __fixunssfsi                    
+00007ec9  DL_I2C_flushControllerRXFIFO    
+00007ef9  DL_UART_transmitDataBlocking    
+00007f29  TIMA1_IRQHandler                
+00007f59  UART0_IRQHandler                
+00007f89  UART1_IRQHandler                
+00007fe9  sscanf                          
+00008019  zdt_stepper_enable              
+00008047  SEGGER_RTT_printf               
+00008199  __aeabi_ui2f                    
+00008199  __floatunsisf                   
+000081c1  _c_int00_noargs                 
+0000820f  DL_I2C_setClockConfig           
+00008235  __aeabi_lmul                    
+00008235  __muldi3                        
+000082a1  SYSCFG_DL_SYSCTL_init           
+000082e5  memccpy                         
+00008349  h3_vision_take_new_sample       
+000083c7  SEGGER_RTT_WriteString          
+000083e5  __aeabi_llsl                    
+000083e5  __ashldi3                       
+000084e5  DL_Timer_setCaptCompUpdateMethod
+00008501  DL_Timer_setClockConfig         
+00008539  SEGGER_RTT_Read                 
+00008555  h3_tuning_link_event            
+0000858d  zdt_stepper_read_real_position  
+000085a9  zdt_stepper_read_status_flags   
+000085c5  zdt_stepper_stop_now            
+00008749  DL_Timer_setCaptureCompareOutCtl
+000088f9  __aeabi_uldivmod                
+00008921  h3_ball_control_vision_rx_isr   
+00008935  h3_ball_control_zdt_rx_isr      
+00008949  ssd1306_clear                   
+00008981  DL_UART_setClockConfig          
+00008993  TI_memcpy_small                 
+000089a5  __TI_decompress_none            
+000089c9  DL_Timer_setCaptureCompareValue 
+000089d9  app_tick_1ms_isr                
+000089e9  h3_ball_control_tick_1ms_isr    
+000089f9  ssd1306_is_present              
+00008a09  wcslen                          
+00008a19  zdt_stepper_send_reference_back 
+00008a29  zdt_stepper_send_reference_test 
+00008a39  __TI_zero_init                  
+00008a75  __aeabi_memset                  
+00008a75  __aeabi_memset4                 
+00008a75  __aeabi_memset8                 
+00008a83  strcpy                          
+00008a9f  strlen                          
+00008aad  TI_memset_small                 
+00008abd  app_start_key_isr               
+00008ac9  h3_ball_control_start_key_isr   
+00008ad5  h3_ball_control_vision_ready    
+00008aed  DL_Common_delayCycles           
+00008b21  SEGGER_RTT_Init                 
+00008b29  __aeabi_errno_addr              
+00008b31  __aeabi_memcpy                  
+00008b31  __aeabi_memcpy4                 
+00008b31  __aeabi_memcpy8                 
+00008b41  h3_tuning_link_runtime          
+00008b49  h3_vision_get                   
+00008b51  motor_get                       
+00008b59  zdt_stepper_get_status          
+00008b67  abort                           
+00008b6d  ADC0_IRQHandler                 
+00008b6d  ADC1_IRQHandler                 
+00008b6d  AES_IRQHandler                  
+00008b6d  CANFD0_IRQHandler               
+00008b6d  DAC0_IRQHandler                 
+00008b6d  DMA_IRQHandler                  
+00008b6d  Default_Handler                 
+00008b6d  GROUP0_IRQHandler               
+00008b6d  HardFault_Handler               
+00008b6d  I2C0_IRQHandler                 
+00008b6d  I2C1_IRQHandler                 
+00008b6d  NMI_Handler                     
+00008b6d  PendSV_Handler                  
+00008b6d  RTC_IRQHandler                  
+00008b6d  SPI0_IRQHandler                 
+00008b6d  SPI1_IRQHandler                 
+00008b6d  SVC_Handler                     
+00008b6d  SysTick_Handler                 
+00008b6d  TIMA0_IRQHandler                
+00008b6d  TIMG0_IRQHandler                
+00008b6d  TIMG12_IRQHandler               
+00008b6d  TIMG6_IRQHandler                
+00008b6d  TIMG7_IRQHandler                
+00008b6d  TIMG8_IRQHandler                
+00008b6d  UART2_IRQHandler                
+00008b6d  UART3_IRQHandler                
+00008b70  C$$EXIT                         
+00008b71  HOSTexit                        
+00008b75  Reset_Handler                   
+00008b89  _system_pre_init                
+00008b90  __aeabi_ctype_table_            
+00008b90  __aeabi_ctype_table_C           
+000093c0  __TI_Handler_Table_Base         
+000093cc  __TI_Handler_Table_Limit        
+000093dc  __TI_CINIT_Base                 
+000093ec  __TI_CINIT_Limit                
+000093ec  __TI_CINIT_Warm                 
 20200000  __start___llvm_prf_bits         
 20200000  __start___llvm_prf_cnts         
 20200000  __stop___llvm_prf_bits          
 20200000  __stop___llvm_prf_cnts          
-20200400  gCONTROL_TIMERBackup            
-202004bc  gPWM_RIGHTBackup                
-2020076c  __aeabi_errno                   
+20200800  gCONTROL_TIMERBackup            
+202008bc  gPWM_RIGHTBackup                
+20200978  _SEGGER_RTT                     
+20200d34  __aeabi_errno                   
 20207e00  __stack                         
 20208000  __STACK_END                     
 ffffffff  __TI_pprof_out_hndl             
@@ -965,4 +1244,4 @@ ffffffff  binit
 UNDEFED   __mpu_init                      
 UNDEFED   _system_post_cinit              
 
-[197 symbols]
+[254 symbols]

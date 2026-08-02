@@ -3,6 +3,7 @@
 #include "src/app.h"
 #include "src/competition_mode.h"
 #include "src/h3_ball_control.h"
+#include "src/h3_config.h"
 #include "src/motor_encoder.h"
 #include "src/ssd1306.h"
 
@@ -199,8 +200,13 @@ int main(void)
     g_key_debounce_count[1] = 0U;
     g_key_debounce_count[2] = 0U;
     g_key_debounce_count[3] = 0U;
+#if H3_STANDALONE_BUILD
+    g_selected_mode = COMPETITION_MODE_H3;
+    g_active_mode = COMPETITION_MODE_H3;
+#else
     g_selected_mode = COMPETITION_MODE_H2;
     g_active_mode = COMPETITION_MODE_NONE;
+#endif
     g_h3_start_pending = false;
     g_dispatch_key_seen = false;
     g_last_dispatch_key_ms = 0U;
@@ -209,7 +215,9 @@ int main(void)
     /* Initialize both question modules once; only the selected one runs. */
     app_init();
     h3_ball_control_init();
+#if !H3_STANDALONE_BUILD
     draw_mode_menu();
+#endif
 
     NVIC_ClearPendingIRQ(DEBUG_UART_INST_INT_IRQN);
     NVIC_ClearPendingIRQ(VISION_UART_INST_INT_IRQN);
@@ -218,12 +226,18 @@ int main(void)
     NVIC_EnableIRQ(CONTROL_TIMER_INST_INT_IRQN);
     NVIC_EnableIRQ(DEBUG_UART_INST_INT_IRQN);
     NVIC_EnableIRQ(ENCODER_INT_IRQN);
+#if H3_STANDALONE_BUILD
+    NVIC_EnableIRQ(VISION_UART_INST_INT_IRQN);
+#else
     /* Vision UART IRQ is enabled only after Q3 starts selected H3. */
     NVIC_DisableIRQ(VISION_UART_INST_INT_IRQN);
+#endif
     __enable_irq();
 
     while (1) {
+#if !H3_STANDALONE_BUILD
         select_or_trigger_mode();
+#endif
 
         if (g_active_mode == COMPETITION_MODE_H2) {
             app_process();

@@ -3,12 +3,15 @@
 "./main.o"
 "./src/app.o"
 "./src/h3_ball_control.o"
+"./src/h3_tuning_link.o"
 "./src/h3_vision.o"
 "./src/i2c_bus.o"
 "./src/line_sensor.o"
 "./src/motor_encoder.o"
 "./src/ssd1306.o"
 "./src/zdt_stepper.o"
+"./src/segger_rtt/SEGGER_RTT.o"
+"./src/segger_rtt/SEGGER_RTT_printf.o"
 -l"./device_linker.cmd"
 -ldevice.cmd.genlibs
 -llibc.a

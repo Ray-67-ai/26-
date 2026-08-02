@@ -91,7 +91,7 @@
                         </toolChain>
                     </folderInfo>
                     <sourceEntries>
-                        <entry excluding="syscfg|prebuilt_safe_locked" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        <entry excluding="syscfg|prebuilt_safe_locked|src/h3_ball_control - 副本.c|src/h3_vision - 副本.c|src/zdt_stepper - 副本.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
                     </sourceEntries>
                 </configuration>
             </storageModule>

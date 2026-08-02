@@ -8,6 +8,7 @@ SHELL = cmd.exe
 C_SRCS += \
 ../src/app.c \
 ../src/h3_ball_control.c \
+../src/h3_tuning_link.c \
 ../src/h3_vision.c \
 ../src/i2c_bus.c \
 ../src/line_sensor.c \
@@ -18,6 +19,7 @@ C_SRCS += \
 C_DEPS += \
 ./src/app.d \
 ./src/h3_ball_control.d \
+./src/h3_tuning_link.d \
 ./src/h3_vision.d \
 ./src/i2c_bus.d \
 ./src/line_sensor.d \
@@ -28,6 +30,7 @@ C_DEPS += \
 OBJS += \
 ./src/app.o \
 ./src/h3_ball_control.o \
+./src/h3_tuning_link.o \
 ./src/h3_vision.o \
 ./src/i2c_bus.o \
 ./src/line_sensor.o \
@@ -38,6 +41,7 @@ OBJS += \
 OBJS__QUOTED += \
 "src\app.o" \
 "src\h3_ball_control.o" \
+"src\h3_tuning_link.o" \
 "src\h3_vision.o" \
 "src\i2c_bus.o" \
 "src\line_sensor.o" \
@@ -48,6 +52,7 @@ OBJS__QUOTED += \
 C_DEPS__QUOTED += \
 "src\app.d" \
 "src\h3_ball_control.d" \
+"src\h3_tuning_link.d" \
 "src\h3_vision.d" \
 "src\i2c_bus.d" \
 "src\line_sensor.d" \
@@ -58,6 +63,7 @@ C_DEPS__QUOTED += \
 C_SRCS__QUOTED += \
 "../src/app.c" \
 "../src/h3_ball_control.c" \
+"../src/h3_tuning_link.c" \
 "../src/h3_vision.c" \
 "../src/i2c_bus.c" \
 "../src/line_sensor.c" \

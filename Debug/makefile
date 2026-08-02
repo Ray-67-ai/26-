@@ -15,12 +15,15 @@ ORDERED_OBJS += \
 "./main.o" \
 "./src/app.o" \
 "./src/h3_ball_control.o" \
+"./src/h3_tuning_link.o" \
 "./src/h3_vision.o" \
 "./src/i2c_bus.o" \
 "./src/line_sensor.o" \
 "./src/motor_encoder.o" \
 "./src/ssd1306.o" \
 "./src/zdt_stepper.o" \
+"./src/segger_rtt/SEGGER_RTT.o" \
+"./src/segger_rtt/SEGGER_RTT_printf.o" \
 $(GEN_CMDS__FLAG) \
 -Wl,-ldevice.cmd.genlibs \
 -Wl,-llibc.a \
@@ -34,8 +37,10 @@ RMDIR := RMDIR /S/Q
 -include sources.mk
 -include subdir_vars.mk
 -include src/subdir_vars.mk
+-include src/segger_rtt/subdir_vars.mk
 -include subdir_rules.mk
 -include src/subdir_rules.mk
+-include src/segger_rtt/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -146,8 +151,8 @@ H2_LineCar_CCS.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(GEN_MISC_FILES__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "ti_msp_dl_config.o" "startup_mspm0g350x_ticlang.o" "main.o" "src\app.o" "src\h3_ball_control.o" "src\h3_vision.o" "src\i2c_bus.o" "src\line_sensor.o" "src\motor_encoder.o" "src\ssd1306.o" "src\zdt_stepper.o" 
-	-$(RM) "ti_msp_dl_config.d" "startup_mspm0g350x_ticlang.d" "main.d" "src\app.d" "src\h3_ball_control.d" "src\h3_vision.d" "src\i2c_bus.d" "src\line_sensor.d" "src\motor_encoder.d" "src\ssd1306.d" "src\zdt_stepper.d" 
+	-$(RM) "ti_msp_dl_config.o" "startup_mspm0g350x_ticlang.o" "main.o" "src\app.o" "src\h3_ball_control.o" "src\h3_tuning_link.o" "src\h3_vision.o" "src\i2c_bus.o" "src\line_sensor.o" "src\motor_encoder.o" "src\ssd1306.o" "src\zdt_stepper.o" "src\segger_rtt\SEGGER_RTT.o" "src\segger_rtt\SEGGER_RTT_printf.o" 
+	-$(RM) "ti_msp_dl_config.d" "startup_mspm0g350x_ticlang.d" "main.d" "src\app.d" "src\h3_ball_control.d" "src\h3_tuning_link.d" "src\h3_vision.d" "src\i2c_bus.d" "src\line_sensor.d" "src\motor_encoder.d" "src\ssd1306.d" "src\zdt_stepper.d" "src\segger_rtt\SEGGER_RTT.d" "src\segger_rtt\SEGGER_RTT_printf.d" 
 	-@echo ' '
 
 .PHONY: all clean dependents

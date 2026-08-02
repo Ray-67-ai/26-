@@ -1,8 +1,9 @@
 # FIXED
 
 src/h3_ball_control.o: ../src/h3_ball_control.c ../src/h3_ball_control.h \
- ../src/h3_config.h ../src/h3_vision.h ../src/motor_encoder.h \
- ../src/ssd1306.h ti_msp_dl_config.h \
+ ../src/h3_config.h ../src/h3_tuning_link.h ../src/h3_vision.h \
+ ../src/zdt_stepper.h ../src/motor_encoder.h ../src/ssd1306.h \
+ ti_msp_dl_config.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/msp.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/DeviceFamily.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/m0p/mspm0g350x.h \
@@ -84,11 +85,12 @@ src/h3_ball_control.o: ../src/h3_ball_control.c ../src/h3_ball_control.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_vref.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_wwdt.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_interrupt.h \
- F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h \
- ../src/zdt_stepper.h
+ F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h
 ../src/h3_ball_control.h:
 ../src/h3_config.h:
+../src/h3_tuning_link.h:
 ../src/h3_vision.h:
+../src/zdt_stepper.h:
 ../src/motor_encoder.h:
 ../src/ssd1306.h:
 ti_msp_dl_config.h:
@@ -174,4 +176,3 @@ F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_vref.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_wwdt.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_interrupt.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h:
-../src/zdt_stepper.h:
