@@ -4,6 +4,8 @@
 #include "src/competition_mode.h"
 #include "src/h3_ball_control.h"
 #include "src/h3_config.h"
+#include "src/h4_balance_ab.h"
+#include "src/h4_config.h"
 #include "src/motor_encoder.h"
 #include "src/ssd1306.h"
 
@@ -25,6 +27,15 @@
      DL_UART_MAIN_INTERRUPT_FRAMING_ERROR |                               \
      DL_UART_MAIN_INTERRUPT_NOISE_ERROR)
 
+#define ZDT_UART_CLEAR_MASK                                                \
+    (DL_UART_MAIN_INTERRUPT_RX |                                          \
+     DL_UART_MAIN_INTERRUPT_RX_TIMEOUT_ERROR |                            \
+     DL_UART_MAIN_INTERRUPT_OVERRUN_ERROR |                               \
+     DL_UART_MAIN_INTERRUPT_BREAK_ERROR |                                 \
+     DL_UART_MAIN_INTERRUPT_PARITY_ERROR |                                \
+     DL_UART_MAIN_INTERRUPT_FRAMING_ERROR |                               \
+     DL_UART_MAIN_INTERRUPT_NOISE_ERROR)
+
 static volatile uint32_t g_system_ms;
 static volatile uint8_t g_key_events;
 static uint8_t g_key_stable_pressed;
@@ -32,6 +43,7 @@ static uint8_t g_key_debounce_count[4];
 static competition_mode_t g_selected_mode;
 static competition_mode_t g_active_mode;
 static bool g_h3_start_pending;
+static bool g_h4_start_pending;
 static bool g_dispatch_key_seen;
 static uint32_t g_last_dispatch_key_ms;
 static uint32_t g_last_menu_refresh_ms;
@@ -45,7 +57,9 @@ static void draw_mode_menu(void)
     }
     ssd1306_clear();
     ssd1306_draw_text(0U, 0U, "H MODE SELECT");
-    if (g_selected_mode == COMPETITION_MODE_H3) {
+    if (g_selected_mode == COMPETITION_MODE_H4) {
+        ssd1306_draw_text(0U, 2U, "SELECT: H4 AB");
+    } else if (g_selected_mode == COMPETITION_MODE_H3) {
         ssd1306_draw_text(0U, 2U, "SELECT: H3 BALL");
     } else {
         ssd1306_draw_text(0U, 2U, "SELECT: H2 LINE");
@@ -71,6 +85,25 @@ static void vision_uart_start_clean(void)
         VISION_UART_INST, VISION_UART_CLEAR_MASK);
     NVIC_ClearPendingIRQ(VISION_UART_INST_INT_IRQN);
     NVIC_EnableIRQ(VISION_UART_INST_INT_IRQN);
+}
+
+/*
+ * H3 initialization can send ZDT commands before the UART0 NVIC line is
+ * enabled. The motor replies immediately, so drain and parse any replies
+ * already waiting in the FIFO before clearing error/pending state. This also
+ * recovers from an RX FIFO overrun caused by those early replies.
+ */
+static void zdt_uart_start_clean(void)
+{
+    NVIC_DisableIRQ(DEBUG_UART_INST_INT_IRQN);
+    while (!DL_UART_Main_isRXFIFOEmpty(DEBUG_UART_INST)) {
+        h3_ball_control_zdt_rx_isr(
+            (uint8_t) DL_UART_Main_receiveData(DEBUG_UART_INST));
+    }
+    DL_UART_Main_clearInterruptStatus(
+        DEBUG_UART_INST, ZDT_UART_CLEAR_MASK);
+    NVIC_ClearPendingIRQ(DEBUG_UART_INST_INT_IRQN);
+    NVIC_EnableIRQ(DEBUG_UART_INST_INT_IRQN);
 }
 
 static uint8_t take_key_events(void)
@@ -152,6 +185,9 @@ static void start_selected_mode(void)
     } else if (g_active_mode == COMPETITION_MODE_H3) {
         g_h3_start_pending = true;
         vision_uart_start_clean();
+    } else if (g_active_mode == COMPETITION_MODE_H4) {
+        g_h4_start_pending = true;
+        vision_uart_start_clean();
     }
 }
 
@@ -169,9 +205,13 @@ static void select_or_trigger_mode(void)
             return;
         }
         if ((events & KEY_EVENT_Q1) != 0U) {
-            g_selected_mode =
-                (g_selected_mode == COMPETITION_MODE_H2) ?
-                    COMPETITION_MODE_H3 : COMPETITION_MODE_H2;
+            if (g_selected_mode == COMPETITION_MODE_H2) {
+                g_selected_mode = COMPETITION_MODE_H3;
+            } else if (g_selected_mode == COMPETITION_MODE_H3) {
+                g_selected_mode = COMPETITION_MODE_H4;
+            } else {
+                g_selected_mode = COMPETITION_MODE_H2;
+            }
             draw_mode_menu();
         } else if ((events & KEY_EVENT_Q3) != 0U) {
             start_selected_mode();
@@ -185,6 +225,8 @@ static void select_or_trigger_mode(void)
             app_start_key_isr();
         } else if (g_active_mode == COMPETITION_MODE_H3) {
             g_h3_start_pending = true;
+        } else if (g_active_mode == COMPETITION_MODE_H4) {
+            g_h4_start_pending = true;
         }
     }
 }
@@ -200,14 +242,18 @@ int main(void)
     g_key_debounce_count[1] = 0U;
     g_key_debounce_count[2] = 0U;
     g_key_debounce_count[3] = 0U;
-#if H3_STANDALONE_BUILD
+#if H3_AUTOTUNE_BUILD || H3_STANDALONE_BUILD
     g_selected_mode = COMPETITION_MODE_H3;
     g_active_mode = COMPETITION_MODE_H3;
+#elif H4_TUNING_BUILD
+    g_selected_mode = COMPETITION_MODE_H4;
+    g_active_mode = COMPETITION_MODE_H4;
 #else
     g_selected_mode = COMPETITION_MODE_H2;
     g_active_mode = COMPETITION_MODE_NONE;
 #endif
     g_h3_start_pending = false;
+    g_h4_start_pending = false;
     g_dispatch_key_seen = false;
     g_last_dispatch_key_ms = 0U;
     g_last_menu_refresh_ms = 0U;
@@ -215,18 +261,18 @@ int main(void)
     /* Initialize both question modules once; only the selected one runs. */
     app_init();
     h3_ball_control_init();
-#if !H3_STANDALONE_BUILD
+    h4_balance_ab_init();
+#if !H3_AUTOTUNE_BUILD && !H3_STANDALONE_BUILD && !H4_TUNING_BUILD
     draw_mode_menu();
 #endif
 
-    NVIC_ClearPendingIRQ(DEBUG_UART_INST_INT_IRQN);
+    zdt_uart_start_clean();
     NVIC_ClearPendingIRQ(VISION_UART_INST_INT_IRQN);
     NVIC_ClearPendingIRQ(ENCODER_INT_IRQN);
 
     NVIC_EnableIRQ(CONTROL_TIMER_INST_INT_IRQN);
-    NVIC_EnableIRQ(DEBUG_UART_INST_INT_IRQN);
     NVIC_EnableIRQ(ENCODER_INT_IRQN);
-#if H3_STANDALONE_BUILD
+#if H3_AUTOTUNE_BUILD || H3_STANDALONE_BUILD || H4_TUNING_BUILD
     NVIC_EnableIRQ(VISION_UART_INST_INT_IRQN);
 #else
     /* Vision UART IRQ is enabled only after Q3 starts selected H3. */
@@ -235,9 +281,7 @@ int main(void)
     __enable_irq();
 
     while (1) {
-#if !H3_STANDALONE_BUILD
         select_or_trigger_mode();
-#endif
 
         if (g_active_mode == COMPETITION_MODE_H2) {
             app_process();
@@ -246,6 +290,12 @@ int main(void)
             if (g_h3_start_pending && h3_ball_control_vision_ready()) {
                 g_h3_start_pending = false;
                 h3_ball_control_start_key_isr();
+            }
+        } else if (g_active_mode == COMPETITION_MODE_H4) {
+            h4_balance_ab_process();
+            if (g_h4_start_pending && h4_balance_ab_vision_ready()) {
+                g_h4_start_pending = false;
+                h4_balance_ab_start_key_isr();
             }
         } else if (ssd1306_is_present() &&
                    ((g_system_ms - g_last_menu_refresh_ms) >= 12U)) {
@@ -264,6 +314,7 @@ void CONTROL_TIMER_INST_IRQHandler(void)
         poll_keys_1ms_isr();
         app_tick_1ms_isr();
         h3_ball_control_tick_1ms_isr();
+        h4_balance_ab_tick_1ms_isr();
     }
 }
 

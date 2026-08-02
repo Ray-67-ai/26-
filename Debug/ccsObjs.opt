@@ -5,6 +5,8 @@
 "./src/h3_ball_control.o"
 "./src/h3_tuning_link.o"
 "./src/h3_vision.o"
+"./src/h4_balance_ab.o"
+"./src/h4_tuning_link.o"
 "./src/i2c_bus.o"
 "./src/line_sensor.o"
 "./src/motor_encoder.o"

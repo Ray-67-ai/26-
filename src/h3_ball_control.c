@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+/* 机器状态机：等待视觉、准备、正向运行、反向运行、负向保持、返回中心、完成、超时、视觉故障 */
 typedef enum {
     H3_WAIT_VISION = 0,
     H3_READY,
@@ -23,6 +24,7 @@ typedef enum {
     H3_VISION_FAULT
 } h3_state_t;
 
+/* 电机动作阶段：空闲、正向kick、正向PID、反向kick、反向PID */
 typedef enum {
     H3_PHASE_IDLE = 0,
     H3_PHASE_POSITIVE_KICK,
@@ -31,6 +33,7 @@ typedef enum {
     H3_PHASE_NEGATIVE_PID
 } h3_motion_phase_t;
 
+/* 全局状态变量 */
 static volatile uint32_t g_millis;
 static volatile bool g_start_key_event;
 static h3_state_t g_state;
@@ -57,6 +60,7 @@ static bool g_motor_diag_read_position;
 static uint32_t g_auto_start_vision_since_ms;
 static bool g_auto_started;
 
+/* 发送相机 ACK 帧给视觉模块，统计已发送帧数 */
 static void send_camera_ack(const h3_vision_sample_t *vision)
 {
     char frame[56];
@@ -78,6 +82,7 @@ static void send_camera_ack(const h3_vision_sample_t *vision)
     ++g_camera_ack_tx_frames;
 }
 
+/* 限幅函数：将 value 限制到 [minimum, maximum] 范围内 */
 static float clampf(float value, float minimum, float maximum)
 {
     if (value < minimum) {
@@ -89,36 +94,43 @@ static float clampf(float value, float minimum, float maximum)
     return value;
 }
 
+/* 绝对值函数，用于浮点数 */
 static float absf(float value)
 {
     return (value < 0.0f) ? -value : value;
 }
 
+/* 获取当前毫秒计数 */
 static uint32_t h3_millis(void)
 {
     return g_millis;
 }
 
+/* 1ms 定时中断：递增全局毫秒计数 */
 void h3_ball_control_tick_1ms_isr(void)
 {
     ++g_millis;
 }
 
+/* 启动按键中断：标记有按键事件发生 */
 void h3_ball_control_start_key_isr(void)
 {
     g_start_key_event = true;
 }
 
+/* ZDT 串口接收中断：转发字节给步进驱动串口处理 */
 void h3_ball_control_zdt_rx_isr(uint8_t byte)
 {
     zdt_stepper_rx_byte_isr(byte);
 }
 
+/* 视觉串口接收中断：转发字节给视觉处理 */
 void h3_ball_control_vision_rx_isr(uint8_t byte)
 {
     h3_vision_rx_byte_isr(byte);
 }
 
+/* 将状态枚举转换为 UI 文本 */
 static const char *state_text(void)
 {
     switch (g_state) {
@@ -135,6 +147,7 @@ static const char *state_text(void)
     }
 }
 
+/* 检查视觉数据是否在允许的时间窗口内仍然有效 */
 static bool vision_is_recent(uint32_t now)
 {
     const h3_vision_sample_t *vision = h3_vision_get();
@@ -142,6 +155,7 @@ static bool vision_is_recent(uint32_t now)
         ((now - vision->last_valid_ms) <= H3_VISION_STALE_TIMEOUT_MS);
 }
 
+/* 外部查询接口：视觉子系统是否准备就绪 */
 bool h3_ball_control_vision_ready(void)
 {
     return vision_is_recent(h3_millis());
@@ -153,12 +167,14 @@ static bool send_motor_angle(uint32_t now, float desired_deg, bool force)
     float command_deg;
     float maximum_step;
 
+    /* 将目标电机角度限制在允许的最大角度范围内 */
     desired_deg = clampf(desired_deg,
                          -runtime->max_motor_angle_deg,
                          runtime->max_motor_angle_deg);
 
     command_deg = desired_deg;
     if (g_last_command_ms != 0U) {
+        /* 根据时间差限制电机角度的变化速率，防止命令突变 */
         maximum_step = runtime->max_motor_slew_deg_s *
             (float) (now - g_last_command_ms) * 0.001f;
         command_deg = clampf(command_deg,
@@ -166,6 +182,7 @@ static bool send_motor_angle(uint32_t now, float desired_deg, bool force)
             g_last_command_angle_deg + maximum_step);
     }
 
+    /* 如果变化不足且距离上次命令时间不长，则不发送新命令 */
     if (!force &&
         (absf(command_deg - g_last_command_angle_deg) <
          H3_MOTOR_COMMAND_MIN_CHANGE_DEG) &&
@@ -181,6 +198,7 @@ static bool send_motor_angle(uint32_t now, float desired_deg, bool force)
     return true;
 }
 
+/* 开始一次运行：初始化定时器、目标位置、状态机和挡块状态 */
 static void start_run(uint32_t now)
 {
     g_run_start_ms = now;
@@ -198,6 +216,7 @@ static void start_run(uint32_t now)
     h3_tuning_link_event("POS_KICK_STARTED");
 }
 
+/* 触发返回中心动作：清空积分，设置目标为中心并强制发送中性角度 */
 static void start_return_center(uint32_t now)
 {
     g_target_mm = 0.0f;
@@ -212,6 +231,7 @@ static void start_return_center(uint32_t now)
     h3_tuning_link_event("RETURN_CENTER");
 }
 
+/* 处理来自调参链路的命令 */
 static void handle_tuning_commands(uint32_t now)
 {
     h3_tune_command_t command;
@@ -247,10 +267,7 @@ static void handle_tuning_commands(uint32_t now)
 
             case H3_TUNE_COMMAND_STOP:
                 (void) zdt_stepper_stop_now();
-                /* During bench tuning, park at the calibrated neutral angle
-                 * and keep holding torque. Disabling immediately used to
-                 * leave the beam tilted, so the ball continued rolling after
-                 * the host had already declared the trial stopped. */
+                /* 在调参时，保持电机输出力矩，以防止关断后轨道倾斜导致钢球继续滚动。 */
                 (void) zdt_stepper_enable(true);
                 g_last_command_ms = 0U;
                 g_last_command_angle_deg = 0.0f;
@@ -293,7 +310,7 @@ static void handle_tuning_commands(uint32_t now)
 static void handle_key(uint32_t now)
 {
 #if H3_AUTOTUNE_BUILD
-    /* Physical Q3 is deliberately ignored in the bench firmware. */
+    /* 桌面调参固件忽略物理按键 Q3。 */
     g_start_key_event = false;
     (void) now;
     return;
@@ -304,6 +321,7 @@ static void handle_key(uint32_t now)
 
     g_start_key_event = false;
 
+    /* 防抖处理：按键事件必须间隔足够时间 */
     if ((now - g_last_key_ms) < H3_KEY_DEBOUNCE_MS) {
         return;
     }
@@ -340,6 +358,8 @@ static void update_motion_state(uint32_t now,
             (vision->velocity_mm_s > 0.0f) ? vision->velocity_mm_s : 0.0f;
         float projected_position_mm = vision->position_mm +
             H3_POSITIVE_BRAKE_LOOKAHEAD_S * positive_speed_mm_s;
+
+        /* 预测是否已经接近正向目标，或超过硬触发点 */
         if ((projected_position_mm >= H3_TARGET_POSITIVE_MM) ||
             (vision->position_mm >= H3_POSITIVE_HARD_TRIGGER_MM)) {
             g_positive_reached_ms = now - g_run_start_ms;
@@ -392,6 +412,7 @@ static void update_motion_state(uint32_t now,
         }
     }
 
+    /* 总时间超时处理：在正向/负向运行阶段时间太长则进入超时状态 */
     if (((g_state == H3_GO_POSITIVE) ||
          (g_state == H3_GO_NEGATIVE) ||
          (g_state == H3_HOLD_NEGATIVE)) &&
@@ -414,9 +435,7 @@ static void run_outer_loop(uint32_t now,
 
     update_motion_state(now, vision);
 
-    /* A safety-timeout run returns the beam to neutral.  A completed run
-     * keeps evaluating the negative target so later disturbances are
-     * corrected instead of abandoning the ball after the score timestamp. */
+    /* 超时时立即返回中立角度；完成后继续评估负向目标以纠正扰动。 */
     if (g_state == H3_TIMEOUT) {
         g_target_mm = 0.0f;
         g_integral_mm_s = 0.0f;
@@ -455,6 +474,7 @@ static void run_outer_loop(uint32_t now,
         h3_tuning_link_event("NEG_KICK_FINISHED");
     }
 
+    /* 只有负向目标、完成、返回中心等阶段才执行积分控制 */
     final_target = (g_state == H3_GO_NEGATIVE) ||
                    (g_state == H3_HOLD_NEGATIVE) ||
                    (g_state == H3_DONE) ||
@@ -489,19 +509,13 @@ static void run_outer_loop(uint32_t now,
     } else if ((g_state == H3_GO_NEGATIVE) ||
                (g_state == H3_HOLD_NEGATIVE) ||
                (g_state == H3_DONE)) {
-        /* During the negative leg, a negative motor command is braking.
-         * Permit extra authority only in that direction; keep
-         * negative travel drive at the normal 5.5-degree limit. */
+        /* 负向阶段：允许更多制动力，但负向驱动仍受正常限制。 */
         motor_deg = clampf(motor_deg,
             -H3_NEGATIVE_BRAKE_MAX_ANGLE_DEG,
             H3_NORMAL_PID_MAX_ANGLE_DEG);
     }
 
-    /* Use measured displacement, rather than noisy instantaneous velocity,
-     * to detect a ball that is genuinely stuck.  Normal motion keeps the
-     * seven-degree PID authority.  If less than 3 mm progress is made, raise
-     * breakaway authority in bounded stages; every 3 mm of real travel resets
-     * the timer and immediately returns control to the normal PID. */
+    /* 卡滞检测：如果错误超过阈值且位移不足，则逐级增加突破角度。 */
     if (absf(error) > H3_STICTION_ERROR_MM) {
         uint32_t stall_age_ms;
         float breakaway_angle_deg = 0.0f;
@@ -542,35 +556,41 @@ static void update_ui(uint32_t now)
     ssd1306_clear();
     ssd1306_draw_text(0U, 0U, "H3 BALL CTRL");
 
+    /* 第一行：状态 + 相机健康 */
     (void) snprintf(text, sizeof(text), "%s %s",
         state_text(), vision_is_recent(now) ? "CAM OK" : "CAM --");
     ssd1306_draw_text(0U, 1U, text);
 
+    /* 第二行：位置和速度 */
     (void) snprintf(text, sizeof(text), "POS%+4d V%+4d",
         (int) vision->position_mm, (int) vision->velocity_mm_s);
     ssd1306_draw_text(0U, 2U, text);
 
+    /* 第三行：目标位置和最近电机角度 */
     (void) snprintf(text, sizeof(text), "TGT%+4d ANG%+3d",
         (int) g_target_mm, (int) g_last_command_angle_deg);
     ssd1306_draw_text(0U, 3U, text);
 
+    /* 第四行：相机接收计数和帧有效状态 */
     (void) snprintf(text, sizeof(text), "CAM RX%lu V%u",
         (unsigned long) (vision->rx_bytes % 100000UL),
         vision->valid ? 1U : 0U);
     ssd1306_draw_text(0U, 4U, text);
 
-    /* G/I/E = valid / no-ball / malformed frame counters. */
+    /* 第五行：G/I/E = 有效/无球/错误帧计数 */
     (void) snprintf(text, sizeof(text), "FRAME %lu/%lu/%lu",
         (unsigned long) (vision->good_frames % 1000UL),
         (unsigned long) (vision->invalid_frames % 1000UL),
         (unsigned long) (vision->bad_frames % 1000UL));
     ssd1306_draw_text(0U, 5U, text);
 
+    /* 第六行：ACK 发送计数和相机帧年龄 */
     (void) snprintf(text, sizeof(text), "ACK TX%lu A%lu",
         (unsigned long) (g_camera_ack_tx_frames % 100000UL),
         (unsigned long) (age_ms % 10000UL));
     ssd1306_draw_text(0U, 6U, text);
 
+    /* 第七行：ZDT 串口传输统计 */
     (void) snprintf(text, sizeof(text), "ZDT T%lu R%lu E%lu",
         (unsigned long) (zdt->tx_frames % 1000UL),
         (unsigned long) (zdt->rx_frames % 1000UL),
@@ -582,11 +602,11 @@ void h3_ball_control_init(void)
 {
     g_millis = 0U;
     g_start_key_event = false;
- /*
- * 调试阶段上电直接READY，
- * 不再通过WAIT CAM阻止按键启动。
- */
-g_state = H3_READY;
+    /*
+     * 调试阶段上电直接 READY，
+     * 不再通过 WAIT CAM 阻止按键启动。
+     */
+    g_state = H3_READY;
     g_last_key_ms = 0U;
     g_run_start_ms = 0U;
     g_positive_reached_ms = 0U;

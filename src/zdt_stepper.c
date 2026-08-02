@@ -103,6 +103,15 @@ bool zdt_stepper_read_real_position(void)
     return send_frame(frame, (uint8_t) sizeof(frame));
 }
 
+bool zdt_stepper_read_driver_config(void)
+{
+    /* X42S Emm manual section 5.8.5: read-only driver configuration. */
+    const uint8_t frame[4] = {
+        H3_ZDT_ADDRESS, 0x42U, 0x6CU, ZDT_FRAME_END
+    };
+    return send_frame(frame, (uint8_t) sizeof(frame));
+}
+
 bool zdt_stepper_send_reference_test(void)
 {
     /* Exact 13-byte frame previously verified by the user in JCom.
@@ -131,6 +140,8 @@ bool zdt_stepper_send_reference_back(void)
 void zdt_stepper_rx_byte_isr(uint8_t byte)
 {
     uint8_t length = g_rx_length;
+
+    ++g_status.rx_bytes;
 
     if (length >= ZDT_RX_FRAME_CAPACITY) {
         length = 0U;

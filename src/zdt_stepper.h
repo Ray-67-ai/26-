@@ -7,6 +7,7 @@
 typedef struct {
     volatile uint32_t tx_frames;
     volatile uint32_t tx_errors;
+    volatile uint32_t rx_bytes;
     volatile uint32_t rx_frames;
     volatile uint32_t ok_responses;
     volatile uint32_t parameter_errors;
@@ -25,6 +26,7 @@ bool zdt_stepper_stop_now(void);
 bool zdt_stepper_move_absolute_deg(float motor_deg);
 bool zdt_stepper_read_status_flags(void);
 bool zdt_stepper_read_real_position(void);
+bool zdt_stepper_read_driver_config(void);
 bool zdt_stepper_send_reference_test(void);
 bool zdt_stepper_send_reference_back(void);
 void zdt_stepper_rx_byte_isr(uint8_t byte);
