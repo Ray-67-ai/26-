@@ -1,6 +1,10 @@
 # FIXED
 
-main.o: ../main.c ti_msp_dl_config.h \
+src/h5_balance_loop.o: ../src/h5_balance_loop.c ../src/h5_balance_loop.h \
+ ../src/h3_vision.h ../src/h4_tuning_link.h ../src/line_sensor.h \
+ ../src/zdt_stepper.h ../src/h5_config.h ../src/h4_config.h \
+ ../src/motor_encoder.h ../src/ssd1306.h \
+ ti_msp_dl_config.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/msp.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/DeviceFamily.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/m0p/mspm0g350x.h \
@@ -83,10 +87,16 @@ main.o: ../main.c ti_msp_dl_config.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_wwdt.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_interrupt.h \
  F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h \
- ../src/app.h ../src/competition_mode.h ../src/h3_ball_control.h \
- ../src/h3_config.h ../src/h4_balance_ab.h ../src/h4_config.h \
- ../src/h5_balance_loop.h ../src/h5_config.h ../src/motor_encoder.h \
- ../src/ssd1306.h
+ ../src/vehicle_config.h
+../src/h5_balance_loop.h:
+../src/h3_vision.h:
+../src/h4_tuning_link.h:
+../src/line_sensor.h:
+../src/zdt_stepper.h:
+../src/h5_config.h:
+../src/h4_config.h:
+../src/motor_encoder.h:
+../src/ssd1306.h:
 ti_msp_dl_config.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/msp/msp.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/devices/DeviceFamily.h:
@@ -170,13 +180,4 @@ F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_vref.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/dl_wwdt.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_interrupt.h:
 F:/ti/mspm0_sdk_2_10_00_04/source/ti/driverlib/m0p/dl_systick.h:
-../src/app.h:
-../src/competition_mode.h:
-../src/h3_ball_control.h:
-../src/h3_config.h:
-../src/h4_balance_ab.h:
-../src/h4_config.h:
-../src/h5_balance_loop.h:
-../src/h5_config.h:
-../src/motor_encoder.h:
-../src/ssd1306.h:
+../src/vehicle_config.h:

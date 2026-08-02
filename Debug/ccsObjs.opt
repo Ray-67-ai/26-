@@ -7,6 +7,7 @@
 "./src/h3_vision.o"
 "./src/h4_balance_ab.o"
 "./src/h4_tuning_link.o"
+"./src/h5_balance_loop.o"
 "./src/i2c_bus.o"
 "./src/line_sensor.o"
 "./src/motor_encoder.o"
