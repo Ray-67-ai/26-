@@ -21,12 +21,12 @@
  * motor > 0 表示摆杆右端升高，球受到向左的加速度。
  * 这些参数只属于第三问，实车必须按调试顺序逐项调整。
  */
-#define H3_BALL_KP_DEG_PER_MM               (0.0700f)
-#define H3_BALL_KI_DEG_PER_MM_S             (0.0200f)
-#define H3_BALL_KD_DEG_PER_MM_S             (0.0400f)
+#define H3_BALL_KP_DEG_PER_MM               (0.1600f)
+#define H3_BALL_KI_DEG_PER_MM_S             (0.0030f)
+#define H3_BALL_KD_DEG_PER_MM_S             (0.1000f)
 #define H3_INTEGRAL_LIMIT_MM_S               (120.0f)
-#define H3_MAX_MOTOR_ANGLE_DEG               (6.0f)
-#define H3_MAX_MOTOR_SLEW_DEG_S              (90.0f)
+#define H3_MAX_MOTOR_ANGLE_DEG               (5.5f)
+#define H3_MAX_MOTOR_SLEW_DEG_S              (100.0f)
 #define H3_MOTOR_COMMAND_MIN_CHANGE_DEG      (0.03f)
 #define H3_MOTOR_COMMAND_MAX_INTERVAL_MS     (60U)
 

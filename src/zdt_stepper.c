@@ -4,7 +4,6 @@
 #include "ti_msp_dl_config.h"
 
 #define ZDT_FRAME_END                 (0x6BU)
-#define ZDT_TX_WAIT_LIMIT             (200000U)
 #define ZDT_RX_FRAME_CAPACITY         (16U)
 
 static volatile uint8_t g_rx_frame[ZDT_RX_FRAME_CAPACITY];
@@ -16,15 +15,12 @@ static bool send_frame(const uint8_t *frame, uint8_t length)
     uint8_t i;
 
     for (i = 0U; i < length; ++i) {
-        uint32_t wait = 0U;
-        while (!DL_UART_Main_transmitDataCheck(DEBUG_UART_INST, frame[i])) {
-            ++wait;
-            if (wait >= ZDT_TX_WAIT_LIMIT) {
-                ++g_status.tx_errors;
-                return false;
-            }
-        }
+        /* Wait until each byte leaves the UART. Together with the frame gap
+         * below this prevents adjacent ZDT commands from being merged; the
+         * motor reported 01 00 EE 6B before this timing fix. */
+        DL_UART_Main_transmitDataBlocking(DEBUG_UART_INST, frame[i]);
     }
+    delay_cycles(CPUCLK_FREQ / 500U); /* 2 ms at 32 MHz. */
     ++g_status.tx_frames;
     return true;
 }

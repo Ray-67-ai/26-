@@ -257,10 +257,18 @@ static void run_outer_loop(uint32_t now,
     float dt_s = vision->sample_dt_s;
 
     update_motion_state(now, vision);
+
+    /* Do not continue evaluating the previous target after completion or
+     * timeout. Return the beam to the calibrated neutral angle instead. */
+    if ((g_state == H3_DONE) || (g_state == H3_TIMEOUT)) {
+        g_target_mm = 0.0f;
+        g_integral_mm_s = 0.0f;
+        (void) send_motor_angle(now, 0.0f, true);
+        return;
+    }
+
     final_target = (g_state == H3_GO_NEGATIVE) ||
-                   (g_state == H3_HOLD_NEGATIVE) ||
-                   (g_state == H3_DONE) ||
-                   (g_state == H3_TIMEOUT);
+                   (g_state == H3_HOLD_NEGATIVE);
 
     error = g_target_mm - vision->position_mm;
     if (final_target && (dt_s > 0.0f) && (dt_s <= 0.2f)) {
