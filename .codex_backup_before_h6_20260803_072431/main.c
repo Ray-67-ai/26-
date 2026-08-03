@@ -8,8 +8,6 @@
 #include "src/h4_config.h"
 #include "src/h5_balance_loop.h"
 #include "src/h5_config.h"
-#include "src/h6_balance_any.h"
-#include "src/h6_config.h"
 #include "src/motor_encoder.h"
 #include "src/ssd1306.h"
 
@@ -49,7 +47,6 @@ static competition_mode_t g_active_mode;
 static bool g_h3_start_pending;
 static bool g_h4_start_pending;
 static bool g_h5_start_pending;
-static bool g_h6_start_pending;
 static bool g_dispatch_key_seen;
 static uint32_t g_last_dispatch_key_ms;
 static uint32_t g_last_menu_refresh_ms;
@@ -63,9 +60,7 @@ static void draw_mode_menu(void)
     }
     ssd1306_clear();
     ssd1306_draw_text(0U, 0U, "H MODE SELECT");
-    if (g_selected_mode == COMPETITION_MODE_H6) {
-        ssd1306_draw_text(0U, 2U, "SELECT: H6 ANY");
-    } else if (g_selected_mode == COMPETITION_MODE_H5) {
+    if (g_selected_mode == COMPETITION_MODE_H5) {
         ssd1306_draw_text(0U, 2U, "SELECT: H5 LAP");
     } else if (g_selected_mode == COMPETITION_MODE_H4) {
         ssd1306_draw_text(0U, 2U, "SELECT: H4 AB");
@@ -201,9 +196,6 @@ static void start_selected_mode(void)
     } else if (g_active_mode == COMPETITION_MODE_H5) {
         g_h5_start_pending = true;
         vision_uart_start_clean();
-    } else if (g_active_mode == COMPETITION_MODE_H6) {
-        g_h6_start_pending = true;
-        vision_uart_start_clean();
     }
 }
 
@@ -227,8 +219,6 @@ static void select_or_trigger_mode(void)
                 g_selected_mode = COMPETITION_MODE_H4;
             } else if (g_selected_mode == COMPETITION_MODE_H4) {
                 g_selected_mode = COMPETITION_MODE_H5;
-            } else if (g_selected_mode == COMPETITION_MODE_H5) {
-                g_selected_mode = COMPETITION_MODE_H6;
             } else {
                 g_selected_mode = COMPETITION_MODE_H2;
             }
@@ -249,8 +239,6 @@ static void select_or_trigger_mode(void)
             g_h4_start_pending = true;
         } else if (g_active_mode == COMPETITION_MODE_H5) {
             g_h5_start_pending = true;
-        } else if (g_active_mode == COMPETITION_MODE_H6) {
-            g_h6_start_pending = true;
         }
     }
 }
@@ -275,9 +263,6 @@ int main(void)
 #elif H5_TUNING_BUILD
     g_selected_mode = COMPETITION_MODE_H5;
     g_active_mode = COMPETITION_MODE_H5;
-#elif H6_TUNING_BUILD
-    g_selected_mode = COMPETITION_MODE_H6;
-    g_active_mode = COMPETITION_MODE_H6;
 #else
     g_selected_mode = COMPETITION_MODE_H2;
     g_active_mode = COMPETITION_MODE_NONE;
@@ -285,18 +270,16 @@ int main(void)
     g_h3_start_pending = false;
     g_h4_start_pending = false;
     g_h5_start_pending = false;
-    g_h6_start_pending = false;
     g_dispatch_key_seen = false;
     g_last_dispatch_key_ms = 0U;
     g_last_menu_refresh_ms = 0U;
 
-    /* Initialize all question modules once; only the selected one runs. */
+    /* Initialize both question modules once; only the selected one runs. */
     app_init();
     h3_ball_control_init();
     h4_balance_ab_init();
     h5_balance_loop_init();
-    h6_balance_any_init();
-#if !H3_AUTOTUNE_BUILD && !H3_STANDALONE_BUILD && !H4_TUNING_BUILD && !H5_TUNING_BUILD && !H6_TUNING_BUILD
+#if !H3_AUTOTUNE_BUILD && !H3_STANDALONE_BUILD && !H4_TUNING_BUILD && !H5_TUNING_BUILD
     draw_mode_menu();
 #endif
 
@@ -306,10 +289,10 @@ int main(void)
 
     NVIC_EnableIRQ(CONTROL_TIMER_INST_INT_IRQN);
     NVIC_EnableIRQ(ENCODER_INT_IRQN);
-#if H3_AUTOTUNE_BUILD || H3_STANDALONE_BUILD || H4_TUNING_BUILD || H5_TUNING_BUILD || H6_TUNING_BUILD
+#if H3_AUTOTUNE_BUILD || H3_STANDALONE_BUILD || H4_TUNING_BUILD || H5_TUNING_BUILD
     NVIC_EnableIRQ(VISION_UART_INST_INT_IRQN);
 #else
-    /* Vision UART IRQ is enabled only after Q3 starts a vision-based mode. */
+    /* Vision UART IRQ is enabled only after Q3 starts selected H3. */
     NVIC_DisableIRQ(VISION_UART_INST_INT_IRQN);
 #endif
     __enable_irq();
@@ -337,12 +320,6 @@ int main(void)
                 g_h5_start_pending = false;
                 h5_balance_loop_start_key_isr();
             }
-        } else if (g_active_mode == COMPETITION_MODE_H6) {
-            h6_balance_any_process();
-            if (g_h6_start_pending && h6_balance_any_vision_ready()) {
-                g_h6_start_pending = false;
-                h6_balance_any_start_key_isr();
-            }
         } else if (ssd1306_is_present() &&
                    ((g_system_ms - g_last_menu_refresh_ms) >= 12U)) {
             g_last_menu_refresh_ms = g_system_ms;
@@ -362,7 +339,6 @@ void CONTROL_TIMER_INST_IRQHandler(void)
         h3_ball_control_tick_1ms_isr();
         h4_balance_ab_tick_1ms_isr();
         h5_balance_loop_tick_1ms_isr();
-        h6_balance_any_tick_1ms_isr();
     }
 }
 

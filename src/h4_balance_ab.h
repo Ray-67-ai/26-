@@ -1,4 +1,4 @@
-#ifndef H4_BALANCE_AB_H
+    #ifndef H4_BALANCE_AB_H
 #define H4_BALANCE_AB_H
 
 #include <stdbool.h>

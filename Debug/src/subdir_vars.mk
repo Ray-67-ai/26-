@@ -13,6 +13,7 @@ C_SRCS += \
 ../src/h4_balance_ab.c \
 ../src/h4_tuning_link.c \
 ../src/h5_balance_loop.c \
+../src/h6_balance_any.c \
 ../src/i2c_bus.c \
 ../src/line_sensor.c \
 ../src/motor_encoder.c \
@@ -27,6 +28,7 @@ C_DEPS += \
 ./src/h4_balance_ab.d \
 ./src/h4_tuning_link.d \
 ./src/h5_balance_loop.d \
+./src/h6_balance_any.d \
 ./src/i2c_bus.d \
 ./src/line_sensor.d \
 ./src/motor_encoder.d \
@@ -41,6 +43,7 @@ OBJS += \
 ./src/h4_balance_ab.o \
 ./src/h4_tuning_link.o \
 ./src/h5_balance_loop.o \
+./src/h6_balance_any.o \
 ./src/i2c_bus.o \
 ./src/line_sensor.o \
 ./src/motor_encoder.o \
@@ -55,6 +58,7 @@ OBJS__QUOTED += \
 "src\h4_balance_ab.o" \
 "src\h4_tuning_link.o" \
 "src\h5_balance_loop.o" \
+"src\h6_balance_any.o" \
 "src\i2c_bus.o" \
 "src\line_sensor.o" \
 "src\motor_encoder.o" \
@@ -69,6 +73,7 @@ C_DEPS__QUOTED += \
 "src\h4_balance_ab.d" \
 "src\h4_tuning_link.d" \
 "src\h5_balance_loop.d" \
+"src\h6_balance_any.d" \
 "src\i2c_bus.d" \
 "src\line_sensor.d" \
 "src\motor_encoder.d" \
@@ -83,6 +88,7 @@ C_SRCS__QUOTED += \
 "../src/h4_balance_ab.c" \
 "../src/h4_tuning_link.c" \
 "../src/h5_balance_loop.c" \
+"../src/h6_balance_any.c" \
 "../src/i2c_bus.c" \
 "../src/line_sensor.c" \
 "../src/motor_encoder.c" \

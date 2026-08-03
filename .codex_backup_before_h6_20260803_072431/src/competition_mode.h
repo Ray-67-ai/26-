@@ -7,8 +7,7 @@ typedef enum {
     COMPETITION_MODE_H2 = 2,
     COMPETITION_MODE_H3 = 3,
     COMPETITION_MODE_H4 = 4,
-    COMPETITION_MODE_H5 = 5,
-    COMPETITION_MODE_H6 = 6
+    COMPETITION_MODE_H5 = 5
 } competition_mode_t;
 
 #endif

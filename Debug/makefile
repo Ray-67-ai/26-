@@ -20,6 +20,7 @@ ORDERED_OBJS += \
 "./src/h4_balance_ab.o" \
 "./src/h4_tuning_link.o" \
 "./src/h5_balance_loop.o" \
+"./src/h6_balance_any.o" \
 "./src/i2c_bus.o" \
 "./src/line_sensor.o" \
 "./src/motor_encoder.o" \
@@ -154,8 +155,8 @@ H2_LineCar_CCS.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(GEN_MISC_FILES__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "ti_msp_dl_config.o" "startup_mspm0g350x_ticlang.o" "main.o" "src\app.o" "src\h3_ball_control.o" "src\h3_tuning_link.o" "src\h3_vision.o" "src\h4_balance_ab.o" "src\h4_tuning_link.o" "src\h5_balance_loop.o" "src\i2c_bus.o" "src\line_sensor.o" "src\motor_encoder.o" "src\ssd1306.o" "src\zdt_stepper.o" "src\segger_rtt\SEGGER_RTT.o" "src\segger_rtt\SEGGER_RTT_printf.o" 
-	-$(RM) "ti_msp_dl_config.d" "startup_mspm0g350x_ticlang.d" "main.d" "src\app.d" "src\h3_ball_control.d" "src\h3_tuning_link.d" "src\h3_vision.d" "src\h4_balance_ab.d" "src\h4_tuning_link.d" "src\h5_balance_loop.d" "src\i2c_bus.d" "src\line_sensor.d" "src\motor_encoder.d" "src\ssd1306.d" "src\zdt_stepper.d" "src\segger_rtt\SEGGER_RTT.d" "src\segger_rtt\SEGGER_RTT_printf.d" 
+	-$(RM) "ti_msp_dl_config.o" "startup_mspm0g350x_ticlang.o" "main.o" "src\app.o" "src\h3_ball_control.o" "src\h3_tuning_link.o" "src\h3_vision.o" "src\h4_balance_ab.o" "src\h4_tuning_link.o" "src\h5_balance_loop.o" "src\h6_balance_any.o" "src\i2c_bus.o" "src\line_sensor.o" "src\motor_encoder.o" "src\ssd1306.o" "src\zdt_stepper.o" "src\segger_rtt\SEGGER_RTT.o" "src\segger_rtt\SEGGER_RTT_printf.o" 
+	-$(RM) "ti_msp_dl_config.d" "startup_mspm0g350x_ticlang.d" "main.d" "src\app.d" "src\h3_ball_control.d" "src\h3_tuning_link.d" "src\h3_vision.d" "src\h4_balance_ab.d" "src\h4_tuning_link.d" "src\h5_balance_loop.d" "src\h6_balance_any.d" "src\i2c_bus.d" "src\line_sensor.d" "src\motor_encoder.d" "src\ssd1306.d" "src\zdt_stepper.d" "src\segger_rtt\SEGGER_RTT.d" "src\segger_rtt\SEGGER_RTT_printf.d" 
 	-@echo ' '
 
 .PHONY: all clean dependents

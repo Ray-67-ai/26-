@@ -33,6 +33,10 @@
 #define H5_CRUISE_RPM                           (140.0f)
 #define H5_ACCEL_TIME_MS                        (2700U)
 
+/* H4 launches at 160 rpm in the same 2700 ms.  H5 cruises at 140 rpm, so
+ * scale only the launch feedforward to retain H4's verified tube pre-tilt. */
+#define H5_LAUNCH_FF_SCALE                     (1.08f)
+
 /* Ignore all wide-line events until the last 441.6 mm of the lap.  The
  * perpendicular A marker must then be seen by at least four channels for
  * 30 ms.  This prevents the two semicircles from being mistaken for A. */
@@ -61,16 +65,22 @@
 #define H5_STUCK_POSITION_MM                    H4_STUCK_POSITION_MM
 #define H5_STUCK_SPEED_MM_S                     H4_STUCK_SPEED_MM_S
 #define H5_STUCK_CONFIRM_MS                     H4_STUCK_CONFIRM_MS
-#define H5_CRUISE_KICK_ANGLE_DEG                (5.0f)
-#define H5_KICK_MAX_MS                          H4_KICK_MAX_MS
+#define H5_CRUISE_KICK_ANGLE_DEG                (7.0f)
+/* T10: 90 ms is the single-variable compromise between the recent 80 ms
+ * under-correction and T9's occasional positive overshoot at 100 ms.
+ * The controller still exits early as soon as the ball moves toward O. */
+#define H5_KICK_MAX_MS                          (90U)
 #define H5_KICK_EXIT_CENTER_SPEED_MM_S          H4_KICK_EXIT_CENTER_SPEED_MM_S
 #define H5_KICK_COOLDOWN_MS                     H4_KICK_COOLDOWN_MS
 
 /* The two curve exits create repeatable longitudinal disturbances.  Apply
  * extra damping only while the ball is moving away from O in these windows. */
+#define H5_LAUNCH_SETTLE_WINDOW_START_MM        (400.0f)
+#define H5_LAUNCH_SETTLE_WINDOW_END_MM          (900.0f)
+#define H5_LAUNCH_SETTLE_KD_MULTIPLIER          (1.50f)
 #define H5_EXIT_C_WINDOW_START_MM                (1700.0f)
 #define H5_EXIT_C_WINDOW_END_MM                  (3200.0f)
-#define H5_EXIT_A_WINDOW_START_MM                (4700.0f)
+#define H5_EXIT_A_WINDOW_START_MM                (3900.0f)
 #define H5_EXIT_A_WINDOW_END_MM                  (5700.0f)
 #define H5_EXIT_C_KD_MULTIPLIER                  (1.50f)
 #define H5_EXIT_A_KD_MULTIPLIER                  (1.50f)
