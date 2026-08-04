@@ -429,20 +429,7 @@ static void run_line_control(uint32_t now)
 static void update_stiction_logic(uint32_t now,
                                   const h3_vision_sample_t *vision)
 {
-    bool displaced_and_slow;
-
-    /* The planned acceleration feed-forward already supplies enough tube
-     * authority during launch.  A low-speed camera sample in this phase is
-     * normal near the turning point, not evidence that the ball is stuck.
-     * Allowing the discrete kick here caused a measured -7 degree command
-     * around 0.8 s and a large positive overshoot. */
-    if (g_state == H4_ACCEL) {
-        g_kick_active = false;
-        g_stuck_start_ms = 0U;
-        return;
-    }
-
-    displaced_and_slow =
+    bool displaced_and_slow =
         (absf(g_predicted_mm) >= H4_STUCK_POSITION_MM) &&
         (absf(vision->velocity_mm_s) <= H4_STUCK_SPEED_MM_S);
 

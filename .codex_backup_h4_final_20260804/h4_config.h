@@ -35,12 +35,12 @@
  * motor_deg = Kp*x_pred + Ki*integral(x) + Kd*v + Kff*a_car.
  * The feed-forward sign is deliberately runtime-adjustable because it
  * depends on the camera coordinate direction and the physical installation. */
-#define H4_BALL_KP_DEG_PER_MM                (0.0750f)
-#define H4_BALL_KI_DEG_PER_MM_S              (0.0020f)
-#define H4_BALL_KD_DEG_PER_MM_S              (0.0450f)
+#define H4_BALL_KP_DEG_PER_MM                (0.0600f)
+#define H4_BALL_KI_DEG_PER_MM_S              (0.0000f)
+#define H4_BALL_KD_DEG_PER_MM_S              (0.0350f)
 #define H4_ACCEL_KD_MULTIPLIER                (1.30f)
 #define H4_PREDICTION_TIME_S                  (0.020f)
-#define H4_ACCEL_FF_DEG_PER_M_S2             (-17.5f)
+#define H4_ACCEL_FF_DEG_PER_M_S2             (-13.5f)
 /* The chassis briefly outruns its low-speed target during launch.  Apply a
  * small tube-only bias before that measured overshoot, then remove it before
  * cruise so the already-stable middle section is unchanged. */
